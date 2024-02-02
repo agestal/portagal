@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Color extends Model
+class Material extends Model
 {
     use HasFactory;
+    protected $table = 'materiales';
     protected $fillable = [
         'nombre'
     ];
-    public function material()
+    public function color()
     {
-        return $this->belongsToMany(Materiales::class);
+        return $this->belongsToMany(Color::class);
     }
 }
