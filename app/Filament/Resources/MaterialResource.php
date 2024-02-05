@@ -28,9 +28,9 @@ class MaterialResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('color')
+                Forms\Components\Select::make('color_id')
                     ->multiple()
-                    ->relationship('color', 'nombre'),
+                    ->relationship('colors', 'colors.nombre'),
             ]);
     }
 
@@ -40,7 +40,7 @@ class MaterialResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('color.nombre')
+                Tables\Columns\TextColumn::make('colors.nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

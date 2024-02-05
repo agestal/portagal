@@ -11,8 +11,8 @@ class Color extends Model
     protected $fillable = [
         'nombre'
     ];
-    public function material()
+    public function materials()
     {
-        return $this->belongsToMany(Materiales::class);
+        return $this->belongsToMany(Material::class);
     }
 }

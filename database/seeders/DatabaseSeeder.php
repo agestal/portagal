@@ -12,6 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(ColorSeeder::class);
+        $this->call(MaterialSeeder::class);
+        $this->call(PuertaSeeder::class);
+        $this->call(PresupuestoSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

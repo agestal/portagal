@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PuertaResource\Pages;
-use App\Filament\Resources\PuertaResource\RelationManagers;
-use App\Models\Puerta;
+use App\Filament\Resources\PresupuestoResource\Pages;
+use App\Filament\Resources\PresupuestoResource\RelationManagers;
+use App\Models\Presupuesto;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,21 +13,23 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PuertaResource extends Resource
+class PresupuestoResource extends Resource
 {
-    protected static ?string $model = Puerta::class;
+    protected static ?string $model = Presupuesto::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $navigationGroup = 'Configuración';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nombre')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('puerta_id')
+                ->relationship('puertas', 'puertas.nombre'),
+                Forms\Components\Select::make('material_id')
+                    ->relationship('materials', 'materials.nombre'),
+                Forms\Components\Select::make('color_id')
+                    ->relationship('colors', 'colors.nombre')
+                    ->searchable(),
             ]);
     }
 
@@ -35,8 +37,15 @@ class PuertaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nombre')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('puerta.nombre')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('material.nombre')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('color.nombre')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -69,9 +78,9 @@ class PuertaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPuertas::route('/'),
-            'create' => Pages\CreatePuerta::route('/create'),
-            'edit' => Pages\EditPuerta::route('/{record}/edit'),
+            'index' => Pages\ListPresupuestos::route('/'),
+            'create' => Pages\CreatePresupuesto::route('/create'),
+            'edit' => Pages\EditPresupuesto::route('/{record}/edit'),
         ];
     }
 }
