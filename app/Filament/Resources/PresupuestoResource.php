@@ -28,8 +28,15 @@ class PresupuestoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('puertas')
-                ->relationship('puertas', 'nombre'),
+                Forms\Components\DatePicker::make('fecha'),
+                Forms\Components\Select::make('puerta_id')
+                    ->relationship('puertas', 'nombre'),
+                Forms\Components\Select::make('diseno_id')
+                    ->relationship('disenos', 'nombre'),
+                Forms\Components\Select::make('pano_id')
+                    ->relationship('panos', 'nombre'),
+                Forms\Components\Select::make('apertura_id')
+                    ->relationship('aperturas', 'nombre'),
                 Forms\Components\Select::make('materials')
                     ->relationship('materials', 'materials.nombre')
                     ->label('Material')
@@ -37,7 +44,7 @@ class PresupuestoResource extends Resource
                     ->afterStateUpdated(function ($state, callable $get, callable $set) {
                     })
                     ->reactive(),
-                Forms\Components\Select::make('colors')
+                Forms\Components\Select::make('color_id')
                     ->relationship('colors', 'colors.nombre')
                     ->options(function (callable $get, callable $set) {
                         if ( !is_null($get('materials')) ) 
