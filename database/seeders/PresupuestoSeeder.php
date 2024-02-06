@@ -13,10 +13,6 @@ class PresupuestoSeeder extends Seeder
      */
     public function run(): void
     {
-        Presupuesto::insert([
-            'puerta_id' => 1,
-            'material_id' => 1,
-            'color_id' => 1,
-        ]);
+
     }
 }

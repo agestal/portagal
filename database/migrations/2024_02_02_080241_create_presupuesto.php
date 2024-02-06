@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('presupuestos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('puerta_id')->references('id')->on('puertas')->constrained()->nullable();
-            $table->foreignId('material_id')->references('id')->on('materials')->constrained()->nullable();
-            $table->foreignId('color_id')->references('id')->on('colors')->constrained()->nullable();
+            $table->foreignId('puerta_id')->references('id')->on('puertas')->nullable();
+            $table->foreignId('material_id')->references('id')->on('materials')->nullable();
+            $table->foreignId('color_id')->references('id')->on('colors')->nullable();
             $table->timestamps();
         });
     }

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::table('presupuestos', function (Blueprint $table) {
             $table->date('fecha');
-            $table->integer('diseno_id')->nullable();
-            $table->integer('pano_id')->nullable();
-            $table->integer('opcion_id')->nullable();
-            $table->integer('apertura_id')->nullable();
+            $table->integer('diseno_id')->references('id')->on('disenos')->nullable();
+            $table->integer('pano_id')->references('id')->on('panos')->nullable();
+            $table->integer('opcion_id')->references('id')->on('opciones')->nullable();
+            $table->integer('apertura_id')->references('id')->on('aperturas')->nullable();
         });
     }
 
