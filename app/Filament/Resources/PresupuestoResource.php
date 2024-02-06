@@ -37,7 +37,7 @@ class PresupuestoResource extends Resource
                     ->relationship('panos', 'nombre'),
                 Forms\Components\Select::make('apertura_id')
                     ->relationship('aperturas', 'nombre'),
-                Forms\Components\Select::make('materials')
+                Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')
                     ->label('Material')
                     ->options(Material::all()->pluck('nombre','id')->toArray())
