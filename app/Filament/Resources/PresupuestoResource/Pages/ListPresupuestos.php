@@ -16,4 +16,10 @@ class ListPresupuestos extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            PresupuestoResource\Widgets\PresupuestosBarChart::class,
+        ];
+    }
 }
