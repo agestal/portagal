@@ -45,7 +45,6 @@ class PresupuestoResource extends Resource
                         }
                         else 
                         {
-                            
                             return Color::join('color_material','color_material.color_id','colors.id')->get()->pluck('nombre','id')->toArray();
                         }
                     }),
