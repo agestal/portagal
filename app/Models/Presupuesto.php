@@ -17,23 +17,24 @@ class Presupuesto extends Model
     ];
     public function puertas()
     {
-        return $this->hasMany(Puerta::class);
+        return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
     }
     use \Znck\Eloquent\Traits\BelongsToThrough;
     public function materials()
     {
-        return $this->hasMany(Material::class);
+        return $this->belongsTo(Material::class, 'material_id', 'id');
     }
     public function colors() : BelongsToThrough
     {
         return $this->belongsToThrough(
-            Material::class,
-            [ColorMaterial::class, Color::class],
+            Color::class,
+            [ColorMaterial::class, Material::class],
             foreignKeyLookup: [ 
-                ColorMaterial::class => 'id'
+                ColorMaterial::class => 'id',
+                Material::class => 'material_id'
             ],
             localKeyLookup: [ 
-                ColorMaterial::class => 'color_id',
+                Color::class => 'id'
             ]
         );
     }

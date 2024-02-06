@@ -19,6 +19,6 @@ class Material extends Model
     }
     public function colors()
     {
-        return $this->belongsToMany(Color::class);
+        return $this->belongsToMany(Color::class, 'color_material', 'material_id', 'color_id');
     }
 }

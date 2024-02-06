@@ -15,10 +15,6 @@ class Puerta extends Model
     ];
     public function presupuesto()
     {
-        return $this->belongsToMany(Presupuesto::class);
-    }
-    public function material()
-    {
-        return $this->belongsToMany(Material::class);
+        return $this->belongsTo(Presupuesto::class);
     }
 }

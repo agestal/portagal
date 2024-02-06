@@ -5,14 +5,18 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PresupuestoResource\Pages;
 use App\Filament\Resources\PresupuestoResource\RelationManagers;
 use App\Models\Presupuesto;
+//use Filament\Actions\Action;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use App\Models\Color;
+use App\Models\Material;
 class PresupuestoResource extends Resource
 {
     protected static ?string $model = Presupuesto::class;
@@ -23,13 +27,28 @@ class PresupuestoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('puerta_id')
-                ->relationship('puertas', 'puertas.nombre'),
-                Forms\Components\Select::make('material_id')
-                    ->relationship('materials', 'materials.nombre'),
-                Forms\Components\Select::make('color_id')
+                Forms\Components\Select::make('puertas')
+                ->relationship('puertas', 'nombre'),
+                Forms\Components\Select::make('materials')
+                    ->relationship('materials', 'materials.nombre')
+                    ->label('Material')
+                    ->options(Material::all()->pluck('nombre','id')->toArray())
+                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                    })
+                    ->reactive(),
+                Forms\Components\Select::make('colors')
                     ->relationship('colors', 'colors.nombre')
-                    ->searchable(),
+                    ->options(function (callable $get, callable $set) {
+                        if ( !is_null($get('materials')) ) 
+                        {
+                            return Color::join('color_material','color_material.color_id','colors.id')->where('material_id',$get('materials'))->get()->pluck('nombre','id')->toArray();
+                        }
+                        else 
+                        {
+                            
+                            return Color::join('color_material','color_material.color_id','colors.id')->get()->pluck('nombre','id')->toArray();
+                        }
+                    }),
             ]);
     }
 
@@ -37,14 +56,11 @@ class PresupuestoResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('puerta.nombre')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('puertas.nombre')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('material.nombre')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('materials.nombre')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('color.nombre')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('colors.nombre')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -71,7 +87,7 @@ class PresupuestoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            //RelationManagers\MaterialRelationManager::class,
         ];
     }
 

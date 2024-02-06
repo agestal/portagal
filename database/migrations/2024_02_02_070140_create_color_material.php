@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('color_material', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('material_id')->references('id')->on('materials')->constrained()->onDelete('cascade');;
-            $table->foreignId('color_id')->references('id')->on('colors')->constrained()->onDelete('cascade');;
+            $table->foreignId('material_id')->references('id')->on('materials')->constrained();
+            $table->foreignId('color_id')->references('id')->on('colors')->constrained();
             $table->timestamps();
         });
     }
