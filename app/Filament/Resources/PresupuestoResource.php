@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\Color;
 use App\Models\Material;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Blade;
 class PresupuestoResource extends Resource
 {
     protected static ?string $model = Presupuesto::class;
@@ -75,6 +77,17 @@ class PresupuestoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('pdf') 
+                    ->label('PDF')
+                    ->color('success')
+                    ->icon('heroicon-o-document')
+                    ->action(function (Presupuesto $record) {
+                        return response()->streamDownload(function () use ($record) {
+                            echo Pdf::loadHtml(
+                                Blade::render('pdf', ['record' => $record])
+                            )->stream();
+                        }, $record->number.'.pdf');
+                    }), 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
