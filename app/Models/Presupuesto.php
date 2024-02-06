@@ -51,6 +51,7 @@ class Presupuesto extends Model
                 Material::class => 'material_id'
             ],
             localKeyLookup: [ 
+                Material::class => 'id',
                 Color::class => 'id'
             ]
         );

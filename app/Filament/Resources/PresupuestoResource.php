@@ -47,9 +47,9 @@ class PresupuestoResource extends Resource
                 Forms\Components\Select::make('color_id')
                     ->relationship('colors', 'colors.nombre')
                     ->options(function (callable $get, callable $set) {
-                        if ( !is_null($get('materials')) ) 
+                        if ( !is_null($get('material_id')) ) 
                         {
-                            return Color::join('color_material','color_material.color_id','colors.id')->where('material_id',$get('materials'))->get()->pluck('nombre','id')->toArray();
+                            return Color::join('color_material','color_material.color_id','colors.id')->where('material_id',$get('material_id'))->get()->pluck('nombre','id')->toArray();
                         }
                         else 
                         {
