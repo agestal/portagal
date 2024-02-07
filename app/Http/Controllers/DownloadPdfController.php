@@ -11,6 +11,6 @@ class DownloadPdfController extends Controller
     {
         $record = Presupuesto::findOrFail($order);
         return Pdf::loadView('pdf', ['record' => $record])
-            ->download($presupuesto->id. '.pdf');
+            ->download('Presupuesto-'.$record->id.'.pdf');
     }
 }
