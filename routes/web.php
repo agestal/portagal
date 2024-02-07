@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DownloadPdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('pdf/{order}', DownloadPdfController::class)->name('pdf'); 

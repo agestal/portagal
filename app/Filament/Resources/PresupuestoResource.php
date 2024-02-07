@@ -18,6 +18,9 @@ use App\Models\Color;
 use App\Models\Material;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Blade;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\CheckboxList;
+
 class PresupuestoResource extends Resource
 {
     protected static ?string $model = Presupuesto::class;
@@ -69,6 +72,12 @@ class PresupuestoResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('colors.nombre')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('panos.nombre')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('disenos.nombre')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('aperturas.nombre')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -87,13 +96,8 @@ class PresupuestoResource extends Resource
                     ->label('PDF')
                     ->color('success')
                     ->icon('heroicon-o-document')
-                    ->action(function (Presupuesto $record) {
-                        return response()->streamDownload(function () use ($record) {
-                            echo Pdf::loadHtml(
-                                Blade::render('pdf', ['record' => $record])
-                            )->stream();
-                        }, $record->number.'.pdf');
-                    }), 
+                    ->url(fn (Presupuesto $record) => route('pdf', $record))
+                    ->openUrlInNewTab(), 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
