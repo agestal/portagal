@@ -20,6 +20,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\CheckboxList;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 class PresupuestoResource extends Resource
 {
@@ -102,6 +103,7 @@ class PresupuestoResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()
                 ]),
             ]);
     }
