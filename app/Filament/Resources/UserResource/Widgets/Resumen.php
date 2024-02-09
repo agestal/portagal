@@ -13,17 +13,13 @@ class Resumen extends BaseWidget
     {
         $puertas = DB::table('puertas')->count();
         $materiales = DB::table('materials')->count();
-        $disenos = DB::table('disenos')->count();
-        $panos = DB::table('panos')->count();
+
         $presupuestos = DB::table('presupuestos')->count();
-        $opciones = DB::table('opciones')->count();
+
         return [
             Stat::make('Puertas creadas:', $puertas),
             Stat::make('Materiales disponibles:', $materiales),
-            Stat::make('Diseños disponibles:', $disenos),
-            Stat::make('Paños configurables:', $panos),
             Stat::make('Presupuestos generados:', $presupuestos)->description('Presupuestos generados desde el inicio de los tiempos')->icon('heroicon-o-document'),
-            Stat::make('Opciones adicionales disponibles:',$opciones)
         ];
     }
 }

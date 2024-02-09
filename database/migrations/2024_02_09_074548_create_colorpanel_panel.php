@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('presupuestos', function (Blueprint $table) {
+        Schema::create('colorpanel_panel', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('puerta_id')->references('id')->on('puertas')->nullable();
-            $table->foreignId('material_id')->references('id')->on('materials')->nullable();
-            $table->foreignId('color_id')->references('id')->on('colors')->nullable();
+            $table->foreignId('panel_id')->references('id')->on('panels')->constrained();
+            $table->foreignId('colorpanel_id')->references('id')->on('colorpanels')->constrained();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('presupuestos');
+        Schema::dropIfExists('colorpanel_panel');
     }
 };

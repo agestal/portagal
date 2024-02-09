@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AperturaResource\Pages;
-use App\Filament\Resources\AperturaResource\RelationManagers;
-use App\Models\Apertura;
+use App\Filament\Resources\ColorpanelResource\Pages;
+use App\Filament\Resources\ColorpanelResource\RelationManagers;
+use App\Models\Colorpanel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,10 +12,11 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\IconColumn;
 
-class AperturaResource extends Resource
+class ColorpanelResource extends Resource
 {
-    protected static ?string $model = Apertura::class;
+    protected static ?string $model = Colorpanel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -28,6 +29,8 @@ class AperturaResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Checkbox::make('std')
+                    ->required(),
             ]);
     }
 
@@ -37,14 +40,8 @@ class AperturaResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                IconColumn::make('std')->boolean()
+              
             ])
             ->filters([
                 //
@@ -69,9 +66,9 @@ class AperturaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAperturas::route('/'),
-            'create' => Pages\CreateApertura::route('/create'),
-            'edit' => Pages\EditApertura::route('/{record}/edit'),
+            'index' => Pages\ListColorpanels::route('/'),
+            'create' => Pages\CreateColorpanel::route('/create'),
+            'edit' => Pages\EditColorpanel::route('/{record}/edit'),
         ];
     }
 }

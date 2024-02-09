@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\OpcionResource\Pages;
+namespace App\Filament\Resources\PanelResource\Pages;
 
-use App\Filament\Resources\OpcionResource;
+use App\Filament\Resources\PanelResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditOpcion extends EditRecord
+class EditPanel extends EditRecord
 {
-    protected static string $resource = OpcionResource::class;
+    protected static string $resource = PanelResource::class;
 
     protected function getHeaderActions(): array
     {

@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MaterialPresupuesto extends Model
+class ColorpanelPanel extends Model
 {
     use HasFactory;
-    protected $table = "materials_presupuestos";
+    protected $table = 'colorpanel_panel';
 }

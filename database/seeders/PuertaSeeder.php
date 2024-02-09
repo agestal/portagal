@@ -14,7 +14,15 @@ class PuertaSeeder extends Seeder
     public function run(): void
     {
         Puerta::insert([
-            [ 'nombre' => 'Corredera' ] , [ 'nombre' => 'Fija' ]
+            [ 'nombre' => 'Seccional' ],
+            [ 'nombre' => 'Corredera' ],
+            [ 'nombre' => 'Abatible 1 Hoja' ],
+            [ 'nombre' => 'Abatible 2 Hojas' ],
+            [ 'nombre' => 'Peatonal' ],
+            [ 'nombre' => 'Persiana' ],
+            [ 'nombre' => 'Lona' ],
+            [ 'nombre' => 'Cristal' ],
+            [ 'nombre' => 'Cierre finca' ],
         ]);
     }
 }

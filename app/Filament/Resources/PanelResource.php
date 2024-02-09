@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PanoResource\Pages;
-use App\Filament\Resources\PanoResource\RelationManagers;
-use App\Models\Pano;
+use App\Filament\Resources\PanelResource\Pages;
+use App\Filament\Resources\PanelResource\RelationManagers;
+use App\Models\Panel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PanoResource extends Resource
+class PanelResource extends Resource
 {
-    protected static ?string $model = Pano::class;
+    protected static ?string $model = Panel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -28,6 +28,9 @@ class PanoResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('colorpanel_id')
+                    ->multiple()
+                    ->relationship('colorpanels', 'colorpanels.nombre'),
             ]);
     }
 
@@ -69,9 +72,9 @@ class PanoResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPanos::route('/'),
-            'create' => Pages\CreatePano::route('/create'),
-            'edit' => Pages\EditPano::route('/{record}/edit'),
+            'index' => Pages\ListPanels::route('/'),
+            'create' => Pages\CreatePanel::route('/create'),
+            'edit' => Pages\EditPanel::route('/{record}/edit'),
         ];
     }
 }

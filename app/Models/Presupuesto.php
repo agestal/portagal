@@ -24,18 +24,6 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
     }
-    public function aperturas()
-    {
-        return $this->belongsTo(Apertura::class, 'apertura_id', 'id');
-    }
-    public function panos()
-    {
-        return $this->belongsTo(Pano::class, 'apertura_id', 'id');
-    }
-    public function disenos()
-    {
-        return $this->belongsTo(Diseno::class, 'apertura_id', 'id');
-    }
     use \Znck\Eloquent\Traits\BelongsToThrough;
     public function materials()
     {
@@ -53,6 +41,25 @@ class Presupuesto extends Model
             localKeyLookup: [ 
                 Material::class => 'id',
                 Color::class => 'id'
+            ]
+        );
+    }
+    public function panels()
+    {
+        return $this->belongsTo(Panel::class, 'panel_id', 'id');
+    }
+    public function colorpanels() : BelongsToThrough
+    {
+        return $this->belongsToThrough(
+            Colorpanel::class,
+            [ColorpanelPanel::class, Panel::class],
+            foreignKeyLookup: [ 
+                ColorpanelPanel::class => 'id',
+                Panel::class => 'panel_id'
+            ],
+            localKeyLookup: [ 
+                Panel::class => 'id',
+                Colorpanel::class => 'id'
             ]
         );
     }

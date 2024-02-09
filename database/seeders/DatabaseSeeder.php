@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ColorSeeder::class);
         $this->call(MaterialSeeder::class);
         $this->call(PuertaSeeder::class);
-        $this->call(PresupuestoSeeder::class);
+        $this->call(PanelSeeder::class);
+        $this->call(ColorpanelSeeder::class);
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
