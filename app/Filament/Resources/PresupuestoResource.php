@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\CheckboxList;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use Filament\Forms\Components\FileUpload;
+use Saade\FilamentAutograph\Forms\Components\SignaturePad;
 
 
 class PresupuestoResource extends Resource
@@ -36,6 +38,9 @@ class PresupuestoResource extends Resource
         return $form
             ->schema([
                 Forms\Components\DatePicker::make('fecha'),
+                Forms\Components\TextInput::make('nombre_cliente'),
+                Forms\Components\TextInput::make('pedido'),
+                Forms\Components\TextInput::make('email'),
                 Forms\Components\Select::make('puerta_id')
                     ->relationship('puertas', 'nombre'),
                 
@@ -74,7 +79,8 @@ class PresupuestoResource extends Resource
                         }
                     }),
 
-
+                    FileUpload::make('archivo1'),
+                    SignaturePad::make('firma'),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')
                     ->label('Material')
@@ -103,9 +109,9 @@ class PresupuestoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('puertas.nombre')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('materials.nombre')
+                Tables\Columns\TextColumn::make('panels.nombre')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('colors.nombre')
+                Tables\Columns\TextColumn::make('colorpanels.nombre')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

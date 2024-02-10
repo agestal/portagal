@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreignId('panel_id')->references('id')->on('panels')->nullable();
             $table->foreignId('colorpanel_id')->references('id')->on('colorpanels')->nullable();
            
+            $table->string('archivo1');
+            $table->string('firma');
             $table->foreignId('material_id')->references('id')->on('materials')->nullable();
             $table->foreignId('color_id')->references('id')->on('colors')->nullable();
 

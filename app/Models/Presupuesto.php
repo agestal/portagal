@@ -12,13 +12,14 @@ class Presupuesto extends Model
     use HasFactory;
     protected $fillable = [
         'fecha',
-        'material_id',
-        'color_id',
+        'panel_id',
+        'colorpanel_id',
         'puerta_id',
-        'pano_id',
-        'diseno_id',
-        'apertura_id',
-        'opcion_id'
+        'nombre_cliente',
+        'pedido',
+        'email',
+        'archivo1',
+        'firma'
     ];
     public function puertas()
     {
@@ -48,19 +49,8 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(Panel::class, 'panel_id', 'id');
     }
-    public function colorpanels() : BelongsToThrough
+    public function colorpanels() 
     {
-        return $this->belongsToThrough(
-            Colorpanel::class,
-            [ColorpanelPanel::class, Panel::class],
-            foreignKeyLookup: [ 
-                ColorpanelPanel::class => 'id',
-                Panel::class => 'panel_id'
-            ],
-            localKeyLookup: [ 
-                Panel::class => 'id',
-                Colorpanel::class => 'id'
-            ]
-        );
+        return $this->belongsTo(Colorpanel::class, 'colorpanel_id', 'id');
     }
 }
