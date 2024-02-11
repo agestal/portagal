@@ -25,6 +25,10 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
     }
+    public function opciones()
+    {
+        return $this->belongsToMany(Opcion::class);
+    }
     use \Znck\Eloquent\Traits\BelongsToThrough;
     public function materials()
     {

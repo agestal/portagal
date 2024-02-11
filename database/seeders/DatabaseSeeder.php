@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PuertaSeeder::class);
         $this->call(PanelSeeder::class);
         $this->call(ColorpanelSeeder::class);
-
+        $this->call(OpcionSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

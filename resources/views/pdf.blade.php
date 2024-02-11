@@ -5,4 +5,4 @@
 <div>Material: {{ $record->panels->nombre }}</div>
 <div>Color: {{ $record->colorpanels->nombre }}</div>
 <div>Fecha: {{ $record->created_at }}</div>
-<div>Imagen 1: <img src='{{ asset("/images/".$record->archivo1) }}'> </img> </div>
+<div>Imagen 1: <img src='data:image/svg+xml;base64,{{ base64_encode( asset("/images/".$record->archivo1)) }}'> </img></div>
