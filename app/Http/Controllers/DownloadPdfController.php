@@ -10,7 +10,9 @@ class DownloadPdfController extends Controller
     public function __invoke(Presupuesto $presupuesto,$order)
     {
         $record = Presupuesto::findOrFail($order);
+        $archivo1 = asset("/images/".$record->archivo1);
         return Pdf::loadView('pdf', ['record' => $record])
+            ->loadFile($archivo1)
             ->download('Presupuesto-'.$record->id.'.pdf');
     }
 }
