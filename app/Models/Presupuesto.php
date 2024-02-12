@@ -19,7 +19,12 @@ class Presupuesto extends Model
         'pedido',
         'email',
         'archivo1',
-        'firma'
+        'firma',
+        'electricidad',
+        'obras',
+        'elevador',
+        'distancia_vertical',
+        'distancia_horizontal'
     ];
     public function puertas()
     {

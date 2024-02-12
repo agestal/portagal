@@ -1,8 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
 
-<div>ID: {{ $record->id }}</div>
+<head>
 
-<div>Puerta: {{ $record->puertas->nombre }}</div>
-<div>Material: {{ $record->panels->nombre }}</div>
-<div>Color: {{ $record->colorpanels->nombre }}</div>
-<div>Fecha: {{ $record->created_at }}</div>
-<div>Imagen 1: <img src='data:image/svg+xml;base64,{{ base64_encode( asset("/images/".$record->archivo1)) }}'> </img></div>
+</head>
+<body>
+    <header>
+    </header>
+        
+    <p> <img src='{{ asset("/images/".$record->archivo1) }}'> </img> </p>
+    
+    <p>ID: {{ $record->id }}</p>
+    <p>Puerta: {{ $record->puertas->nombre }}</p>
+    <p>Material: {{ $record->panels->nombre }}</p>
+    <p>Color: {{ $record->colorpanels->nombre }}</p>
+    <p>Fecha: {{ $record->created_at }}</p>
+
+    <p> <img src='{{ storage_path($record->firma) }}'> </img> </p>
+</body>
+</html>
+
+
