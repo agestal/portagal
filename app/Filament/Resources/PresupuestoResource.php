@@ -94,9 +94,9 @@ class PresupuestoResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('opcion_id')
                                     ->relationship('opcion','nombre')
-                                    ->label('Opciones...'),
+                                    ->label('Opcion'),
                                 Forms\Components\TextInput::make('valor')
-                            ])->required(),
+                            ])->columns(2),
                     ]),
                 Wizard\Step::make('Datos para montaje')
                     ->schema([
