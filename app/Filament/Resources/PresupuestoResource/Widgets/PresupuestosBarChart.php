@@ -13,16 +13,16 @@ class PresupuestosBarChart extends ApexChartWidget
     protected function getOptions(): array
     {
         $data = DB::table('presupuestos AS p')
-                    ->join('materials AS m','p.material_id','m.id')
-                    ->select('m.nombre AS material',DB::raw('count(*) as presupuestos'))
-                    ->groupBy('m.nombre')
+                    ->join('puertas AS pr','p.puerta_id','pr.id')
+                    ->select('pr.nombre AS puerta',DB::raw('count(*) as presupuestos'))
+                    ->groupBy('pr.nombre')
                     ->get();
         $values = [];
         $labels = [];
         foreach ( $data as $d )
         {
             array_push($values,$d->presupuestos);
-            array_push($labels,$d->material);
+            array_push($labels,$d->puerta);
         }
         return [
             'chart' => [
