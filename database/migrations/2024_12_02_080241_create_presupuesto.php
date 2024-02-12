@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('puerta_id')->references('id')->on('puertas')->nullable();
             $table->foreignId('panel_id')->references('id')->on('panels')->nullable();
             $table->foreignId('colorpanel_id')->references('id')->on('colorpanels')->nullable();
+            $table->foreignId('opcion_id')->references('id')->on('opcions')->nullable();
            
             $table->string('archivo1');
             $table->string('firma');
