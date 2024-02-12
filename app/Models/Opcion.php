@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Opcion extends Model
 {
     use HasFactory;
     protected $fillable = [
         'nombre'
     ];
-    public function presupuestos()
+    public function opcionpresupuesto(): HasMany
     {
-        return $this->belongsToMany(Presupuesto::class);
+        return $this->hasMany(OpcionPresupuesto::class);
     }
+
 }

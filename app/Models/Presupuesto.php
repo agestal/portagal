@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Znck\Eloquent\Relations\BelongsToThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Presupuesto extends Model
 {
@@ -29,10 +30,6 @@ class Presupuesto extends Model
     public function puertas()
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
-    }
-    public function opcions()
-    {
-        return $this->belongsToMany(Opcion::class);
     }
     use \Znck\Eloquent\Traits\BelongsToThrough;
     public function materials()
@@ -62,8 +59,8 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(Colorpanel::class, 'colorpanel_id', 'id');
     }
-    public function opcionpresupuesto()
+    public function opcionpresupuesto(): HasMany
     {
-        return $this->belongsToMany(OpcionPresupuesto::class);
+        return $this->hasMany(OpcionPresupuesto::class);
     }
 }

@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 class OpcionPresupuesto extends Model
 {
     use HasFactory;
@@ -14,8 +15,13 @@ class OpcionPresupuesto extends Model
         'presupuesto_id',
         'valor'
     ];
-    public function presupuestos()
+    public function presupuesto(): BelongsTo
     {
-        return $this->belongsToMay(Presupuesto::class);
+        return $this->belongsTo(Presupuesto::class);
+    }
+    
+    public function opcion(): BelongsTo
+    {
+        return $this->belongsTo(Opcion::class);
     }
 }

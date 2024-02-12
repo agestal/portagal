@@ -88,10 +88,15 @@ class PresupuestoResource extends Resource
                                     return Colorpanel::get()->pluck('nombre','id')->toArray();
                                 }
                             }),
-                        Forms\Components\Select::make('opcion_id')
-                            ->relationship('opcions', 'opcions.nombre')
-                            ->options(Opcion::all()->pluck('nombre','id')->toArray())
-                            ->label('Opciones...'),
+                        Forms\Components\Repeater::make('opcionpresupuesto')
+                            ->relationship()
+                            ->label('Opciones')
+                            ->schema([
+                                Forms\Components\Select::make('opcion_id')
+                                    ->relationship('opcion','nombre')
+                                    ->label('Opciones...'),
+                                Forms\Components\TextInput::make('valor')
+                            ])->required(),
                     ]),
                 Wizard\Step::make('Datos para montaje')
                     ->schema([
