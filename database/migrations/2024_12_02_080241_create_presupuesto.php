@@ -23,6 +23,12 @@ return new class extends Migration
            
             $table->string('archivo1');
             $table->string('firma');
+            $table->boolean('electricidad');
+            $table->boolean('obras');
+            $table->boolean('elevador');
+            
+            $table->integer('distancia_vertical');
+            $table->integer('distancia_horizontal');
             $table->foreignId('material_id')->references('id')->on('materials')->nullable();
             $table->foreignId('color_id')->references('id')->on('colors')->nullable();
 

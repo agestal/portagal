@@ -22,6 +22,8 @@ class ColorpanelResource extends Resource
 
     protected static ?string $navigationGroup = 'Configuración';
 
+    protected static ?string $navigationLabel = 'Colores de panel';
+
     public static function form(Form $form): Form
     {
         return $form

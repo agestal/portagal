@@ -21,6 +21,8 @@ class ColorResource extends Resource
 
     protected static ?string $navigationGroup = 'Configuración';
 
+    protected static ?string $navigationLabel = 'Colores';
+
     public static function form(Form $form): Form
     {
         return $form

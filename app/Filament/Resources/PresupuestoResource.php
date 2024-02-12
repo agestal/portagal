@@ -28,6 +28,7 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Filament\Forms\Components\FileUpload;
 use Saade\FilamentAutograph\Forms\Components\SignaturePad;
 use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Grid;
 
 class PresupuestoResource extends Resource
 {
@@ -48,16 +49,14 @@ class PresupuestoResource extends Resource
                         Forms\Components\TextInput::make('pedido'),
                         Forms\Components\TextInput::make('email')->regex('/^.+@.+$/i'),
                     ]),
-                Wizard\Step::make('Tipo de puerta')
-                    ->schema([
-                        Forms\Components\Select::make('puerta_id')
-                            ->relationship('puertas', 'nombre'),
-                    ]),
                 Wizard\Step::make('Opciones de la puerta')
                     ->schema([
+                        Forms\Components\Select::make('puerta_id')
+                            ->relationship('puertas', 'nombre')
+                            ->label('Tipo de puerta'),
                         Forms\Components\Select::make('panel_id')
                             ->relationship('panels', 'panels.nombre')
-                            ->label('Panel')
+                            ->label('Tipo de panel')
                             ->hidden(false)
                             ->options(Panel::all()->pluck('nombre','id')->toArray())
                             ->afterStateUpdated(function ($state, callable $get, callable $set) {
@@ -65,6 +64,7 @@ class PresupuestoResource extends Resource
                             ->reactive(),
                         Forms\Components\Select::make('colorpanel_id')
                             ->relationship('colorpanels', 'colorpanels.nombre')
+                            ->label('Color del panel')
                             ->searchable()
                             ->preload()
                             ->options(function (callable $get, callable $set) {
@@ -91,7 +91,18 @@ class PresupuestoResource extends Resource
                         Forms\Components\Select::make('opcion_id')
                             ->relationship('opcions', 'opcions.nombre')
                             ->options(Opcion::all()->pluck('nombre','id')->toArray())
-                            ->label('Opcion'),
+                            ->label('Opciones...'),
+                    ]),
+                Wizard\Step::make('Datos para montaje')
+                    ->schema([
+                        Grid::make(2)->schema([
+                            Forms\Components\Checkbox::make('electricidad')->label('Incluimos electricidad: '),
+                            Forms\Components\TextInput::make('distancia_horizontal')->label('Distancia entre paredes: (CMs)')->numeric(),
+                            Forms\Components\Checkbox::make('obras')->label('Incluimos albañilería: '),
+                            Forms\Components\TextInput::make('distancia_vertical')->label('Distancia suelo techo: (CMs)')->numeric(),
+                            Forms\Components\Checkbox::make('elevador')->label('Incluimos elevador: '),
+                        ])->columns(2),
+
                     ]),
                 Wizard\Step::make('Imagenes')
                     ->schema([

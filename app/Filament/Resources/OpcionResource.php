@@ -21,6 +21,8 @@ class OpcionResource extends Resource
     
     protected static ?string $navigationGroup = 'Configuración';
 
+    protected static ?string $navigationLabel = 'Opciones';
+
     public static function form(Form $form): Form
     {
         return $form
