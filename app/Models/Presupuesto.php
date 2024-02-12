@@ -25,7 +25,7 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
     }
-    public function opciones()
+    public function opcions()
     {
         return $this->belongsToMany(Opcion::class);
     }
@@ -56,5 +56,9 @@ class Presupuesto extends Model
     public function colorpanels() 
     {
         return $this->belongsTo(Colorpanel::class, 'colorpanel_id', 'id');
+    }
+    public function opcionpresupuesto()
+    {
+        return $this->belongsToMany(OpcionPresupuesto::class);
     }
 }

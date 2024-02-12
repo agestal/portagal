@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('opcions_presupuestos', function (Blueprint $table) {
+        Schema::create('opcion_presupuesto', function (Blueprint $table) {
             $table->id();
             $table->integer('presupuesto_id')->references('id')->on('presupuestos')->constrained();
             $table->integer('opcion_id')->references('id')->on('opcions')->constrained();

@@ -8,5 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class OpcionPresupuesto extends Model
 {
     use HasFactory;
-    protected $table = 'opcions_presupuestos';
+    protected $table = 'opcion_presupuesto';
+    protected $fillable = [
+        'opcion_id',
+        'presupuesto_id',
+        'valor'
+    ];
+    public function presupuestos()
+    {
+        return $this->belongsToMay(Presupuesto::class);
+    }
 }

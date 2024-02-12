@@ -90,12 +90,8 @@ class PresupuestoResource extends Resource
                             }),
                         Forms\Components\Select::make('opcion_id')
                             ->relationship('opcions', 'opcions.nombre')
-                            ->label('Opcion')
                             ->options(Opcion::all()->pluck('nombre','id')->toArray())
-                            ->createOptionForm([
-                                Forms\Components\Select::make('opcion_id')
-                                    ->relationship('opcions', 'opcions.nombre'),
-                            ]),
+                            ->label('Opcion'),
                     ]),
                 Wizard\Step::make('Imagenes')
                     ->schema([
