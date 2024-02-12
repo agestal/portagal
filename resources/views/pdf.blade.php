@@ -16,7 +16,7 @@
     <p>Color: {{ $record->colorpanels->nombre }}</p>
     <p>Fecha: {{ $record->created_at }}</p>
 
-    <p> <img src='{{ storage_path($record->firma) }}'> </img> </p>
+    <p> <img src='{{ $record->firma }}'> </img> </p>
 </body>
 </html>
 
