@@ -26,6 +26,7 @@
         "psr/simple-cache": "^2.0",
         "pxlrbt/filament-excel": "^2.3",
         "saade/filament-autograph": "^3.0",
+        "silviolleite/laravelpwa": "^2.0",
         "staudenmeir/belongs-to-through": "^2.5"
     },
     "require-dev": {

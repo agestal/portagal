@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\MaterialResource\Pages;
-use App\Filament\Resources\MaterialResource\RelationManagers;
-use App\Models\Material;
+use App\Filament\Resources\FuncionamientoResource\Pages;
+use App\Filament\Resources\FuncionamientoResource\RelationManagers;
+use App\Models\Funcionamiento;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,27 +12,26 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\IconColumn;
 
-class MaterialResource extends Resource
+class FuncionamientoResource extends Resource
 {
-    protected static ?string $model = Material::class;
+    protected static ?string $model = Funcionamiento::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Configuración';
 
-    protected static ?string $navigationLabel = 'Materiales';
-    
+    protected static ?string $navigationLabel = 'Funcionamientos';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nombre')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('color_id')
-                    ->multiple()
-                    ->relationship('colors', 'colors.nombre'),
+                    ->required(),
+                Forms\Components\Checkbox::make('automatico')
+                    ->required(),
             ]);
     }
 
@@ -42,16 +41,7 @@ class MaterialResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('colors.nombre')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                IconColumn::make('automatico')->boolean()
             ])
             ->filters([
                 //
@@ -76,9 +66,9 @@ class MaterialResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMaterials::route('/'),
-            'create' => Pages\CreateMaterial::route('/create'),
-            'edit' => Pages\EditMaterial::route('/{record}/edit'),
+            'index' => Pages\ListFuncionamientos::route('/'),
+            'create' => Pages\CreateFuncionamiento::route('/create'),
+            'edit' => Pages\EditFuncionamiento::route('/{record}/edit'),
         ];
     }
 }

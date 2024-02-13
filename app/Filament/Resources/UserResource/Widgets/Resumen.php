@@ -12,13 +12,12 @@ class Resumen extends BaseWidget
     protected function getStats(): array
     {
         $puertas = DB::table('puertas')->count();
-        $materiales = DB::table('materials')->count();
-
+        $opciones = DB::table('opcions')->count();
         $presupuestos = DB::table('presupuestos')->count();
 
         return [
             Stat::make('Puertas creadas:', $puertas),
-            Stat::make('Materiales disponibles:', $materiales),
+            Stat::make('Opciones disponibles:', $opciones),
             Stat::make('Presupuestos generados:', $presupuestos)->description('Presupuestos generados desde el inicio de los tiempos')->icon('heroicon-o-document'),
         ];
     }

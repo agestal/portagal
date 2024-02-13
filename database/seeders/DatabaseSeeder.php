@@ -13,12 +13,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(UserSeeder::class);
-        $this->call(ColorSeeder::class);
-        $this->call(MaterialSeeder::class);
         $this->call(PuertaSeeder::class);
         $this->call(PanelSeeder::class);
         $this->call(ColorpanelSeeder::class);
         $this->call(OpcionSeeder::class);
+        $this->call(FuncionamientoSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

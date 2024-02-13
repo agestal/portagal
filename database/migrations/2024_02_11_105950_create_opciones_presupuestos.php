@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('presupuesto_id')->references('id')->on('presupuestos')->constrained();
             $table->integer('opcion_id')->references('id')->on('opcions')->constrained();
-            $table->string('valor');
+            $table->string('valor')->nullable();
             $table->timestamps();
         });
     }

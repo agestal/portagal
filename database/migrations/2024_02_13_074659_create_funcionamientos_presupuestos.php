@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*Schema::create('color_material', function (Blueprint $table) {
+        Schema::create('funcionamiento_presupuesto', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('material_id')->references('id')->on('materials')->constrained();
-            $table->foreignId('color_id')->references('id')->on('colors')->constrained();
+            $table->integer('presupuesto_id')->references('id')->on('presupuestos')->constrained();
+            $table->integer('funcionamiento_id')->references('id')->on('funcionamientos')->constrained();
+            $table->string('valor')->nullable();
             $table->timestamps();
-        });*/
+        });
     }
 
     /**
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('color_material');
+        Schema::dropIfExists('funcionamiento_presupuesto');
     }
 };

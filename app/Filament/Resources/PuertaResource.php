@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\IconColumn;
 
 class PuertaResource extends Resource
 {
@@ -30,6 +31,10 @@ class PuertaResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Checkbox::make('automatica')
+                    ->required(),
+                Forms\Components\Checkbox::make('permite_motor')
+                    ->required(),
             ]);
     }
 
@@ -39,6 +44,8 @@ class PuertaResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
+                IconColumn::make('automatica')->boolean(),
+                IconColumn::make('permite_motor')->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

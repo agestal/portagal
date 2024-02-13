@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ColorResource\Pages;
+namespace App\Filament\Resources\MotorResource\Pages;
 
-use App\Filament\Resources\ColorResource;
+use App\Filament\Resources\MotorResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditColor extends EditRecord
+class EditMotor extends EditRecord
 {
-    protected static string $resource = ColorResource::class;
+    protected static string $resource = MotorResource::class;
 
     protected function getHeaderActions(): array
     {

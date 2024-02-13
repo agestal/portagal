@@ -21,18 +21,13 @@ return new class extends Migration
             $table->foreignId('panel_id')->references('id')->on('panels')->nullable();
             $table->foreignId('colorpanel_id')->references('id')->on('colorpanels')->nullable();
             $table->foreignId('opcion_id')->references('id')->on('opcions')->nullable();
-           
-            $table->string('archivo1');
-            $table->string('firma');
-            $table->boolean('electricidad');
-            $table->boolean('obras');
-            $table->boolean('elevador');
-            
-            $table->integer('distancia_vertical');
-            $table->integer('distancia_horizontal');
-            $table->foreignId('material_id')->references('id')->on('materials')->nullable();
-            $table->foreignId('color_id')->references('id')->on('colors')->nullable();
-
+            $table->string('archivo1',1000)->nullable();
+            $table->string('firma',1000)->nullable();
+            $table->boolean('electricidad')->nullable();
+            $table->boolean('obras')->nullable();
+            $table->boolean('elevador')->nullable();
+            $table->integer('distancia_vertical')->nullable();
+            $table->integer('distancia_horizontal')->nullable();
             $table->timestamps();
         });
     }

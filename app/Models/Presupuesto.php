@@ -31,11 +31,25 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
     }
-    use \Znck\Eloquent\Traits\BelongsToThrough;
-    public function materials()
+    public function panels()
     {
-        return $this->belongsTo(Material::class, 'material_id', 'id');
+        return $this->belongsTo(Panel::class, 'panel_id', 'id');
     }
+    public function colorpanels() 
+    {
+        return $this->belongsTo(Colorpanel::class, 'colorpanel_id', 'id');
+    }
+    public function opcionpresupuesto(): HasMany
+    {
+        return $this->hasMany(OpcionPresupuesto::class);
+    }
+    public function funcionamientopresupuesto(): HasMany
+    {
+        return $this->hasMany(FuncionamientoPresupuesto::class);
+    }
+
+
+    /*use \Znck\Eloquent\Traits\BelongsToThrough;
     public function colors() : BelongsToThrough
     {
         return $this->belongsToThrough(
@@ -50,17 +64,5 @@ class Presupuesto extends Model
                 Color::class => 'id'
             ]
         );
-    }
-    public function panels()
-    {
-        return $this->belongsTo(Panel::class, 'panel_id', 'id');
-    }
-    public function colorpanels() 
-    {
-        return $this->belongsTo(Colorpanel::class, 'colorpanel_id', 'id');
-    }
-    public function opcionpresupuesto(): HasMany
-    {
-        return $this->hasMany(OpcionPresupuesto::class);
-    }
+    }*/
 }

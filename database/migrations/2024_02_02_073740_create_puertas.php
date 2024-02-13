@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('puertas', function (Blueprint $table) {
             $table->id()->onDelete('cascade');
             $table->string('nombre');
+            $table->boolean('automatica');
+            $table->boolean('permite_motor');
             $table->timestamps();
         });
     }

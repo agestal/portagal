@@ -97,6 +97,15 @@ class PresupuestoResource extends Resource
                                     ->label('Opcion'),
                                 Forms\Components\TextInput::make('valor')
                             ])->columns(2),
+                        Forms\Components\Repeater::make('funcionamientopresupuesto')
+                            ->relationship()
+                            ->label('Funcionamientos')
+                            ->schema([
+                                Forms\Components\Select::make('funcionamiento_id')
+                                    ->relationship('funcionamiento','nombre')
+                                    ->label('Funcionamiento'),
+                                Forms\Components\TextInput::make('valor')
+                            ])->columns(2),
                     ]),
                 Wizard\Step::make('Datos para montaje')
                     ->schema([

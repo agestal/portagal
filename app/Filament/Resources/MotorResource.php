@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ColorResource\Pages;
-use App\Filament\Resources\ColorResource\RelationManagers;
-use App\Models\Color;
+use App\Filament\Resources\MotorResource\Pages;
+use App\Filament\Resources\MotorResource\RelationManagers;
+use App\Models\Motor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,23 +13,22 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ColorResource extends Resource
+class MotorResource extends Resource
 {
-    protected static ?string $model = Color::class;
+    protected static ?string $model = Motor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Configuración';
 
-    protected static ?string $navigationLabel = 'Colores';
+    protected static ?string $navigationLabel = 'Motores';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nombre')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
             ]);
     }
 
@@ -71,9 +70,9 @@ class ColorResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListColors::route('/'),
-            'create' => Pages\CreateColor::route('/create'),
-            'edit' => Pages\EditColor::route('/{record}/edit'),
+            'index' => Pages\ListMotors::route('/'),
+            'create' => Pages\CreateMotor::route('/create'),
+            'edit' => Pages\EditMotor::route('/{record}/edit'),
         ];
     }
 }
