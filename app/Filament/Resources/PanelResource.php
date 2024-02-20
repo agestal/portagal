@@ -21,7 +21,7 @@ class PanelResource extends Resource
 
     protected static ?string $navigationGroup = 'Configuración';
 
-    protected static ?string $navigationLabel = 'Tipos de panel';
+    protected static ?string $navigationLabel = 'Modelo de panel';
 
     public static function form(Form $form): Form
     {

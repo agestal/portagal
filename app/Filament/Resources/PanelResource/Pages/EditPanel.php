@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditPanel extends EditRecord
 {
     protected static string $resource = PanelResource::class;
+    protected static ?string $title =  "Modelos de panel"; 
 
     protected function getHeaderActions(): array
     {

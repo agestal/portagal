@@ -5,9 +5,9 @@
 <body>
     <header>
     </header>
-        
-    <p> <img src='{{ asset("/images/".$record->archivo1) }}'> </img> </p>
-    
+     @foreach ( $record->archivo1 as $f )   
+    <p> <img src='{{ asset("/images/".$f) }}'> </img> </p>
+    @endforeach
     <p>ID: {{ $record->id }}</p>
     <p>Puerta: {{ $record->puertas->nombre }}</p>
     <p>Material: {{ $record->panels->nombre }}</p>

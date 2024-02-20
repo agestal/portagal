@@ -29,6 +29,7 @@ use Filament\Forms\Components\FileUpload;
 use Saade\FilamentAutograph\Forms\Components\SignaturePad;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
 
 class PresupuestoResource extends Resource
 {
@@ -108,19 +109,28 @@ class PresupuestoResource extends Resource
                             ])->columns(2),
                     ]),
                 Wizard\Step::make('Datos para montaje')
-                    ->schema([
-                        Grid::make(2)->schema([
-                            Forms\Components\Checkbox::make('electricidad')->label('Incluimos electricidad: '),
-                            Forms\Components\TextInput::make('distancia_horizontal')->label('Distancia entre paredes: (CMs)')->numeric(),
-                            Forms\Components\Checkbox::make('obras')->label('Incluimos albañilería: '),
-                            Forms\Components\TextInput::make('distancia_vertical')->label('Distancia suelo techo: (CMs)')->numeric(),
-                            Forms\Components\Checkbox::make('elevador')->label('Incluimos elevador: '),
-                        ])->columns(2),
-
+                ->schema([
+                    Section::make('Opciones')
+                        ->description('Marca las opcioones correspondientes')
+                        ->schema([
+                            Grid::make()->schema([
+                                Forms\Components\Checkbox::make('electricidad')->label('Incluimos electricidad: '),
+                                Forms\Components\TextInput::make('distancia_horizontal')->label('Distancia entre paredes: (CMs)')->numeric(),
+                                Forms\Components\Checkbox::make('obras')->label('Incluimos albañilería: '),
+                                Forms\Components\TextInput::make('distancia_vertical')->label('Distancia suelo techo: (CMs)')->numeric(),
+                                Forms\Components\Checkbox::make('elevador')->label('Incluimos elevador: '),
+                            ])->columns(2),
+                        ]),
+                    Section::make('Dibujos aclaratorios')
+                        ->schema([
+                            SignaturePad::make('croquis_detallado1'),
+                            SignaturePad::make('croquis_detallado2')
+                                ->maxWidth(500),
+                        ]),
                     ]),
                 Wizard\Step::make('Imagenes')
                     ->schema([
-                        FileUpload::make('archivo1'),
+                        FileUpload::make('archivo1')->multiple(),
                 ]),
                 Wizard\Step::make('Firma')
                     ->schema([

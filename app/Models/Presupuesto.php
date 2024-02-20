@@ -27,6 +27,9 @@ class Presupuesto extends Model
         'distancia_vertical',
         'distancia_horizontal'
     ];
+    protected $casts = [
+        'archivo1' => 'array',
+    ];
     public function puertas()
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');

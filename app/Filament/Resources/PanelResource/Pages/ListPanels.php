@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListPanels extends ListRecords
 {
     protected static string $resource = PanelResource::class;
+    protected static ?string $title =  "Modelo de panel"; 
 
     protected function getHeaderActions(): array
     {
