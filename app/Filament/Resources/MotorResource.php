@@ -29,6 +29,11 @@ class MotorResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nombre')
                     ->required(),
+                Forms\Components\Select::make('nombre')
+                    ->relationship('tipomotor', 'nombre')
+                    ->label('Tipo de motor')
+                    ->searchable()
+                    ->preload()
             ]);
     }
 
@@ -37,6 +42,8 @@ class MotorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('tipomotor.nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

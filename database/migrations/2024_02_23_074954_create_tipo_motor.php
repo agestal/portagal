@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*Schema::create('color_material', function (Blueprint $table) {
+        Schema::create('tipo_motor', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('material_id')->references('id')->on('materials')->constrained();
-            $table->foreignId('color_id')->references('id')->on('colors')->constrained();
+            $table->string('nombre');
+            $table->boolean('lleva_guia');
             $table->timestamps();
-        });*/
+        });
     }
 
     /**
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('color_material');
+        Schema::dropIfExists('tipo_motor');
     }
 };

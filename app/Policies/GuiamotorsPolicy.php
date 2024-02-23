@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Motor;
+use App\Models\Guiamotors;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class MotorPolicy
+class GuiamotorsPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class MotorPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_motor');
+        return $user->can('view_any_guiamotors');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Motor  $motor
+     * @param  \App\Models\Guiamotors  $guiamotors
      * @return bool
      */
-    public function view(User $user, Motor $motor): bool
+    public function view(User $user, Guiamotors $guiamotors): bool
     {
-        return $user->can('view_motor');
+        return $user->can('view_guiamotors');
     }
 
     /**
@@ -41,31 +41,31 @@ class MotorPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_motor');
+        return $user->can('create_guiamotors');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Motor  $motor
+     * @param  \App\Models\Guiamotors  $guiamotors
      * @return bool
      */
-    public function update(User $user, Motor $motor): bool
+    public function update(User $user, Guiamotors $guiamotors): bool
     {
-        return $user->can('update_motor');
+        return $user->can('update_guiamotors');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Motor  $motor
+     * @param  \App\Models\Guiamotors  $guiamotors
      * @return bool
      */
-    public function delete(User $user, Motor $motor): bool
+    public function delete(User $user, Guiamotors $guiamotors): bool
     {
-        return $user->can('delete_motor');
+        return $user->can('delete_guiamotors');
     }
 
     /**
@@ -76,19 +76,19 @@ class MotorPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_motor');
+        return $user->can('delete_any_guiamotors');
     }
 
     /**
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Motor  $motor
+     * @param  \App\Models\Guiamotors  $guiamotors
      * @return bool
      */
-    public function forceDelete(User $user, Motor $motor): bool
+    public function forceDelete(User $user, Guiamotors $guiamotors): bool
     {
-        return $user->can('force_delete_motor');
+        return $user->can('force_delete_guiamotors');
     }
 
     /**
@@ -99,19 +99,19 @@ class MotorPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_motor');
+        return $user->can('force_delete_any_guiamotors');
     }
 
     /**
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Motor  $motor
+     * @param  \App\Models\Guiamotors  $guiamotors
      * @return bool
      */
-    public function restore(User $user, Motor $motor): bool
+    public function restore(User $user, Guiamotors $guiamotors): bool
     {
-        return $user->can('restore_motor');
+        return $user->can('restore_guiamotors');
     }
 
     /**
@@ -122,19 +122,19 @@ class MotorPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_motor');
+        return $user->can('restore_any_guiamotors');
     }
 
     /**
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Motor  $motor
+     * @param  \App\Models\Guiamotors  $guiamotors
      * @return bool
      */
-    public function replicate(User $user, Motor $motor): bool
+    public function replicate(User $user, Guiamotors $guiamotors): bool
     {
-        return $user->can('replicate_motor');
+        return $user->can('replicate_guiamotors');
     }
 
     /**
@@ -145,7 +145,7 @@ class MotorPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_motor');
+        return $user->can('reorder_guiamotors');
     }
 
 }

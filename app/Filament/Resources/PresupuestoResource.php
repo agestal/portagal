@@ -30,6 +30,7 @@ use Saade\FilamentAutograph\Forms\Components\SignaturePad;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
+use DB;
 
 class PresupuestoResource extends Resource
 {
@@ -41,7 +42,7 @@ class PresupuestoResource extends Resource
     {
         return $form
             ->schema([
-            Forms\Components\Wizard::make([
+            Wizard::make([
                 Wizard\Step::make('Datos de cliente')
                     ->schema([
                         Forms\Components\DatePicker::make('fecha')
@@ -74,7 +75,10 @@ class PresupuestoResource extends Resource
                                     $std = Panel::where('id',$get('panel_id'))->select('puede_std')->first();
                                     if ( $std->puede_std == true )
                                     {
-                                        return Colorpanel::all()->pluck('nombre','id')->toArray();
+                                        $datos1 = Colorpanel::join('colorpanel_panel as cpp','cpp.colorpanel_id','colorpanels.id')->join('panels as p','p.id','cpp.panel_id')->where('p.id',$get('panel_id'))->pluck('colorpanels.nombre','colorpanels.id')->toArray();
+                                        $datos = Colorpanel::where('std',0)->pluck('nombre','id')->union($datos1)->toArray();
+                                        //return Colorpanel::all()->pluck('nombre','id')->toArray();
+                                        return $datos;
                                     }
                                     else
                                     {  
@@ -155,7 +159,7 @@ class PresupuestoResource extends Resource
                             return Color::join('color_material','color_material.color_id','colors.id')->get()->pluck('nombre','id')->toArray();
                         }
                     }),*/
-                ]),
+                ])->skippable(),
             ])->columns(1);
     }
 

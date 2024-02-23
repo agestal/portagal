@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Colorpanel extends Model
+class TipoMotor extends Model
 {
     use HasFactory;
+    protected $table = 'tipo_motor';
     protected $fillable = [
-        'nombre',
-        'std'
+        'nombre'
     ];
-    public function panels()
+    public function motors()
     {
-        return $this->belongsToMany(Panel::class, 'colorpanel_panel', 'panel_id', 'colorpanel_id');
+        return $this->belongsToMany(Motor::class);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PanelResource\Pages;
-use App\Filament\Resources\PanelResource\RelationManagers;
-use App\Models\Panel;
+use App\Filament\Resources\TipoMotorResource\Pages;
+use App\Filament\Resources\TipoMotorResource\RelationManagers;
+use App\Models\TipoMotor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,15 +13,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PanelResource extends Resource
+class TipoMotorResource extends Resource
 {
-    protected static ?string $model = Panel::class;
+    protected static ?string $model = TipoMotor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Configuración';
 
-    protected static ?string $navigationLabel = 'Modelo de panel';
+    protected static ?string $navigationLabel = 'Tipos de motores';
 
     public static function form(Form $form): Form
     {
@@ -30,10 +30,6 @@ class PanelResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('colorpanel_id')
-                    ->multiple()
-                    ->preload()
-                    ->relationship('colorpanels', 'colorpanels.nombre'),
             ]);
     }
 
@@ -43,9 +39,6 @@ class PanelResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('colorpanels.nombre')
-                    ->searchable()
-                    ->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -78,9 +71,9 @@ class PanelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPanels::route('/'),
-            'create' => Pages\CreatePanel::route('/create'),
-            'edit' => Pages\EditPanel::route('/{record}/edit'),
+            'index' => Pages\ListTipoMotors::route('/'),
+            'create' => Pages\CreateTipoMotor::route('/create'),
+            'edit' => Pages\EditTipoMotor::route('/{record}/edit'),
         ];
     }
 }
