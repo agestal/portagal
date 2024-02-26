@@ -31,6 +31,9 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use DB;
+use Illuminate\Support\Str;
+Use Closure;
+use App\Models\Motor;
 
 class PresupuestoResource extends Resource
 {
@@ -93,6 +96,25 @@ class PresupuestoResource extends Resource
                                     return Colorpanel::get()->pluck('nombre','id')->toArray();
                                 }
                             }),
+                        Forms\Components\Checkbox::make('automatica')
+                            ->reactive(),
+                        Forms\Components\Select::make('tipo_motor')
+                            ->label('Tipo de motor')
+                            ->relationship('tipomotors','tipo_motor.nombre')
+                            ->hidden( function (callable $get) {
+                                return !$get('automatica');
+                            })
+                            ->reactive(),
+                        Forms\Components\Select::make('motor')
+                            ->label('Modelo de motor')
+                            ->relationship('motors','motors.nombre')
+                            ->hidden( function (callable $get) {           
+                                return !$get('automatica');
+                            })
+                            ->options(function (callable $get, callable $set) {
+                                return Motor::where('tipo_id',$get('tipo_motor'))->pluck('nombre','id')->toArray();
+                            })
+                            ->reactive(),
                         Forms\Components\Repeater::make('opcionpresupuesto')
                             ->relationship()
                             ->label('Opciones')

@@ -16,4 +16,8 @@ class Motor extends Model
     {
         return $this->hasOne(TipoMotor::class);
     }
+    public function presupuestos()
+    {
+        return $this->belongsToMany(Presupuesto::class);
+    }
 }

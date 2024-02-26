@@ -35,6 +35,7 @@ return new class extends Migration
             $table->boolean('remates')->nullable();
             $table->boolean('portico')->nullable();
             $table->boolean('elevador')->nullable();
+            $table->boolean('automatica')->nullable();
             $table->string('material_pilares')->nullable();
             $table->string('material_techo')->nullable();
             $table->integer('distancia_vertical')->nullable();

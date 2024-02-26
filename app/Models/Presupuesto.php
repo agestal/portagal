@@ -50,8 +50,14 @@ class Presupuesto extends Model
     {
         return $this->hasMany(FuncionamientoPresupuesto::class);
     }
-
-
+    public function motors() 
+    {
+        return $this->belongsTo(Motor::class);
+    }
+    public function tipomotors()
+    {
+        return $this->belongsTo(TipoMotor::class);
+    }
     /*use \Znck\Eloquent\Traits\BelongsToThrough;
     public function colors() : BelongsToThrough
     {

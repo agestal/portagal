@@ -16,4 +16,8 @@ class TipoMotor extends Model
     {
         return $this->belongsToMany(Motor::class);
     }
+    public function presupuestos()
+    {
+        return $this->belongsToMany(Presupuesto::class);
+    }
 }
