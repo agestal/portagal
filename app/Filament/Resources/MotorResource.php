@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MotorResource\Pages;
-use App\Filament\Resources\MotorResource\RelationManagers;
 use App\Models\Motor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class MotorResource extends Resource
 {
@@ -29,8 +27,8 @@ class MotorResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nombre')
                     ->required(),
-                Forms\Components\Select::make('nombre')
-                    ->relationship('tipomotor', 'nombre')
+                Forms\Components\Select::make('tipomotors_id')
+                    ->relationship('tipomotors', 'nombre')
                     ->label('Tipo de motor')
                     ->searchable()
                     ->preload()
@@ -43,7 +41,7 @@ class MotorResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tipomotor.nombre')
+                Tables\Columns\TextColumn::make('tipomotors.nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

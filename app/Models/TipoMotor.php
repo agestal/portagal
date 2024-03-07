@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TipoMotor extends Model
 {
@@ -12,9 +13,9 @@ class TipoMotor extends Model
     protected $fillable = [
         'nombre'
     ];
-    public function motors()
+    public function motors() : HasMany
     {
-        return $this->belongsToMany(Motor::class);
+        return $this->hasMany(Motor::class);
     }
     public function presupuestos()
     {

@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Motor extends Model
 {
@@ -12,11 +15,11 @@ class Motor extends Model
         'nombre',
         'tipo_id'
     ];
-    public function tipomotors()
+    public function tipomotors() : BelongsTo
     {
-        return $this->hasOne(TipoMotor::class);
+        return $this->belongsTo(TipoMotor::class);
     }
-    public function presupuestos()
+    public function presupuestos() : BelongsToMany
     {
         return $this->belongsToMany(Presupuesto::class);
     }

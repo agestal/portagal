@@ -289,7 +289,7 @@ class PresupuestoResource extends Resource
                                         return $get('funcionamiento') == 2 ? false : true;
                                     })
                                     ->options(function (callable $get, callable $set) {
-                                        return Motor::where('tipo_id',$get('tipo_motor'))->pluck('nombre','id')->toArray();
+                                        return Motor::where('tipomotors_id',$get('tipomotors_id'))->pluck('nombre','id')->toArray();
                                     })
                                     ->reactive(),
                                 Forms\Components\Repeater::make('opcionpresupuesto')

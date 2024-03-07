@@ -14,10 +14,10 @@ class MotorSeeder extends Seeder
     public function run(): void
     {
         Motor::insert([
-            [ 'nombre' => '1000N' , 'tipo_id' => 1],
-            [ 'nombre' => '1500N' , 'tipo_id' => 1],
-            [ 'nombre' => 'KVM25' , 'tipo_id' => 2],
-            [ 'nombre' => 'INDUS 100DC' , 'tipo_id' => 2],
+            [ 'nombre' => '1000N' , 'tipomotors_id' => 1],
+            [ 'nombre' => '1500N' , 'tipomotors_id' => 1],
+            [ 'nombre' => 'KVM25' , 'tipomotors_id' => 2],
+            [ 'nombre' => 'INDUS 100DC' , 'tipomotors_id' => 2],
         ]);
     }
 }
