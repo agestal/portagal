@@ -31,8 +31,6 @@ class ColorpanelResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Checkbox::make('std')
-                    ->required(),
             ]);
     }
 

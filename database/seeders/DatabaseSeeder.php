@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ColorpanelSeeder::class);
         $this->call(OpcionSeeder::class);
         $this->call(FuncionamientoSeeder::class);
-        $this->call(ColorpanelPanelSeeder::class);
         $this->call(TipoMotorSeeder::class);
         $this->call(MotorSeeder::class);
         // \App\Models\User::factory(10)->create();

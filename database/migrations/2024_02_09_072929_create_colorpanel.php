@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('colorpanels', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->boolean('std');
             $table->timestamps();
         });
     }

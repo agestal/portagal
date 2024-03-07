@@ -15,8 +15,8 @@ class Panel extends Model
     {
         return $this->belongsToMany(Presupuesto::class);
     }
-    public function colorpanels()
+    /*public function colorpanels()
     {
         return $this->belongsToMany(Colorpanel::class, 'colorpanel_panel', 'panel_id', 'colorpanel_id');
-    }
+    }*/
 }

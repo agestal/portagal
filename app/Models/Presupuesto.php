@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Znck\Eloquent\Relations\BelongsToThrough;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -30,15 +31,15 @@ class Presupuesto extends Model
     protected $casts = [
         'archivo1' => 'array',
     ];
-    public function puertas()
+    public function puertas() : BelongsTo
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
     }
-    public function panels()
+    public function panels() : BelongsTo
     {
         return $this->belongsTo(Panel::class, 'panel_id', 'id');
     }
-    public function colorpanels() 
+    public function colorpanels() : BelongsTo
     {
         return $this->belongsTo(Colorpanel::class, 'colorpanel_id', 'id');
     }
@@ -50,11 +51,11 @@ class Presupuesto extends Model
     {
         return $this->hasMany(FuncionamientoPresupuesto::class);
     }
-    public function motors() 
+    public function motors()  : BelongsTo
     {
         return $this->belongsTo(Motor::class);
     }
-    public function tipomotors()
+    public function tipomotors() : BelongsTo
     {
         return $this->belongsTo(TipoMotor::class);
     }
