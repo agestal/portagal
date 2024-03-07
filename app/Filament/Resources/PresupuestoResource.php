@@ -60,7 +60,7 @@ class PresupuestoResource extends Resource
                             ->relationship('puertas', 'nombre')
                             ->reactive()
                             ->label('Tipo de puerta'),
-                        Section::make('Panel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
+                        Section::make('Panel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Escoge el tipo de panel y su color')
                             ->schema([
                                 Forms\Components\Select::make('panel_id')
@@ -96,7 +96,7 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => $get('tipo_color_panel') ),
                             ])->collapsible(),
 
-                        Section::make('Tipo de suelo')
+                        Section::make('Tipo de suelo')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Rellena aquí las opciones sobre el tipo de suelo')
                             ->schema([
                                 Forms\Components\ToggleButtons::make('tipo_suelo')->label('Tipo de suelo')->inline()
@@ -143,7 +143,7 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => !$get('techo_inclinacion') )
                                     ->numeric(),
                             ])->collapsible(),
-                        Section::make('Dintel')
+                        Section::make('Dintel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Opciones de dintel')
                             ->schema([
                                 Forms\Components\Toggle::make('dintel_panel')->label(__('Dinel del panel'))->reactive(),
@@ -156,7 +156,7 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => !$get('dintel_panel') )
                                     ->numeric(),
                             ])->collapsible(),
-                        Section::make('Tubos laterales')
+                        Section::make('Tubos laterales')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Opciones de los tubos laterales')
                             ->schema([
                                 Forms\Components\Toggle::make('tubos_laterales')->label(__('Tubos laterales'))->reactive(),
@@ -172,7 +172,7 @@ class PresupuestoResource extends Resource
                                     ->label('Color')
                                     ->hidden(fn(Callable $get) => !$get('tubos_laterales') ),
                             ])->collapsible(),
-                        Section::make('Ventanas')
+                        Section::make('Ventanas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Marca aquí si incluyes ventanas')
                             ->schema([
                                 Forms\Components\Toggle::make('ventanas')->label(__('Ventanas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
@@ -197,7 +197,7 @@ class PresupuestoResource extends Resource
                                     ->label('Posición ventanas')
                                     ->hidden(fn(Callable $get) => !$get('ventanas') ),
                             ])->collapsible()->collapsed(),
-                        Section::make('Rejillas')
+                        Section::make('Rejillas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Marca aquí si incluyes rejillas')
                             ->schema([
                                 Forms\Components\Toggle::make('rejillas')->label(__('Rejillas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
@@ -216,7 +216,7 @@ class PresupuestoResource extends Resource
                                         ->label('Posición rejillas')
                                         ->hidden(fn(Callable $get) => !$get('rejillas') ),
                             ])->collapsible()->collapsed(),
-                        Section::make('Peatonal')
+                        Section::make('Peatonal')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Marca aquí si incluyes una puerta peatonal')
                             ->schema([
                                     Forms\Components\Toggle::make('peatonal_insertada')->label(__('Peatonal'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
@@ -276,7 +276,7 @@ class PresupuestoResource extends Resource
                                             }),
                                     ])
                             ])->collapsible()->collapsed(),
-                        Section::make('Funcionamiento')
+                        Section::make('Funcionamiento')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Marca aquí si la puerta es manual o automática')
                             ->schema([
                                 Forms\Components\ToggleButtons::make('funcionamiento')->inline()
@@ -326,7 +326,7 @@ class PresupuestoResource extends Resource
                                             return $get('funcionamiento') == 1 ? false : true;
                                         }),    
                             ])->collapsible(),
-                        Section::make('Otras opciones')->columns(1)
+                        Section::make('Otras opciones')->columns(1)->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->schema([
                                 Forms\Components\Toggle::make('muelles_antirotura')->label(__('Muelles antirotura'))->reactive()->default(true),
                                 Forms\Components\Toggle::make('soporte_guia_lateral')->label(__('Soporte guía lateral'))->reactive()->default(true),
