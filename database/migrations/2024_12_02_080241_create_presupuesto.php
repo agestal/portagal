@@ -73,9 +73,9 @@ return new class extends Migration
             $table->boolean('peatonal_seguridad')->nullable();
 
             $table->string('funcionamiento')->nullable();
-            $table->integer('tipo_motor_id')->nullable();
+            $table->integer('tipomotors_id')->nullable();
             $table->integer('motor_id')->nullable();
-            $table->foreignId('opcion_id')->references('id')->on('opcions')->nullable();
+            //$table->foreignId('opcion_id')->references('id')->on('opcions')->nullable();
             $table->integer('manual')->nullable();
             $table->string('manual_tirador')->nullable();
 
@@ -88,10 +88,10 @@ return new class extends Migration
             $table->integer('elevador')->nullable();
             $table->integer('elevador_portagal')->nullable();
 
-            $table->string('firma',1000)->nullable();
-            $table->string('montaje_guias',1000)->nullable();
-            $table->string('renates',1000)->nullable();
-            $table->string('portico',1000)->nullable();
+            $table->text('firma')->nullable();
+            $table->text('montaje_guias')->nullable();
+            $table->text('renates')->nullable();
+            $table->text('portico')->nullable();
 
             $table->text('fotos')->nullable();
             $table->text('comentarios_fotos')->nullable();

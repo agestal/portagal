@@ -203,7 +203,7 @@ class PresupuestoResource extends Resource
                                         ])->hidden( function (callable $get) {
                                             return !$get('rejillas');
                                         }),
-                                Forms\Components\Textarea::make('posicion_ventanas')
+                                Forms\Components\Textarea::make('posicion_rejillas')
                                         ->label('Posición rejillas')
                                         ->hidden(fn(Callable $get) => !$get('rejillas') ),
                             ])->collapsible()->collapsed(),
@@ -275,14 +275,14 @@ class PresupuestoResource extends Resource
                                         '2' => 'Automática',
                                     ]) 
                                     ->reactive(),
-                                Forms\Components\Select::make('tipo_motor_id')
+                                Forms\Components\Select::make('tipomotors_id')
                                     ->label('Tipo de motor')
                                     ->relationship('tipomotors','tipo_motor.nombre')
                                     ->hidden( function (callable $get) {
                                         return $get('funcionamiento') == 2 ? false : true;
                                     })
                                     ->reactive(),
-                                Forms\Components\Select::make('motor_id')
+                                Forms\Components\Select::make('motors_id')
                                     ->label('Modelo de motor')
                                     ->relationship('motors','motors.nombre')
                                     ->hidden( function (callable $get) {           
@@ -296,10 +296,10 @@ class PresupuestoResource extends Resource
                                     ->relationship()
                                     ->label('Opciones')
                                     ->schema([
-                                        Forms\Components\Select::make('opcion_id')
+                                        Forms\Components\Select::make('opcion_id')->required()
                                             ->relationship('opcion','nombre')
                                             ->label('Opcion'),
-                                        Forms\Components\TextInput::make('valor')
+                                        Forms\Components\TextInput::make('valor')->required()
                                     ])
                                     ->hidden( function (callable $get) {           
                                         return $get('funcionamiento') == 2 ? false : true;
@@ -396,12 +396,17 @@ class PresupuestoResource extends Resource
                                         '2' => 'Lo aporta Portagal',
                                         '3' => 'Lo aporta el cliente',
                                     ])->hidden(fn(Callable $get) => !$get('obras') ),
-                                Forms\Components\ToggleButtons::make('elevador_portagal')->label('Elevador: ')->inline()
+                                Forms\Components\ToggleButtons::make('elevador_portagal')->label('Elevador tipo:')->inline()
                                     ->options([
-                                        '1' => 'No se necesita',
-                                        '2' => 'Lo aporta Portagal',
-                                        '3' => 'Lo aporta el cliente',
-                                    ])->hidden(fn(Callable $get) => !$get('obras') ),
+                                        '1' => 'Tijera Electrica 8m',
+                                        '2' => 'Tijera electrica 10m',
+                                        '3' => 'Tijera electrica 12m',
+                                        '4' => 'Tijera Diesel Pequeña',
+                                        '5' => 'Tijera Diesel Grande',
+                                        '6' => 'Pato 12m',
+                                        '7' => 'Camion Cesta',
+                                        '8' => 'Andamio',
+                                    ])->hidden(fn(Callable $get) => !$get('elevador') ),
                             ])->columns(1),
                         ]),
                     Section::make('Dibujos aclaratorios')
@@ -413,7 +418,7 @@ class PresupuestoResource extends Resource
                     ]),
                 Wizard\Step::make('Imagenes')
                     ->schema([
-                        FileUpload::make('archivo1')->multiple(),
+                        FileUpload::make('fotos')->multiple(),
                 ]),
                 Wizard\Step::make('Firma')
                     ->schema([

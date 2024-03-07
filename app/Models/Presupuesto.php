@@ -14,22 +14,90 @@ class Presupuesto extends Model
     use HasFactory;
     protected $fillable = [
         'fecha',
+        'nombre_cliente',
+        'email',
+        'referencia',
+       
+        'puerta_id',
+        
         'panel_id',
         'colorpanel_id',
-        'puerta_id',
-        'nombre_cliente',
-        'pedido',
-        'email',
-        'archivo1',
-        'firma',
+        'tipo_color_panel',
+        'colorpanel_no_std',
+
+        'tipo_suelo',
+        'suelocc_anchod',
+        'suelocc_anchoi',
+        'suelocc_alto',
+        'suelocc_dintel',
+        'sueloh_alto',
+        'sueloh_ancho',
+        'sueloh_dintel',
+        'techo_inclinacion',
+        'grados_inclinacion',
+
+        'dintel_panel' ,
+        'dintel_ancho',
+        'dintel_alto' ,
+
+        'tubos_laterales',
+        'tubos_cantidad',
+        'tubos_alto',
+        'tubos_color',
+
+        'ventanas',
+        'ventanas_tipo',
+        'ventanas_tipo_cristal',
+        'numero_ventanas',
+        'posicion_ventanas',
+
+        'rejillas',
+        'numero_rejillas',
+        'posicion_rejillas',
+
+        'muelles_antirotura',
+        'color_herraje_std',
+        'color_herraje_no_std',
+        
+        'soporte_guia_lateral',
+        'color_guias_std',
+        'color_guias_no_std',
+        'paracaidas',
+
+        'peatonal_insertada',
+        'peatonal_apertura',
+        'peatonal_posicion',
+        'peatonal_bisagras',
+        'peatonal_cierrapuertas',
+        'peatonal_seguridad',
+
+        'funcionamiento',
+        'tipomotors_id',
+        'motors_id',
+        'manual',
+        'manual_tirador',
+
         'electricidad',
+        'electricidad_comentarios',
         'obras',
-        'elevador',
+        'obras_comentarios',
         'distancia_vertical',
-        'distancia_horizontal'
+        'distancia_horizontal',
+        'elevador',
+        'elevador_portagal',
+
+        'firma',
+        'montaje_guias',
+        'renates',
+        'portico',
+
+        'fotos',
+        'comentarios_fotos',
+
+        'comentarios',
     ];
     protected $casts = [
-        'archivo1' => 'array',
+        'fotos' => 'array',
     ];
     public function puertas() : BelongsTo
     {
