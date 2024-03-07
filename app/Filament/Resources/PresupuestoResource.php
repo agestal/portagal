@@ -395,7 +395,7 @@ class PresupuestoResource extends Resource
                                         '1' => 'No se necesita',
                                         '2' => 'Lo aporta Portagal',
                                         '3' => 'Lo aporta el cliente',
-                                    ])->hidden(fn(Callable $get) => !$get('obras') ),
+                                    ])->hidden(fn(Callable $get) => !$get('obras') )->reactive(),
                                 Forms\Components\ToggleButtons::make('elevador_portagal')->label('Elevador tipo:')->inline()
                                     ->options([
                                         '1' => 'Tijera Electrica 8m',
@@ -406,7 +406,9 @@ class PresupuestoResource extends Resource
                                         '6' => 'Pato 12m',
                                         '7' => 'Camion Cesta',
                                         '8' => 'Andamio',
-                                    ])->hidden(fn(Callable $get) => !$get('elevador') ),
+                                    ])->hidden(function (callable $get) {           
+                                        return $get('elevador') == 2 ? false : true;
+                                    }),
                             ])->columns(1),
                         ]),
                     Section::make('Dibujos aclaratorios')
