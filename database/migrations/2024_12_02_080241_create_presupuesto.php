@@ -76,7 +76,7 @@ return new class extends Migration
             $table->integer('tipomotors_id')->nullable();
             $table->integer('motor_id')->nullable();
             //$table->foreignId('opcion_id')->references('id')->on('opcions')->nullable();
-            $table->integer('manual')->nullable();
+            $table->string('manual_cerradura')->nullable();
             $table->string('manual_tirador')->nullable();
 
             $table->boolean('electricidad')->nullable();
@@ -87,6 +87,8 @@ return new class extends Migration
             $table->integer('distancia_horizontal')->nullable();
             $table->integer('elevador')->nullable();
             $table->integer('elevador_portagal')->nullable();
+            $table->integer('materiales_pilares')->nullable();
+            $table->integer('materiales_techo')->nullable();
 
             $table->text('firma')->nullable();
             $table->text('montaje_guias')->nullable();
@@ -97,6 +99,10 @@ return new class extends Migration
             $table->text('comentarios_fotos')->nullable();
 
             $table->text('comentarios')->nullable();
+
+            $table->float('lat')->nullable();
+            $table->float('lon')->nullable();
+            $table->string('location')->nullable();
 
             $table->timestamps();
         });

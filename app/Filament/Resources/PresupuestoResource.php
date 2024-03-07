@@ -34,6 +34,7 @@ use DB;
 use Illuminate\Support\Str;
 Use Closure;
 use App\Models\Motor;
+use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 
 class PresupuestoResource extends Resource
 {
@@ -48,44 +49,52 @@ class PresupuestoResource extends Resource
             Wizard::make([
                 Wizard\Step::make('Datos de cliente')
                     ->schema([
-                        Forms\Components\DatePicker::make('fecha')->label(__('Fecha'))->default(now()),
-                        Forms\Components\TextInput::make('nombre_cliente')->label(__('Cliente')),
-                        Forms\Components\TextInput::make('referencia')->label(__('Referencia')),
-                        Forms\Components\TextInput::make('email')->regex('/^.+@.+$/i')->label(__('Email')),
+                        Forms\Components\DatePicker::make('fecha')->label(__('Fecha'))->default(now())->required(),
+                        Forms\Components\TextInput::make('nombre_cliente')->label(__('Cliente'))->required(),
+                        Forms\Components\TextInput::make('referencia')->label(__('Referencia'))->required(),
+                        Forms\Components\TextInput::make('email')->regex('/^.+@.+$/i')->label(__('Email'))->required(),
                     ]),
                 Wizard\Step::make('Opciones de la puerta')
                     ->schema([
-                        Forms\Components\Select::make('puerta_id')
+                        Forms\Components\Select::make('puerta_id')->required()
                             ->relationship('puertas', 'nombre')
+                            ->reactive()
                             ->label('Tipo de puerta'),
-                        Section::make('Panel')
+                        Section::make('Panel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
                             ->description('Escoge el tipo de panel y su color')
                             ->schema([
                                 Forms\Components\Select::make('panel_id')
                                     ->relationship('panels', 'panels.nombre')
+                                    ->required()
                                     ->label('Tipo de panel')
                                     ->hidden(false)
                                     ->options(Panel::all()->pluck('nombre','id')->toArray())
                                     ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                     })
                                     ->reactive(),
-                                Forms\Components\Toggle::make('tipo_color_panel')
-                                    ->label(__('Color de panel standard'))
-                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {  })
+                                Forms\Components\ToggleButtons::make('tipo_color_panel')
+                                    ->label(__('Color de panel Estandard'))
+                                    ->options([
+                                        true => 'Estandard',
+                                        false => 'No estandard',
+                                    ])->inline()
                                     ->default( fn(Callable $get)  => $get('panel_id') ? !Panel::where('id',$get('panel_id'))->first()->puede_std : true )
-                                    ->reactive(),
+                                    ->reactive()
+                                    ->required(),
                                 Forms\Components\Select::make('colorpanel_id')
                                     ->relationship('colorpanels', 'colorpanels.nombre')
-                                    ->label('Color del panel (STD)')
+                                    ->label('Color del panel (Estandard)')
                                     ->searchable()
                                     ->preload()
                                     ->reactive()
+                                    ->required()
                                     ->hidden(fn(Callable $get) => !$get('tipo_color_panel') )
                                     ->options(Colorpanel::pluck('nombre','id')->toArray()),
                                 Forms\Components\TextInput::make('colorpanel_no_std')
-                                    ->label('Color del panel (NO STD)')
+                                    ->label('Color del panel (No estandard)')
+                                    ->required()
                                     ->hidden(fn(Callable $get) => $get('tipo_color_panel') ),
-                            ])->collapsible()->collapsed(),
+                            ])->collapsible(),
 
                         Section::make('Tipo de suelo')
                             ->description('Rellena aquí las opciones sobre el tipo de suelo')
@@ -133,7 +142,7 @@ class PresupuestoResource extends Resource
                                     ->label('Grados inclinación')
                                     ->hidden(fn(Callable $get) => !$get('techo_inclinacion') )
                                     ->numeric(),
-                            ])->collapsible()->collapsed(),
+                            ])->collapsible(),
                         Section::make('Dintel')
                             ->description('Opciones de dintel')
                             ->schema([
@@ -146,7 +155,7 @@ class PresupuestoResource extends Resource
                                     ->label('Alto')
                                     ->hidden(fn(Callable $get) => !$get('dintel_panel') )
                                     ->numeric(),
-                            ])->collapsible()->collapsed(),
+                            ])->collapsible(),
                         Section::make('Tubos laterales')
                             ->description('Opciones de los tubos laterales')
                             ->schema([
@@ -162,7 +171,7 @@ class PresupuestoResource extends Resource
                                 Forms\Components\TextInput::make('tubos_color')
                                     ->label('Color')
                                     ->hidden(fn(Callable $get) => !$get('tubos_laterales') ),
-                            ])->collapsible()->collapsed(),
+                            ])->collapsible(),
                         Section::make('Ventanas')
                             ->description('Marca aquí si incluyes ventanas')
                             ->schema([
@@ -177,13 +186,13 @@ class PresupuestoResource extends Resource
                                         '2' => 'Industrial 609 x 146',
                                         '3' => 'Industrial 609 x 203',
                                         '4' => 'Industrial ovalada 670 x 345',
-                                    ]),
+                                    ])->hidden(fn(Callable $get) => !$get('ventanas') ),
                                 Forms\Components\ToggleButtons::make('ventana_tipo_cristal')->label(__('Tipo de cristal (ventana)'))->inline()
                                     ->options([
                                         '1' => 'Transparente',
                                         '2' => 'Translucida',
                                         '3' => 'Opaca',
-                                    ]),
+                                    ])->hidden(fn(Callable $get) => !$get('ventanas') ),
                                 Forms\Components\Textarea::make('posicion_ventanas')
                                     ->label('Posición ventanas')
                                     ->hidden(fn(Callable $get) => !$get('ventanas') ),
@@ -221,6 +230,7 @@ class PresupuestoResource extends Resource
                                         ->hidden( function (callable $get) {
                                             return !$get('peatonal_insertada');
                                         }),
+                                        //Forms\Components\ImageEntry::make('author.avatar'),
                                         Forms\Components\ToggleButtons::make('peatonal_apertura')->label('Apertura')->inline()
                                             ->options([
                                                 '1' => 'Interior Dereecha',
@@ -269,7 +279,7 @@ class PresupuestoResource extends Resource
                         Section::make('Funcionamiento')
                             ->description('Marca aquí si la puerta es manual o automática')
                             ->schema([
-                                Forms\Components\ToggleButtons::make('funcionamiento')
+                                Forms\Components\ToggleButtons::make('funcionamiento')->inline()
                                     ->options([
                                         '1' => 'Manual',
                                         '2' => 'Automática',
@@ -289,7 +299,7 @@ class PresupuestoResource extends Resource
                                         return $get('funcionamiento') == 2 ? false : true;
                                     })
                                     ->options(function (callable $get, callable $set) {
-                                        return Motor::where('tipomotors_id',$get('tipomotors_id'))->pluck('nombre','id')->toArray();
+                                        return Motor::where('tipomotors_id',$get('tipomotors_id'))->orderBy('nombre','desc')->pluck('nombre','id')->toArray();
                                     })
                                     ->reactive(),
                                 Forms\Components\Repeater::make('opcionpresupuesto')
@@ -305,54 +315,45 @@ class PresupuestoResource extends Resource
                                         return $get('funcionamiento') == 2 ? false : true;
                                     })->columns(2),
 
-                                Forms\Components\ToggleButtons::make('manual')
-                                    ->options([
-                                        '1' => 'Tirador',
-                                        '2' => 'Cerradura tipo FAC',
-                                    ]) 
+                                Forms\Components\TextInput::make('manual_tirador')
+                                    ->label(__('Tirador'))
                                     ->hidden( function (callable $get) {           
                                         return $get('funcionamiento') == 1 ? false : true;
-                                    })
-                                    ->reactive(), 
-                                    Forms\Components\TextInput::make('manual_tirador')
-                                        ->label(__('Tirador manual'))
+                                    }), 
+                                    Forms\Components\TextInput::make('manual_cerradura')
+                                        ->label(__('Cerradura tipo FAC'))
                                         ->hidden( function (callable $get) {           
-                                            return $get('manual') == 1 ? false : true;
+                                            return $get('funcionamiento') == 1 ? false : true;
                                         }),    
-                            ])->collapsible()->collapsed(),
+                            ])->collapsible(),
                         Section::make('Otras opciones')->columns(1)
                             ->schema([
-                                Forms\Components\Toggle::make('muelles_antirotura')->label(__('Muelles antirotura'))->reactive(),
+                                Forms\Components\Toggle::make('muelles_antirotura')->label(__('Muelles antirotura'))->reactive()->default(true),
+                                Forms\Components\Toggle::make('soporte_guia_lateral')->label(__('Soporte guía lateral'))->reactive()->default(true),
+                                Forms\Components\Toggle::make('paracaidas')->label(__('Paracaídas'))->reactive(),       
                                 Forms\Components\ToggleButtons::make('color_herraje_std')
-                                    ->label(__('Color herrajes (STD)'))->inline()->reactive()
+                                    ->label(__('Color herrajes'))->inline()->reactive()
                                     ->options([
-                                        '1' => 'Blanco std',
+                                        '1' => 'Blanco (Estandard)',
                                         '2' => 'Otro color',
-                                    ]) 
-                                    ->hidden( function (callable $get) {           
-                                        return !$get('muelles_antirotura') ;
-                                    }),
+                                    ]),
                                 Forms\Components\TextInput::make('color_herraje_no_std')
                                     ->label(__('Color herrajes no estándard'))
                                     ->hidden( function (callable $get) {           
                                         return $get('color_herraje_std') == 2 ? false : true;
                                     }),   
-                                Forms\Components\Toggle::make('soporte_guia_lateral')->label(__('Soporte guía lateral'))->reactive(),
                                 Forms\Components\ToggleButtons::make('color_guias_std')
-                                    ->label(__('Color guias (STD)'))->inline()->reactive()
+                                    ->label(__('Color guias'))->inline()->reactive()
                                     ->options([
-                                        '1' => 'Sin lacar',
+                                        '1' => 'Sin lacar (Estandard)',
                                         '2' => 'Otro color',
-                                    ]) 
-                                    ->hidden( function (callable $get) {           
-                                        return !$get('soporte_guia_lateral') ;
-                                    }),
+                                    ]),
                                 Forms\Components\TextInput::make('color_guias_no_std')
                                     ->label(__('Color guias no estándard'))
                                     ->hidden( function (callable $get) {           
                                         return $get('color_guias_std') == 2 ? false : true;
                                     }),   
-                                Forms\Components\Toggle::make('paracaidas')->label(__('Paracaídas'))->reactive(),                                
+                                                         
                             ])->collapsible()->collapsed(),
 
 
@@ -388,15 +389,32 @@ class PresupuestoResource extends Resource
                                     ->label('Albañilería comentarios')
                                     ->hidden(fn(Callable $get) => !$get('obras') ),
 
-                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->numeric()->hidden(fn(Callable $get) => !$get('obras') ),    
+                                Forms\Components\Select::make('materiales_pilares')
+                                    ->relationship('materials', 'materials.nombre')
+                                    ->label('Materiales de los pialres')
+                                    ->searchable()
+                                    ->preload()
+                                    ->reactive()
+                                    ->hidden(fn(Callable $get) => !$get('obras') )
+                                    ->options(Material::pluck('nombre','id')->toArray()),
+                                Forms\Components\Select::make('materiales_techo')
+                                    ->relationship('materials', 'materials.nombre')
+                                    ->label('Materiales del techo')
+                                    ->searchable()
+                                    ->preload()
+                                    ->reactive()
+                                    ->hidden(fn(Callable $get) => !$get('obras') )
+                                    ->options(Material::pluck('nombre','id')->toArray()),
                                 Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->numeric()->hidden(fn(Callable $get) => !$get('obras') ),
+                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->numeric()->hidden(fn(Callable $get) => !$get('obras') ),    
+                                
                                 Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()
                                     ->options([
                                         '1' => 'No se necesita',
                                         '2' => 'Lo aporta Portagal',
                                         '3' => 'Lo aporta el cliente',
                                     ])->hidden(fn(Callable $get) => !$get('obras') )->reactive(),
-                                Forms\Components\ToggleButtons::make('elevador_portagal')->label('Elevador tipo:')->inline()
+                                Forms\Components\Select::make('elevador_portagal')->label('Elevador tipo:')
                                     ->options([
                                         '1' => 'Tijera Electrica 8m',
                                         '2' => 'Tijera electrica 10m',
@@ -424,7 +442,29 @@ class PresupuestoResource extends Resource
                 ]),
                 Wizard\Step::make('Firma')
                     ->schema([
-                        SignaturePad::make('firma'),
+                        Map::make('location')
+                            ->defaultLocation([43.333120461082714 , -8.36360451626186])
+                            ->autocomplete('full_address') 
+                            ->geolocateOnLoad(true, false) 
+                            ->mapControls([
+                                'mapTypeControl'    => true,
+                                'scaleControl'      => true,
+                                'streetViewControl' => true,
+                                'rotateControl'     => true,
+                                'fullscreenControl' => true,
+                                'searchBoxControl'  => true, 
+                                'zoomControl'       => true,
+                            ]) 
+                            ->autocomplete(
+                                fieldName: 'airport_name',
+                                types: ['airport'],
+                                placeField: 'name',
+                                countries: ['US', 'CA', 'MX'],
+                            )
+                            ->geolocate() 
+                            ->geolocateLabel('Get Location') 
+                            ->clickable(true),
+                        SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla']),
                 ]),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Znck\Eloquent\Relations\BelongsToThrough;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Presupuesto extends Model
 {
@@ -99,6 +100,30 @@ class Presupuesto extends Model
     protected $casts = [
         'fotos' => 'array',
     ];
+    protected $appends = [
+        'location',
+    ];
+    public function getLocationAttribute(): array
+    {
+        return [
+            "lat" => (float)$this->lat,
+            "lng" => (float)$this->lon,
+        ];
+    }
+    public function setLocationAttribute(?array $location): void
+    {
+        if (is_array($location))
+        {
+            $this->attributes['lat'] = $location['lat'];
+            $this->attributes['lon'] = $location['lng'];
+            unset($this->attributes['location']);
+        }
+    }
+    public static function getComputedLocation(): string
+    {
+        return 'location';
+    }
+
     public function puertas() : BelongsTo
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
@@ -114,10 +139,6 @@ class Presupuesto extends Model
     public function opcionpresupuesto(): HasMany
     {
         return $this->hasMany(OpcionPresupuesto::class);
-    }
-    public function funcionamientopresupuesto(): HasMany
-    {
-        return $this->hasMany(FuncionamientoPresupuesto::class);
     }
     public function motors()  : BelongsTo
     {
