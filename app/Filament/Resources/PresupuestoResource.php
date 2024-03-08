@@ -95,7 +95,15 @@ class PresupuestoResource extends Resource
                                     ->required()
                                     ->hidden(fn(Callable $get) => $get('tipo_color_panel') ),
                             ])->collapsible(),
-
+                        Section::make('Orejetas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; })
+                            ->description('Datos sobre las orejetas')
+                            ->schema([
+                                Forms\Components\Toggle::make('orejetas')->label(__('Orejetas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
+                                Forms\Components\TextInput::make('orejetas_medidas')
+                                    ->label('Medidas de las orejetas')
+                                    ->hidden(function (callable $get) { return !$get('orejetas'); }),
+                                SignaturePad::make('orejetas_dibujo')->label(__('Dibujo de las orejetas'))->extraAttributes(['class' => 'fondo-pantalla'])->hidden(function (callable $get) { return !$get('orejetas'); }),
+                            ])->collapsible(),
                         Section::make('Tipo de suelo')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Rellena aquí las opciones sobre el tipo de suelo')
                             ->schema([
@@ -322,7 +330,7 @@ class PresupuestoResource extends Resource
                                             }),
                                     ])
                             ])->collapsible()->collapsed(),
-                        Section::make('Funcionamiento')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
+                        Section::make('Funcionamiento')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
                             ->description('Marca aquí si la puerta es manual o automática')
                             ->schema([
                                 Forms\Components\ToggleButtons::make('funcionamiento')->inline()

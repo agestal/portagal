@@ -49,6 +49,10 @@ return new class extends Migration
             $table->integer('tipo_guia_suelo')->nullable();
             $table->integer('material_guia_suelo')->nullable();
 
+            $table->boolean('orejetas')->nullable();
+            $table->string('orejetas_medidas')->nullable();
+            $table->text('orejetas_dibujo')->nullable();
+
             $table->boolean('dintel_panel')->nullable(); /***/
             $table->string('dintel_ancho')->nullable(); /***/
             $table->string('dintel_alto')->nullable(); /***/
