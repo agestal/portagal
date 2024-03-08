@@ -27,15 +27,27 @@ return new class extends Migration
             $table->string('colorpanel_no_std')->nullable(); /***/
 
             $table->integer('tipo_suelo')->nullable();/***/
-            $table->float('suelocc_anchod')->nullable();/***/
-            $table->float('suelocc_anchoi')->nullable();/***/
-            $table->float('suelocc_alto')->nullable();/***/
+            $table->float('suelocc_altod')->nullable();/***/
+            $table->float('suelocc_altoi')->nullable();/***/
+            $table->float('suelocc_ancho')->nullable();/***/
             $table->float('suelocc_dintel')->nullable();/***/
             $table->float('sueloh_alto')->nullable();/***/
             $table->float('sueloh_ancho')->nullable();/***/
             $table->float('sueloh_dintel')->nullable();/***/
             $table->boolean('techo_inclinacion')->nullable();
             $table->float('grados_inclinacion')->nullable(); /***/
+
+            $table->float('pilares_alto')->nullable();/***/
+            $table->float('pilares_ancho')->nullable();/***/
+
+            $table->boolean('buzon')->nullable(); /***/
+            $table->integer('tipo_buzon')->nullable(); /***/
+
+            $table->boolean('bate_contrau')->nullable();
+
+            $table->boolean('guia_suelo')->nullable();
+            $table->integer('tipo_guia_suelo')->nullable();
+            $table->integer('material_guia_suelo')->nullable();
 
             $table->boolean('dintel_panel')->nullable(); /***/
             $table->string('dintel_ancho')->nullable(); /***/

@@ -14,11 +14,24 @@ class OpcionSeeder extends Seeder
     public function run(): void
     {
         Opcion::insert([
-            [ 'nombre' => 'Herrajes' ], 
-            [ 'nombre' => 'Guia' ],
-            [ 'nombre' => 'Soporte directo guia lateral' ],
-            [ 'nombre' => 'Anti rotura de muelles' ],
-            [ 'nombre' => 'Paracaidas' ],
+            [ 'nombre' => 'Fotocélulas espejo' ], 
+            [ 'nombre' => 'Fotocélulas emisor receptor' ],
+            [ 'nombre' => 'Desbloqueo exterior' ],
+            [ 'nombre' => 'Teclado inalámbrico' ],
+            [ 'nombre' => 'Seguridad peatonal' ],
+            [ 'nombre' => 'Mandos inox' ],
+            [ 'nombre' => 'Led' ],
+            [ 'nombre' => 'Banda de seguridad' ],
+            [ 'nombre' => 'Pulsador inalámbrico' ],
+            [ 'nombre' => 'Pulsador cableado' ],
+            [ 'nombre' => 'Receptor externo' ],
+            [ 'nombre' => 'Antena exterior' ],
         ]);
     }
 }
+
+
+
+
+
+

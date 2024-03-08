@@ -117,16 +117,16 @@ class PresupuestoResource extends Resource
                                     ->hidden(function (callable $get) { return $get('tipo_suelo') == 1 ? false : true; } )
                                     ->numeric(),
 
-                                Forms\Components\TextInput::make('suelocc_anchod')
-                                    ->label('Ancho de paso libre derecha')
+                                Forms\Components\TextInput::make('suelocc_altod')
+                                    ->label('Alto de paso libre derecha')
                                     ->hidden(function (callable $get) { return $get('tipo_suelo') == 2 ? false : true; } )
                                     ->numeric(),
-                                Forms\Components\TextInput::make('suelocc_anchoi')
-                                    ->label('Ancho de paso libre izquierda')
+                                Forms\Components\TextInput::make('suelocc_altoi')
+                                    ->label('Alto de paso libre izquierda')
                                     ->hidden(function (callable $get) { return $get('tipo_suelo') == 2 ? false : true; } )
                                     ->numeric(),
-                                Forms\Components\TextInput::make('suelocc_alto')
-                                    ->label('Alto de paso libre')
+                                Forms\Components\TextInput::make('suelocc_ancho')
+                                    ->label('Ancho de paso libre')
                                     ->hidden(function (callable $get) { return $get('tipo_suelo') == 2 ? false : true; } )
                                     ->numeric(),
                                 Forms\Components\TextInput::make('suelocc_dintel')
@@ -141,6 +141,16 @@ class PresupuestoResource extends Resource
                                 Forms\Components\TextInput::make('grados_inclinacion')
                                     ->label('Grados inclinación')
                                     ->hidden(fn(Callable $get) => !$get('techo_inclinacion') )
+                                    ->numeric(),
+                            ])->collapsible(),
+                        Section::make('Datos pilares')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; })
+                            ->description('Datos de los pilares')
+                            ->schema([
+                                Forms\Components\TextInput::make('pilares_ancho')
+                                    ->label('Ancho')
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('pilares_alto')
+                                    ->label('Alto')
                                     ->numeric(),
                             ])->collapsible(),
                         Section::make('Dintel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
@@ -216,7 +226,43 @@ class PresupuestoResource extends Resource
                                         ->label('Posición rejillas')
                                         ->hidden(fn(Callable $get) => !$get('rejillas') ),
                             ])->collapsible()->collapsed(),
-                        Section::make('Peatonal')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
+                        Section::make('Buzón')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; })
+                            ->description('Marca aquí si incluyes buzón')
+                            ->schema([
+                                Forms\Components\Toggle::make('buzon')->label(__('Buzon'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
+                                Forms\Components\ToggleButtons::make('buzon_tipo')->label(__('Tipo de buzón'))->inline()
+                                        ->options([
+                                            '1' => 'Inox',
+                                            '2' => 'Lacado RAL',
+                                        ])->hidden( function (callable $get) {
+                                            return !$get('buzon');
+                                        }),
+                            ])->collapsible()->collapsed(),
+                        Section::make('Bate contra U')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
+                            ->description('Marca aquí si bate contra U')
+                            ->schema([
+                                Forms\Components\Toggle::make('bate_contrau')->label(__('Bate contra U'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
+                            ])->collapsible()->collapsed(),
+                        Section::make('Guía de suelo')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
+                            ->description('Opciones de la guía de suelo')
+                            ->schema([
+                                Forms\Components\Toggle::make('guia_suelo')->label(__('Guía de suelo'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
+                                Forms\Components\ToggleButtons::make('tipo_guia_suelo')->label(__('Tipo de guía'))->inline()->reactive()
+                                        ->options([
+                                            '1' => 'De atornillar',
+                                            '2' => 'Embutida',
+                                        ])->hidden( function (callable $get) {
+                                            return !$get('guia_suelo');
+                                        }),
+                                Forms\Components\ToggleButtons::make('material_guia_suelo')->label(__('Material de guía'))->inline()
+                                        ->options([
+                                            '1' => 'Inox',
+                                            '2' => 'Acero galvanizado',
+                                        ])->hidden( function (callable $get) {
+                                            return $get('tipo_guia_suelo') == 1 ? false : true;
+                                        }),
+                            ])->collapsible()->collapsed(),
+                        Section::make('Peatonal')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
                             ->description('Marca aquí si incluyes una puerta peatonal')
                             ->schema([
                                     Forms\Components\Toggle::make('peatonal_insertada')->label(__('Peatonal'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
