@@ -31,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->path(path: '')
             ->login()
             ->colors([
-                'primary' => Color::Emerald,
+                'primary' => Color::Sky,
                 'secondary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -60,6 +60,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])   
+            ->brandLogo(asset('images/logo_portagal_puertas_automaticas.png'))
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()                
                 ->gridColumns([
