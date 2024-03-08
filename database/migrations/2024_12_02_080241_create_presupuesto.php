@@ -74,7 +74,7 @@ return new class extends Migration
 
             $table->string('funcionamiento')->nullable();
             $table->integer('tipomotors_id')->nullable();
-            $table->integer('motor_id')->nullable();
+            $table->integer('motors_id')->nullable();
             //$table->foreignId('opcion_id')->references('id')->on('opcions')->nullable();
             $table->string('manual_cerradura')->nullable();
             $table->string('manual_tirador')->nullable();

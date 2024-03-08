@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('opcion_presupuesto', function (Blueprint $table) {
             $table->id();
-            $table->integer('presupuesto_id')->references('id')->on('presupuestos')->constrained();
-            $table->integer('opcion_id')->references('id')->on('opcions')->constrained();
+            $table->integer('presupuesto_id')->references('id')->on('presupuestos')->constrained()->nullable();
+            $table->integer('opcion_id')->references('id')->on('opcions')->constrained()->nullable();
             $table->string('valor')->nullable();
             $table->timestamps();
         });

@@ -303,13 +303,13 @@ class PresupuestoResource extends Resource
                                     })
                                     ->reactive(),
                                 Forms\Components\Repeater::make('opcionpresupuesto')
-                                    ->relationship()
+                                    ->relationship('opcionpresupuesto')
                                     ->label('Opciones')
                                     ->schema([
-                                        Forms\Components\Select::make('opcion_id')->required()
+                                        Forms\Components\Select::make('opcion_id')
                                             ->relationship('opcion','nombre')
                                             ->label('Opcion'),
-                                        Forms\Components\TextInput::make('valor')->required()
+                                        Forms\Components\TextInput::make('valor')
                                     ])
                                     ->hidden( function (callable $get) {           
                                         return $get('funcionamiento') == 2 ? false : true;
@@ -390,7 +390,6 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => !$get('obras') ),
 
                                 Forms\Components\Select::make('materiales_pilares')
-                                    ->relationship('materials', 'materials.nombre')
                                     ->label('Materiales de los pialres')
                                     ->searchable()
                                     ->preload()
@@ -398,7 +397,6 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => !$get('obras') )
                                     ->options(Material::pluck('nombre','id')->toArray()),
                                 Forms\Components\Select::make('materiales_techo')
-                                    ->relationship('materials', 'materials.nombre')
                                     ->label('Materiales del techo')
                                     ->searchable()
                                     ->preload()
