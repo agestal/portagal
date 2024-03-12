@@ -45,6 +45,8 @@ return new class extends Migration
 
             $table->boolean('bate_contrau')->nullable();
 
+            $table->integer('orientacion')->nullable();
+
             $table->boolean('guia_suelo')->nullable();
             $table->integer('tipo_guia_suelo')->nullable();
             $table->integer('material_guia_suelo')->nullable();

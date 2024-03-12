@@ -161,6 +161,16 @@ class PresupuestoResource extends Resource
                                     ->label('Alto')
                                     ->numeric(),
                             ])->collapsible(),
+                        Section::make('Datos sobre la orientación')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; })
+                            ->description('Orientación')
+                            ->schema([
+                                Forms\Components\ToggleButtons::make('orientaion')->label('orientaion')->inline()
+                                ->options([
+                                    '1' => 'Horizontal',
+                                    '2' => 'Vertical',
+                                    '2' => 'Mixta',
+                                ])->reactive(),
+                            ])->collapsible(),
                         Section::make('Dintel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Opciones de dintel')
                             ->schema([
@@ -516,7 +526,7 @@ class PresupuestoResource extends Resource
                             ->geolocate() 
                             ->geolocateLabel('Get Location') 
                             ->clickable(true),
-                        SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla']),
+                        SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
                 ]),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')

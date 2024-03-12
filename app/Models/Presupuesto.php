@@ -128,6 +128,10 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(Puerta::class, 'puerta_id' , 'id');
     }
+    public function puertamaterials() : BelongsTo
+    {
+        return $this->belongsTo(Puertamaterial::class);
+    }
     public function panels() : BelongsTo
     {
         return $this->belongsTo(Panel::class, 'panel_id', 'id');
