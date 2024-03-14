@@ -28,3 +28,7 @@
 <link rel="apple-touch-icon" href="/images/icons/icon-512x512.png">
 
 @laravelPWA
+
+
+
+
