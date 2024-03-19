@@ -2,39 +2,27 @@
 
 namespace App\Filament\Resources;
 use App\Filament\Resources\PresupuestoResource\Pages;
-use App\Filament\Resources\PresupuestoResource\RelationManagers;
 use App\Models\Presupuesto;
-use Filament\Forms\Components\Fieldset;
+use App\Models\Puertamaterial;
 //use Filament\Actions\Action;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Models\Color;
 use App\Models\Material;
 use App\Models\Panel;
-use App\Models\Opcion;
 use App\Models\Colorpanel;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Blade;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\CheckboxList;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Filament\Forms\Components\FileUpload;
 use Saade\FilamentAutograph\Forms\Components\SignaturePad;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
-use DB;
-use Illuminate\Support\Str;
-Use Closure;
 use App\Models\Motor;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
+use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 
 class PresupuestoResource extends Resource
 {
@@ -60,6 +48,19 @@ class PresupuestoResource extends Resource
                             ->relationship('puertas', 'nombre')
                             ->reactive()
                             ->label('Tipo de puerta'),
+                        Section::make('Material de puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; })
+                            ->description('Datos sobre el material de la puerta')
+                            ->schema([
+                                Forms\Components\Select::make('puertamaterial_id')
+                                    ->relationship('puertamaterials', 'puertamaterials.nombre')
+                                    ->required()
+                                    ->label('Material de la puerta')
+                                    ->hidden(false)
+                                    ->options(Puertamaterial::all()->pluck('nombre','id')->toArray())
+                                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                    })
+                                    ->reactive(),
+                            ])->collapsible(),
                         Section::make('Panel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Escoge el tipo de panel y su color')
                             ->schema([
@@ -504,8 +505,12 @@ class PresupuestoResource extends Resource
                 ]),
                 Wizard\Step::make('Firma')
                     ->schema([
+                        Geocomplete::make('full_address'),
                         Map::make('location')
                             ->defaultLocation([43.333120461082714 , -8.36360451626186])
+                            ->geolocate() // adds a button to request device location and set map marker accordingly
+                            ->geolocateLabel('Get Location') // overrides the default label for geolocate button
+                            ->geolocateOnLoad(true, false) // geolocate on load, second arg 'always' (default false, only for new form)
                             ->autocomplete('full_address') 
                             ->geolocateOnLoad(true, false) 
                             ->mapControls([
@@ -514,19 +519,40 @@ class PresupuestoResource extends Resource
                                 'streetViewControl' => true,
                                 'rotateControl'     => true,
                                 'fullscreenControl' => true,
-                                'searchBoxControl'  => true, 
+                                'searchBoxControl'  => false, 
                                 'zoomControl'       => true,
                             ]) 
-                            ->autocomplete(
-                                fieldName: 'airport_name',
-                                types: ['airport'],
-                                placeField: 'name',
-                                countries: ['US', 'CA', 'MX'],
-                            )
-                            ->geolocate() 
-                            ->geolocateLabel('Get Location') 
-                            ->clickable(true),
+                            ->draggable() // allow dragging to move marker
+                            ->clickable(true)
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                $set('lat', $state['lat']);
+                                $set('lon', $state['lng']);
+                            }),
+
+                        Forms\Components\TextInput::make('lat')
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                $set('location', [
+                                    'lat' => floatVal($state),
+                                    'lng' => floatVal($get('lon')),
+                                ]);
+                            })
+                            ->lazy(), // important to use lazy, to avoid updates as you type
+                        Forms\Components\TextInput::make('lon')
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                $set('location', [
+                                    'lat' => floatval($get('lat')),
+                                    'lng' => floatVal($state),
+                                ]);
+                            })
+                            ->lazy(), // important to use lazy, to avoid updates as you type
+
                         SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
+
+
+ 
                 ]),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')
@@ -557,9 +583,9 @@ class PresupuestoResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('puertas.nombre')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('panels.nombre')
+                Tables\Columns\TextColumn::make('nombre_cliente')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('colorpanels.nombre')
+                Tables\Columns\TextColumn::make('full_address')->label('Dirección')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

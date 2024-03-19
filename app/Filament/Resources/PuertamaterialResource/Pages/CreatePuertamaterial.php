@@ -8,5 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreatePuertamaterial extends CreateRecord
 {
+    protected static ?string $title =  "Material de puerta"; 
     protected static string $resource = PuertamaterialResource::class;
 }

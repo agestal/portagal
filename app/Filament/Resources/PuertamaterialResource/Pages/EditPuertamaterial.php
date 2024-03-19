@@ -9,7 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditPuertamaterial extends EditRecord
 {
     protected static string $resource = PuertamaterialResource::class;
-
+    protected static ?string $title =  "Material de puerta"; 
     protected function getHeaderActions(): array
     {
         return [

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(OpcionSeeder::class);
         $this->call(TipoMotorSeeder::class);
         $this->call(MotorSeeder::class);
+        $this->call(PuertamaterialSeeder::class);
         $this->call(MaterialSeeder::class);
         // \App\Models\User::factory(10)->create();
 

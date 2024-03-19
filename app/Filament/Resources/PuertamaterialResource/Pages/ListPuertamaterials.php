@@ -9,7 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListPuertamaterials extends ListRecords
 {
     protected static string $resource = PuertamaterialResource::class;
-
+    protected static ?string $title =  "Material de puerta"; 
     protected function getHeaderActions(): array
     {
         return [

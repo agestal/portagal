@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Znck\Eloquent\Relations\BelongsToThrough;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Cheesegrits\FilamentGoogleMaps\Concerns\InteractsWithMaps;
 
 class Presupuesto extends Model
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMaps;
     protected $fillable = [
         'fecha',
         'nombre_cliente',
@@ -25,6 +26,8 @@ class Presupuesto extends Model
         'colorpanel_id',
         'tipo_color_panel',
         'colorpanel_no_std',
+
+        'puertamaterial_id',
 
         'tipo_suelo',
         'suelocc_anchod',
@@ -92,6 +95,11 @@ class Presupuesto extends Model
         'renates',
         'portico',
 
+        'location',
+        'full_address',
+        'lat',
+        'lon',
+
         'fotos',
         'comentarios_fotos',
 
@@ -130,7 +138,7 @@ class Presupuesto extends Model
     }
     public function puertamaterials() : BelongsTo
     {
-        return $this->belongsTo(Puertamaterial::class);
+        return $this->belongsTo(Puertamaterial::class,'puertamaterial_id','id');
     }
     public function panels() : BelongsTo
     {
@@ -152,7 +160,6 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(TipoMotor::class);
     }
-
     /*use \Znck\Eloquent\Traits\BelongsToThrough;
     public function colors() : BelongsToThrough
     {

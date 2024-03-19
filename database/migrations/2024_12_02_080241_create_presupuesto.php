@@ -21,8 +21,10 @@ return new class extends Migration
            
             $table->foreignId('puerta_id')->references('id')->on('puertas')->nullable();/***/
             
-            $table->foreignId('panel_id')->references('id')->on('panels')->nullable();/***/
-            $table->foreignId('colorpanel_id')->references('id')->on('colorpanels')->nullable();/***/
+            $table->foreignId('puertamaterial_id')->nullable();
+
+            $table->foreignId('panel_id')->nullable();/***/
+            $table->foreignId('colorpanel_id')->nullable();/***/
             $table->boolean('tipo_color_panel')->nullable();  /***/
             $table->string('colorpanel_no_std')->nullable(); /***/
 
@@ -93,7 +95,7 @@ return new class extends Migration
             $table->string('funcionamiento')->nullable();
             $table->integer('tipomotors_id')->nullable();
             $table->integer('motors_id')->nullable();
-            //$table->foreignId('opcion_id')->references('id')->on('opcions')->nullable();
+
             $table->string('manual_cerradura')->nullable();
             $table->string('manual_tirador')->nullable();
 
@@ -121,6 +123,7 @@ return new class extends Migration
             $table->float('lat')->nullable();
             $table->float('lon')->nullable();
             $table->string('location')->nullable();
+            $table->string('full_address')->nullable();
 
             $table->timestamps();
         });
