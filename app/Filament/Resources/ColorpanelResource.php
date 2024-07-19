@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ToggleColumn;
 
 class ColorpanelResource extends Resource
 {
@@ -40,8 +41,8 @@ class ColorpanelResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
-                IconColumn::make('std')->boolean()
-              
+                ToggleColumn::make('std')
+
             ])
             ->filters([
                 //

@@ -90,7 +90,7 @@ class PresupuestoResource extends Resource
                                     ->reactive()
                                     ->required()
                                     ->hidden(fn(Callable $get) => !$get('tipo_color_panel') )
-                                    ->options(Colorpanel::pluck('nombre','id')->toArray()),
+                                    ->options(Colorpanel::where('std',1)->pluck('nombre','id')->toArray()),
                                 Forms\Components\TextInput::make('colorpanel_no_std')
                                     ->label('Color del panel (No estandard)')
                                     ->required()
@@ -127,11 +127,11 @@ class PresupuestoResource extends Resource
                                     ->numeric(),
 
                                 Forms\Components\TextInput::make('suelocc_altod')
-                                    ->label('Alto de paso libre derecha')
+                                    ->label('Alto de paso libre derecha (V. Interior)')
                                     ->hidden(function (callable $get) { return $get('tipo_suelo') == 2 ? false : true; } )
                                     ->numeric(),
                                 Forms\Components\TextInput::make('suelocc_altoi')
-                                    ->label('Alto de paso libre izquierda')
+                                    ->label('Alto de paso libre izquierda (V. Interior)')
                                     ->hidden(function (callable $get) { return $get('tipo_suelo') == 2 ? false : true; } )
                                     ->numeric(),
                                 Forms\Components\TextInput::make('suelocc_ancho')
@@ -142,7 +142,7 @@ class PresupuestoResource extends Resource
                                     ->label('Dintel')
                                     ->hidden(function (callable $get) { return $get('tipo_suelo') == 2 ? false : true; } )
                                     ->numeric(),
-                
+
                                 Forms\Components\Toggle::make('techo_inclinacion')
                                     ->label(__('Techo con inclinación'))
                                     ->afterStateUpdated(function ($state, callable $get, callable $set) {  })
@@ -286,32 +286,33 @@ class PresupuestoResource extends Resource
                             ->schema([
                                     Forms\Components\Toggle::make('peatonal_insertada')->label(__('Peatonal'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
                                    Grid::make()->columns(2)
-                                    ->schema([  
-                                        Forms\Components\Toggle::make('peatonal_cierrapuertas')->label(__('Cierrapuertas (peatonal)'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive() 
+                                    ->schema([
+                                        Forms\Components\Toggle::make('peatonal_cierrapuertas')->label(__('Cierrapuertas (peatonal)'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive()
                                         ->hidden( function (callable $get) {
                                             return !$get('peatonal_insertada');
                                         }),
-                                        Forms\Components\Toggle::make('peatonal_seguridad')->label(__('Seguridad (peatonal)'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive() 
+                                        Forms\Components\Toggle::make('peatonal_seguridad')->label(__('Seguridad (peatonal)'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive()
                                         ->hidden( function (callable $get) {
                                             return !$get('peatonal_insertada');
                                         }),
                                         //Forms\Components\ImageEntry::make('author.avatar'),
                                         Forms\Components\ToggleButtons::make('peatonal_apertura')->label('Apertura')->inline()
                                             ->options([
-                                                '1' => 'Interior Dereecha',
+                                                '1' => 'Interior Derecha',
                                                 '2' => 'Interior Izquierda',
-                                                '3' => 'Exterior Dereecha',
+                                                '3' => 'Exterior Derecha',
                                                 '4' => 'Exterior Izquierda',
-                                            ]) 
+                                            ])
                                             ->hidden( function (callable $get) {
                                                 return !$get('peatonal_insertada');
                                             }),
-                                        Forms\Components\ToggleButtons::make('peatonal_posicion')->label('Posicion')->inline()
+                                        Forms\Components\ToggleButtons::make('peatonal_posicion')->label('Posicion (V. Interior)')->inline()
                                             ->options([
                                                 '1' => 'Derecha',
                                                 '2' => 'Centro',
                                                 '3' => 'Izquierda',
-                                            ]) 
+                                            ])
+                                            ->default(2)
                                             ->hidden( function (callable $get) {
                                                 return !$get('peatonal_insertada');
                                             }),
@@ -319,7 +320,7 @@ class PresupuestoResource extends Resource
                                             ->options([
                                                 '1' => 'Normal',
                                                 '2' => 'Oculta',
-                                            ]) 
+                                            ])
                                             ->hidden( function (callable $get) {
                                                 return !$get('peatonal_insertada');
                                             }),
@@ -327,7 +328,7 @@ class PresupuestoResource extends Resource
                                             ->options([
                                                 '1' => 'Normal',
                                                 '2' => 'Reducido',
-                                            ]) 
+                                            ])
                                             ->hidden( function (callable $get) {
                                                 return !$get('peatonal_insertada');
                                             }),
@@ -335,7 +336,7 @@ class PresupuestoResource extends Resource
                                             ->options([
                                                 '1' => 'Normal',
                                                 '2' => '3 puntos',
-                                            ]) 
+                                            ])
                                             ->hidden( function (callable $get) {
                                                 return !$get('peatonal_insertada');
                                             }),
@@ -348,7 +349,7 @@ class PresupuestoResource extends Resource
                                     ->options([
                                         '1' => 'Manual',
                                         '2' => 'Automática',
-                                    ]) 
+                                    ])
                                     ->reactive(),
                                 Forms\Components\Select::make('tipomotors_id')
                                     ->label('Tipo de motor')
@@ -360,7 +361,7 @@ class PresupuestoResource extends Resource
                                 Forms\Components\Select::make('motors_id')
                                     ->label('Modelo de motor')
                                     ->relationship('motors','motors.nombre')
-                                    ->hidden( function (callable $get) {           
+                                    ->hidden( function (callable $get) {
                                         return $get('funcionamiento') == 2 ? false : true;
                                     })
                                     ->options(function (callable $get, callable $set) {
@@ -376,49 +377,49 @@ class PresupuestoResource extends Resource
                                             ->label('Opcion'),
                                         Forms\Components\TextInput::make('valor')
                                     ])
-                                    ->hidden( function (callable $get) {           
+                                    ->hidden( function (callable $get) {
                                         return $get('funcionamiento') == 2 ? false : true;
                                     })->columns(2),
 
                                 Forms\Components\TextInput::make('manual_tirador')
                                     ->label(__('Tirador'))
-                                    ->hidden( function (callable $get) {           
+                                    ->hidden( function (callable $get) {
                                         return $get('funcionamiento') == 1 ? false : true;
-                                    }), 
+                                    }),
                                     Forms\Components\TextInput::make('manual_cerradura')
                                         ->label(__('Cerradura tipo FAC'))
-                                        ->hidden( function (callable $get) {           
+                                        ->hidden( function (callable $get) {
                                             return $get('funcionamiento') == 1 ? false : true;
-                                        }),    
+                                        }),
                             ])->collapsible(),
                         Section::make('Otras opciones')->columns(1)->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->schema([
                                 Forms\Components\Toggle::make('muelles_antirotura')->label(__('Muelles antirotura'))->reactive()->default(true),
                                 Forms\Components\Toggle::make('soporte_guia_lateral')->label(__('Soporte guía lateral'))->reactive()->default(true),
-                                Forms\Components\Toggle::make('paracaidas')->label(__('Paracaídas'))->reactive(),       
+                                Forms\Components\Toggle::make('paracaidas')->label(__('Paracaídas'))->reactive(),
                                 Forms\Components\ToggleButtons::make('color_herraje_std')
                                     ->label(__('Color herrajes'))->inline()->reactive()
                                     ->options([
                                         '1' => 'Blanco (Estandard)',
                                         '2' => 'Otro color',
-                                    ]),
+                                    ])->default(1),
                                 Forms\Components\TextInput::make('color_herraje_no_std')
                                     ->label(__('Color herrajes no estándard'))
-                                    ->hidden( function (callable $get) {           
+                                    ->hidden( function (callable $get) {
                                         return $get('color_herraje_std') == 2 ? false : true;
-                                    }),   
+                                    }),
                                 Forms\Components\ToggleButtons::make('color_guias_std')
                                     ->label(__('Color guias'))->inline()->reactive()
                                     ->options([
                                         '1' => 'Sin lacar (Estandard)',
                                         '2' => 'Otro color',
-                                    ]),
+                                    ])->default(1),
                                 Forms\Components\TextInput::make('color_guias_no_std')
                                     ->label(__('Color guias no estándard'))
-                                    ->hidden( function (callable $get) {           
+                                    ->hidden( function (callable $get) {
                                         return $get('color_guias_std') == 2 ? false : true;
-                                    }),   
-                                                         
+                                    }),
+
                             ])->collapsible()->collapsed(),
 
 
@@ -469,8 +470,8 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => !$get('obras') )
                                     ->options(Material::pluck('nombre','id')->toArray()),
                                 Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->numeric()->hidden(fn(Callable $get) => !$get('obras') ),
-                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->numeric()->hidden(fn(Callable $get) => !$get('obras') ),    
-                                
+                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->numeric()->hidden(fn(Callable $get) => !$get('obras') ),
+
                                 Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()
                                     ->options([
                                         '1' => 'No se necesita',
@@ -487,7 +488,48 @@ class PresupuestoResource extends Resource
                                         '6' => 'Pato 12m',
                                         '7' => 'Camion Cesta',
                                         '8' => 'Andamio',
-                                    ])->hidden(function (callable $get) {           
+                                    ])->hidden(function (callable $get) {
+                                        return $get('elevador') == 2 ? false : true;
+                                    }),
+                            ])->columns(1),
+                        ]),
+                    Section::make('Otras opciones')
+                        ->description('Marca las opcioones correspondientes')
+                        ->collapsed()
+                        ->schema([
+                            Grid::make()->schema([
+                                Forms\Components\Select::make('materiales_pilares')
+                                    ->label('Materiales de los pialres')
+                                    ->searchable()
+                                    ->preload()
+                                    ->reactive()
+                                    ->options(Material::pluck('nombre','id')->toArray()),
+                                Forms\Components\Select::make('materiales_techo')
+                                    ->label('Materiales del techo')
+                                    ->searchable()
+                                    ->preload()
+                                    ->reactive()
+                                    ->options(Material::pluck('nombre','id')->toArray()),
+                                Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->numeric(),
+                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->numeric(),
+
+                                Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()
+                                    ->options([
+                                        '1' => 'No se necesita',
+                                        '2' => 'Lo aporta Portagal',
+                                        '3' => 'Lo aporta el cliente',
+                                    ]),
+                                Forms\Components\Select::make('elevador_portagal')->label('Elevador tipo:')
+                                    ->options([
+                                        '1' => 'Tijera Electrica 8m',
+                                        '2' => 'Tijera electrica 10m',
+                                        '3' => 'Tijera electrica 12m',
+                                        '4' => 'Tijera Diesel Pequeña',
+                                        '5' => 'Tijera Diesel Grande',
+                                        '6' => 'Pato 12m',
+                                        '7' => 'Camion Cesta',
+                                        '8' => 'Andamio',
+                                    ])->hidden(function (callable $get) {
                                         return $get('elevador') == 2 ? false : true;
                                     }),
                             ])->columns(1),
@@ -511,17 +553,17 @@ class PresupuestoResource extends Resource
                             ->geolocate() // adds a button to request device location and set map marker accordingly
                             ->geolocateLabel('Get Location') // overrides the default label for geolocate button
                             ->geolocateOnLoad(true, false) // geolocate on load, second arg 'always' (default false, only for new form)
-                            ->autocomplete('full_address') 
-                            ->geolocateOnLoad(true, false) 
+                            ->autocomplete('full_address')
+                            ->geolocateOnLoad(true, false)
                             ->mapControls([
                                 'mapTypeControl'    => true,
                                 'scaleControl'      => true,
                                 'streetViewControl' => true,
                                 'rotateControl'     => true,
                                 'fullscreenControl' => true,
-                                'searchBoxControl'  => false, 
+                                'searchBoxControl'  => false,
                                 'zoomControl'       => true,
-                            ]) 
+                            ])
                             ->draggable() // allow dragging to move marker
                             ->clickable(true)
                             ->reactive()
@@ -552,7 +594,7 @@ class PresupuestoResource extends Resource
                         SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
 
 
- 
+
                 ]),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')
@@ -564,11 +606,11 @@ class PresupuestoResource extends Resource
                 Forms\Components\Select::make('color_id')
                     ->relationship('colors', 'colors.nombre')
                     ->options(function (callable $get, callable $set) {
-                        if ( !is_null($get('material_id')) ) 
+                        if ( !is_null($get('material_id')) )
                         {
                             return Color::join('color_material','color_material.color_id','colors.id')->where('material_id',$get('material_id'))->get()->pluck('nombre','id')->toArray();
                         }
-                        else 
+                        else
                         {
                             return Color::join('color_material','color_material.color_id','colors.id')->get()->pluck('nombre','id')->toArray();
                         }
@@ -601,12 +643,12 @@ class PresupuestoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('pdf') 
+                Tables\Actions\Action::make('pdf')
                     ->label('PDF')
                     ->color('success')
                     ->icon('heroicon-o-document')
                     ->url(fn (Presupuesto $record) => route('pdf', $record))
-                    ->openUrlInNewTab(), 
+                    ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

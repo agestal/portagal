@@ -62,6 +62,7 @@ class AdminPanelProvider extends PanelProvider
             ])   
             ->brandLogo(asset('images/logo_portagal_puertas_automaticas.png'))
             ->authGuard('web')
+            ->maxContentWidth('full')
             ->plugins([
                 BreezyCore::make()
                 ->myProfile(
