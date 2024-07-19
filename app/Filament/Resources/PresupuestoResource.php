@@ -455,42 +455,6 @@ class PresupuestoResource extends Resource
                                     ->label('Albañilería comentarios')
                                     ->hidden(fn(Callable $get) => !$get('obras') ),
 
-                                Forms\Components\Select::make('materiales_pilares')
-                                    ->label('Materiales de los pialres')
-                                    ->searchable()
-                                    ->preload()
-                                    ->reactive()
-                                    ->hidden(fn(Callable $get) => !$get('obras') )
-                                    ->options(Material::pluck('nombre','id')->toArray()),
-                                Forms\Components\Select::make('materiales_techo')
-                                    ->label('Materiales del techo')
-                                    ->searchable()
-                                    ->preload()
-                                    ->reactive()
-                                    ->hidden(fn(Callable $get) => !$get('obras') )
-                                    ->options(Material::pluck('nombre','id')->toArray()),
-                                Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->numeric()->hidden(fn(Callable $get) => !$get('obras') ),
-                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->numeric()->hidden(fn(Callable $get) => !$get('obras') ),
-
-                                Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()
-                                    ->options([
-                                        '1' => 'No se necesita',
-                                        '2' => 'Lo aporta Portagal',
-                                        '3' => 'Lo aporta el cliente',
-                                    ])->hidden(fn(Callable $get) => !$get('obras') )->reactive(),
-                                Forms\Components\Select::make('elevador_portagal')->label('Elevador tipo:')
-                                    ->options([
-                                        '1' => 'Tijera Electrica 8m',
-                                        '2' => 'Tijera electrica 10m',
-                                        '3' => 'Tijera electrica 12m',
-                                        '4' => 'Tijera Diesel Pequeña',
-                                        '5' => 'Tijera Diesel Grande',
-                                        '6' => 'Pato 12m',
-                                        '7' => 'Camion Cesta',
-                                        '8' => 'Andamio',
-                                    ])->hidden(function (callable $get) {
-                                        return $get('elevador') == 2 ? false : true;
-                                    }),
                             ])->columns(1),
                         ]),
                     Section::make('Otras opciones')
