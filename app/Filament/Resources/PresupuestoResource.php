@@ -165,11 +165,11 @@ class PresupuestoResource extends Resource
                         Section::make('Datos sobre la orientación')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; })
                             ->description('Orientación')
                             ->schema([
-                                Forms\Components\ToggleButtons::make('orientaion')->label('orientaion')->inline()
+                                Forms\Components\ToggleButtons::make('orientaion')->label('orientacion')->inline()
                                 ->options([
                                     '1' => 'Horizontal',
                                     '2' => 'Vertical',
-                                    '2' => 'Mixta',
+                                    '3' => 'Mixta',
                                 ])->reactive(),
                             ])->collapsible(),
                         Section::make('Dintel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
@@ -261,6 +261,13 @@ class PresupuestoResource extends Resource
                             ->description('Marca aquí si bate contra U')
                             ->schema([
                                 Forms\Components\Toggle::make('bate_contrau')->label(__('Bate contra U'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
+                                Forms\Components\ToggleButtons::make('opcion_contrau')->label(__('Opciones bate contra U'))->inline()->reactive()
+                                ->options([
+                                    '1' => 'U enfrentada al pilar',
+                                    '2' => 'U por cara interior',
+                                ])->hidden( function (callable $get) {
+                                    return !$get('bate_contrau');
+                                }),
                             ])->collapsible()->collapsed(),
                         Section::make('Guía de suelo')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
                             ->description('Opciones de la guía de suelo')
@@ -500,7 +507,7 @@ class PresupuestoResource extends Resource
                         ]),
                     Section::make('Dibujos aclaratorios')
                         ->schema([
-                            SignaturePad::make('montaje_guias')->label(__('Montaje Guías')),
+                            SignaturePad::make('montaje_guias')->label(__('Montaje Guías'))->extraAttributes(['height' => '400px' ]),
                             SignaturePad::make('remates')->label(__('Remates')),
                             SignaturePad::make('portico')->label(__('Pórtico')),
                         ]),

@@ -13,7 +13,7 @@ function action() {
     // draw the image on the canvas
     ctx.drawImage(background, 0, 0);
 
-    //// Then continue with your code 
+    //// Then continue with your code
     var wrapper = document.getElementById("signature-pad"),
         clearButton = wrapper.querySelector("[data-action=clear]"),
         saveButton = wrapper.querySelector("[data-action=save]"),

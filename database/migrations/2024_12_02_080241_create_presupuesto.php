@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('nombre_cliente'); /***/
             $table->string('email'); /***/
             $table->string('referencia'); /***/
-           
+
             $table->foreignId('puerta_id')->references('id')->on('puertas')->nullable();/***/
-            
+
             $table->foreignId('puertamaterial_id')->nullable();
 
             $table->foreignId('panel_id')->nullable();/***/
@@ -46,6 +46,7 @@ return new class extends Migration
             $table->integer('tipo_buzon')->nullable(); /***/
 
             $table->boolean('bate_contrau')->nullable();
+            $table->integer('opcion_contrau')->nullable();
 
             $table->integer('orientacion')->nullable();
 
@@ -77,12 +78,12 @@ return new class extends Migration
             $table->text('posicion_rejillas')->nullable();  /***/
 
             $table->boolean('muelles_antirotura')->default(true); /***/
-            $table->integer('color_herraje_std')->nullable(); /***/ 
-            $table->string('color_herraje_no_std')->nullable(); /***/ 
-            
+            $table->integer('color_herraje_std')->nullable(); /***/
+            $table->string('color_herraje_no_std')->nullable(); /***/
+
             $table->boolean('soporte_guia_lateral')->default(true); /***/
-            $table->integer('color_guias_std')->nullable(); /***/ 
-            $table->string('color_guias_no_std')->nullable(); /***/ 
+            $table->integer('color_guias_std')->nullable(); /***/
+            $table->string('color_guias_no_std')->nullable(); /***/
             $table->boolean('paracaidas')->nullable(); /***/
 
             $table->boolean('peatonal_insertada')->nullable();
