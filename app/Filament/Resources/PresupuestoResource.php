@@ -152,6 +152,47 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => !$get('techo_inclinacion') )
                                     ->numeric(),
                             ])->collapsible(),
+                        Section::make('Opciones Paño')->hidden(function (Callable $get) { return in_array($get('puertamaterial_id'),array(1,2,3)) ? false : true; })
+                            ->description('Tipo de lama y color')
+                            ->schema([
+                                Forms\Components\ToggleButtons::make('opciones_pano')->inline()
+                                    ->label('Opción de paño')
+                                    ->hidden(function (Callable $get) { return in_array($get('puertamaterial_id'),array(1)) ? false : true; })
+                                    ->options([
+                                        '1' => 'Lama 200',
+                                        '2' => 'Lama 100',
+                                        '3' => 'Especial',
+                                    ])->reactive(),
+                                Forms\Components\ToggleButtons::make('opciones_pano')->inline()
+                                    ->label('Opción de paño')
+                                    ->hidden(function (Callable $get) { return in_array($get('puertamaterial_id'),array(2)) ? false : true; })
+                                    ->options([
+                                        '3' => 'Especial',
+                                        '4' => 'Lama PC24',
+                                        '5' => 'Otras opciones',
+                                    ])->reactive(),
+                                Forms\Components\ToggleButtons::make('color_pano')->inline()
+                                    ->hidden(function (Callable $get) { return in_array($get('opciones_pano'),array(1,2)) ? false : true; })
+                                    ->label('Color de paño')
+                                    ->options([
+                                        '1' => 'Lacado en color RAL',
+                                        '2' => 'Imitración madera',
+                                    ])->reactive(),
+                                Forms\Components\ToggleButtons::make('color_pano')->inline()
+                                    ->hidden(function (Callable $get) { return in_array($get('opciones_pano'),array(4,5)) ? false : true; })
+                                    ->label('Color de paño')
+                                    ->options([
+                                        '1' => 'Lacado en color RAL',
+                                    ])->reactive(),
+                                Forms\Components\ToggleButtons::make('color_panel_sandwich')->inline()
+                                    ->hidden(function (Callable $get) { return in_array($get('puertamaterial_id'),array(3)) ? false : true; })
+                                    ->label('Color panel sandwich')
+                                    ->options([
+                                        '1' => 'Imitación madera',
+                                        '2' => 'Color RAL',
+                                    ])->reactive(),
+                            ])->collapsible()
+                            ->reactive(),
                         Section::make('Datos pilares')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; })
                             ->description('Datos de los pilares')
                             ->schema([
@@ -165,7 +206,7 @@ class PresupuestoResource extends Resource
                         Section::make('Datos sobre la orientación')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; })
                             ->description('Orientación')
                             ->schema([
-                                Forms\Components\ToggleButtons::make('orientaion')->label('orientacion')->inline()
+                                Forms\Components\ToggleButtons::make('orientacion')->label('orientacion')->inline()
                                 ->options([
                                     '1' => 'Horizontal',
                                     '2' => 'Vertical',
@@ -323,6 +364,8 @@ class PresupuestoResource extends Resource
                                             ->hidden( function (callable $get) {
                                                 return !$get('peatonal_insertada');
                                             }),
+                                    Grid::make()->columns(1)
+                                            ->schema([
                                         Forms\Components\ToggleButtons::make('peatonal_bisagras')->label('Bisagras')->inline()
                                             ->options([
                                                 '1' => 'Normal',
@@ -347,7 +390,19 @@ class PresupuestoResource extends Resource
                                             ->hidden( function (callable $get) {
                                                 return !$get('peatonal_insertada');
                                             }),
-                                    ])
+                                        ])->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; }),
+                                    Grid::make()->columns(1)
+                                    ->schema([
+                                        Forms\Components\ToggleButtons::make('peatonal_cerradura')->label('Cerradura')->inline()
+                                            ->options([
+                                                '1' => 'Normal',
+                                                '3' => 'Con coqueta eléctrica',
+                                            ])
+                                            ->hidden( function (callable $get) {
+                                                return !$get('peatonal_insertada');
+                                            }),
+                                        ])->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; }),
+                                        ])
                             ])->collapsible()->collapsed(),
                         Section::make('Funcionamiento')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
                             ->description('Marca aquí si la puerta es manual o automática')
@@ -392,12 +447,17 @@ class PresupuestoResource extends Resource
                                     ->label(__('Tirador'))
                                     ->hidden( function (callable $get) {
                                         return $get('funcionamiento') == 1 ? false : true;
-                                    }),
-                                    Forms\Components\TextInput::make('manual_cerradura')
-                                        ->label(__('Cerradura tipo FAC'))
-                                        ->hidden( function (callable $get) {
-                                            return $get('funcionamiento') == 1 ? false : true;
-                                        }),
+                                }),
+                                Forms\Components\TextInput::make('manual_cerradura_fac')
+                                    ->label(__('Cerradura tipo FAC'))
+                                    ->hidden( function (callable $get) {
+                                        return $get('funcionamiento') == 1 && $get('puerta_id') == 1 ? false : true;
+                                }),
+                                Forms\Components\TextInput::make('manual_cerradura_pc')
+                                    ->label(__('Cerradura tipo pico de loro'))
+                                    ->hidden( function (callable $get) {
+                                        return $get('funcionamiento') == 1 && in_array($get('puerta_id'),array(2))  ? false : true;
+                                }),
                             ])->collapsible(),
                         Section::make('Otras opciones')->columns(1)->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->schema([

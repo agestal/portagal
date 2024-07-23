@@ -39,6 +39,12 @@ return new class extends Migration
             $table->boolean('techo_inclinacion')->nullable();
             $table->float('grados_inclinacion')->nullable(); /***/
 
+            $table->integer('opciones_pano')->nullable(); /***/
+            $table->string('color_pano')->nullable(); /***/
+            $table->string('color_panel_sandwich')->nullable(); /***/
+
+
+
             $table->float('pilares_alto')->nullable();/***/
             $table->float('pilares_ancho')->nullable();/***/
 
@@ -97,7 +103,8 @@ return new class extends Migration
             $table->integer('tipomotors_id')->nullable();
             $table->integer('motors_id')->nullable();
 
-            $table->string('manual_cerradura')->nullable();
+            $table->string('manual_cerradura_fac')->nullable();
+            $table->string('manual_cerradura_pc')->nullable();
             $table->string('manual_tirador')->nullable();
 
             $table->boolean('electricidad')->nullable();
