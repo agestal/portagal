@@ -21,6 +21,7 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use App\Models\Motor;
+use App\Models\TipoMotor;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 
@@ -413,18 +414,31 @@ class PresupuestoResource extends Resource
                                         '2' => 'Automática',
                                     ])
                                     ->reactive(),
+                                Forms\Components\ToggleButtons::make('motor_opcion')->inline()
+                                        ->options([
+                                            '1' => 'Se conserva motor',
+                                            '2' => 'Motor nuevo',
+                                        ])
+                                        ->reactive()
+                                        ->hidden( function (callable $get) {
+                                            return $get('funcionamiento') == 2 && in_array($get('puerta_id'),array(2,3,4)) ? false : true;
+                                        }),
+                                
                                 Forms\Components\Select::make('tipomotors_id')
                                     ->label('Tipo de motor')
                                     ->relationship('tipomotors','tipo_motor.nombre')
+                                    ->options(function (callable $get, callable $set) {
+                                        return TipoMotor::join('puerta_tipo_motor','tipo_motor.id','puerta_tipo_motor.tipo_motor_id')->where('puerta_tipo_motor.puerta_id',$get('puerta_id'))->orderBy('nombre','desc')->pluck('tipo_motor.nombre','tipo_motor.id')->toArray();
+                                    })
                                     ->hidden( function (callable $get) {
-                                        return $get('funcionamiento') == 2 ? false : true;
+                                        return $get('funcionamiento') == 2 && ($get('motor_opcion') == 2  || $get('puerta_id') == 1 ) ? false : true;
                                     })
                                     ->reactive(),
                                 Forms\Components\Select::make('motors_id')
-                                    ->label('Modelo de motor')
+                                    ->label('Modelo de motor')  
                                     ->relationship('motors','motors.nombre')
                                     ->hidden( function (callable $get) {
-                                        return $get('funcionamiento') == 2 ? false : true;
+                                        return $get('funcionamiento') == 2 && ($get('motor_opcion') == 2  || $get('puerta_id') == 1 ) ? false : true;
                                     })
                                     ->options(function (callable $get, callable $set) {
                                         return Motor::where('tipomotors_id',$get('tipomotors_id'))->orderBy('nombre','desc')->pluck('nombre','id')->toArray();
@@ -537,12 +551,12 @@ class PresupuestoResource extends Resource
                                     ->options(Material::pluck('nombre','id')->toArray()),
                                 Forms\Components\Select::make('materiales_techo')
                                     ->label('Materiales del techo')
-                                    ->searchable()
+                                    ->searchable()  
                                     ->preload()
                                     ->reactive()
                                     ->options(Material::pluck('nombre','id')->toArray()),
-                                Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->numeric(),
-                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->numeric(),
+                                Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false ),
+                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))  ? true : false ),
 
                                 Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()
                                     ->options([

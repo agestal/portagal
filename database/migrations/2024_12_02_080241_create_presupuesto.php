@@ -100,6 +100,7 @@ return new class extends Migration
             $table->boolean('peatonal_seguridad')->nullable();
 
             $table->string('funcionamiento')->nullable();
+            $table->integer('motor_opcion')->nullable();
             $table->integer('tipomotors_id')->nullable();
             $table->integer('motors_id')->nullable();
 

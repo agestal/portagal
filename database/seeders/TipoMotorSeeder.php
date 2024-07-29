@@ -15,7 +15,13 @@ class TipoMotorSeeder extends Seeder
     {
         TipoMotor::insert([
             [ 'nombre' => 'Motor de techo' , 'lleva_guia' => true],
-            [ 'nombre' => 'Motor de ataque a eje' , 'lleva_guia' => false],
+            [ 'nombre' => 'Motor de ataque a eje' , 'lleva_guia' => false ],
+            [ 'nombre' => 'Industrial' , 'lleva_guia' => false],
+            [ 'nombre' => 'Residencial' , 'lleva_guia' => false ],
+            [ 'nombre' => 'Hidráulico' , 'lleva_guia' => false ],
+            [ 'nombre' => 'Electromecánico' , 'lleva_guia' => false ],
+            [ 'nombre' => 'Hidráulico 2' , 'lleva_guia' => false ],
+            [ 'nombre' => 'Electromecánico 2' , 'lleva_guia' => false ],
         ]);
     }
 }

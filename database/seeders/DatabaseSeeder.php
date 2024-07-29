@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\PuertaTipoMotor;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MotorSeeder::class);
         $this->call(PuertamaterialSeeder::class);
         $this->call(MaterialSeeder::class);
+        $this->call(PuertaTipoMotorsSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

@@ -30,6 +30,8 @@ class TipoMotorResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('puerta_id')
+                    ->relationship('puertas', 'nombre'),
             ]);
     }
 
@@ -38,6 +40,8 @@ class TipoMotorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('puertas.nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

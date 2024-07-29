@@ -13,8 +13,12 @@ class Puerta extends Model
     protected $fillable = [
         'nombre'
     ];
-    public function presupuesto()
+    public function presupuesto() : BelongsTo
     {
         return $this->belongsTo(Presupuesto::class);
+    }
+    public function tipomotors() : HasMany
+    {
+        return $this->hasMany(TipoMotor::class);
     }
 }
