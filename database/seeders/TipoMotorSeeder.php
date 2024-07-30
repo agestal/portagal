@@ -20,8 +20,8 @@ class TipoMotorSeeder extends Seeder
             [ 'nombre' => 'Residencial' , 'lleva_guia' => false ],
             [ 'nombre' => 'Hidráulico' , 'lleva_guia' => false ],
             [ 'nombre' => 'Electromecánico' , 'lleva_guia' => false ],
-            [ 'nombre' => 'Hidráulico 2' , 'lleva_guia' => false ],
-            [ 'nombre' => 'Electromecánico 2' , 'lleva_guia' => false ],
+            [ 'nombre' => 'Hidráulico 2 Hojas' , 'lleva_guia' => false ],
+            [ 'nombre' => 'Electromecánico 2 Hojas' , 'lleva_guia' => false ],
         ]);
     }
 }

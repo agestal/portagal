@@ -118,6 +118,8 @@ return new class extends Migration
             $table->integer('elevador_portagal')->nullable();
             $table->integer('materiales_pilares')->nullable();
             $table->integer('materiales_techo')->nullable();
+            $table->Boolean('montaje_guia_suelo')->nullable();
+            $table->integer('material_guia_suelo_cr')->nullable();
 
             $table->text('firma')->nullable();
             $table->text('montaje_guias')->nullable();

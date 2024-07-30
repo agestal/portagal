@@ -423,7 +423,7 @@ class PresupuestoResource extends Resource
                                         ->hidden( function (callable $get) {
                                             return $get('funcionamiento') == 2 && in_array($get('puerta_id'),array(2,3,4)) ? false : true;
                                         }),
-                                
+
                                 Forms\Components\Select::make('tipomotors_id')
                                     ->label('Tipo de motor')
                                     ->relationship('tipomotors','tipo_motor.nombre')
@@ -435,7 +435,7 @@ class PresupuestoResource extends Resource
                                     })
                                     ->reactive(),
                                 Forms\Components\Select::make('motors_id')
-                                    ->label('Modelo de motor')  
+                                    ->label('Modelo de motor')
                                     ->relationship('motors','motors.nombre')
                                     ->hidden( function (callable $get) {
                                         return $get('funcionamiento') == 2 && ($get('motor_opcion') == 2  || $get('puerta_id') == 1 ) ? false : true;
@@ -551,19 +551,28 @@ class PresupuestoResource extends Resource
                                     ->options(Material::pluck('nombre','id')->toArray()),
                                 Forms\Components\Select::make('materiales_techo')
                                     ->label('Materiales del techo')
-                                    ->searchable()  
+                                    ->searchable()
                                     ->preload()
                                     ->reactive()
+                                    ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false )
                                     ->options(Material::pluck('nombre','id')->toArray()),
+                                Forms\Components\Toggle::make('montaje_guia_suelo')
+                                    ->label('Montaje guía de suelo')
+                                    ->reactive()
+                                    ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(2)) ? true : false ),
+                                Forms\Components\TextInput::make('material_guia_suelo_cr')
+                                    ->label('Materiales suelo :')
+                                    ->reactive()
+                                    ->hidden(function (callable $get) { return !$get('montaje_guia_suelo'); }),
                                 Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false ),
                                 Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))  ? true : false ),
 
-                                Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()
+                                Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()->reactive()
                                     ->options([
                                         '1' => 'No se necesita',
                                         '2' => 'Lo aporta Portagal',
                                         '3' => 'Lo aporta el cliente',
-                                    ]),
+                                    ])->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))),
                                 Forms\Components\Select::make('elevador_portagal')->label('Elevador tipo:')
                                     ->options([
                                         '1' => 'Tijera Electrica 8m',
