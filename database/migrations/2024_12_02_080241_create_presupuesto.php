@@ -41,12 +41,27 @@ return new class extends Migration
 
             $table->integer('opciones_pano')->nullable(); /***/
             $table->string('color_pano')->nullable(); /***/
+            $table->string('diseno_especial')->nullable(); /***/
             $table->string('color_panel_sandwich')->nullable(); /***/
 
-
-
-            $table->float('pilares_alto')->nullable();/***/
-            $table->float('pilares_ancho')->nullable();/***/
+            $table->float('pilar_izquierdo')->nullable();/***/
+            $table->float('pilar_derecho')->nullable();/***/
+            $table->float('ancho_plibre')->nullable();/***/
+            $table->float('puerta_izquierda')->nullable();/***/
+            $table->float('puerta_derecha')->nullable();/***/
+            $table->integer('direccion_apertura')->nullable(); /***/
+            $table->integer('solapes')->nullable(); /***/
+            $table->boolean('rabos')->nullable(); /***/
+            $table->float('rabo_superior')->nullable(); /***/
+            $table->float('rabo_inferior')->nullable(); /***/
+            $table->boolean('puerta_caida')->nullable(); /***/
+            $table->boolean('opciones_caida')->nullable(); /***/
+            $table->integer('tipo_cierre')->nullable(); /***/
+            $table->integer('rueda')->nullable(); /***/
+            $table->string('descripcion_rueda')->nullable(); /***/
+            $table->boolean('guia_suelo')->nullable();
+            $table->integer('tipo_guia_suelo')->nullable();
+            $table->integer('material_guia_suelo')->nullable();
 
             $table->boolean('buzon')->nullable(); /***/
             $table->integer('tipo_buzon')->nullable(); /***/
@@ -56,9 +71,7 @@ return new class extends Migration
 
             $table->integer('orientacion')->nullable();
 
-            $table->boolean('guia_suelo')->nullable();
-            $table->integer('tipo_guia_suelo')->nullable();
-            $table->integer('material_guia_suelo')->nullable();
+
 
             $table->boolean('orejetas')->nullable();
             $table->string('orejetas_medidas')->nullable();
