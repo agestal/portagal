@@ -17,7 +17,8 @@ class PanelSeeder extends Seeder
             [ 'nombre' => 'Acanalado' , 'puede_std' => true],
             [ 'nombre' => 'Uniacanalado' , 'puede_std' => true],
             [ 'nombre' => 'Liso' , 'puede_std' => true],
-            [ 'nombre' => 'Metacrilato' , 'puede_std' => false],
+            [ 'nombre' => 'Cuarterón' , 'puede_std' => true],
+            [ 'nombre' => 'Especial' , 'puede_std' => false],
         ]);
     }
 }

@@ -50,12 +50,14 @@ return new class extends Migration
             $table->float('puerta_izquierda')->nullable();/***/
             $table->float('puerta_derecha')->nullable();/***/
             $table->integer('direccion_apertura')->nullable(); /***/
-            $table->integer('solapes')->nullable(); /***/
+            $table->integer('solape_motor')->nullable(); /***/
+            $table->integer('solape_cierra')->nullable(); /***/
             $table->boolean('rabos')->nullable(); /***/
             $table->float('rabo_superior')->nullable(); /***/
             $table->float('rabo_inferior')->nullable(); /***/
             $table->boolean('puerta_caida')->nullable(); /***/
             $table->boolean('opciones_caida')->nullable(); /***/
+            $table->text('caida_dibujo')->nullable(); /***/
             $table->integer('tipo_cierre')->nullable(); /***/
             $table->integer('rueda')->nullable(); /***/
             $table->string('descripcion_rueda')->nullable(); /***/
