@@ -56,7 +56,7 @@ return new class extends Migration
             $table->float('rabo_superior')->nullable(); /***/
             $table->float('rabo_inferior')->nullable(); /***/
             $table->boolean('puerta_caida')->nullable(); /***/
-            $table->boolean('opciones_caida')->nullable(); /***/
+            $table->integer('opciones_caida')->nullable(); /***/
             $table->text('caida_dibujo')->nullable(); /***/
             $table->integer('tipo_cierre')->nullable(); /***/
             $table->integer('rueda')->nullable(); /***/
@@ -64,6 +64,12 @@ return new class extends Migration
             $table->boolean('guia_suelo')->nullable();
             $table->integer('tipo_guia_suelo')->nullable();
             $table->integer('material_guia_suelo')->nullable();
+            $table->float('holgura_inferior')->nullable();
+            $table->integer('tipo_cierre_peatonal')->nullable();
+            $table->integer('manillas')->nullable();
+            $table->boolean('pano_fijo_hoja_aux')->nullable();
+            $table->integer('ancho_fijo_aux')->nullable();
+            $table->integer('alto_fijo_aux')->nullable();
 
             $table->boolean('buzon')->nullable(); /***/
             $table->integer('tipo_buzon')->nullable(); /***/
