@@ -114,7 +114,7 @@ class PresupuestoResource extends Resource
                                         '10' => 'Lama 200 vertical imitación madera clara',
                                         '11' => 'Lama 200 horizontal imitación madera oscura',
                                         '12' => 'Lama 200 vertical imitación madera oscura',
-                                        '5' => 'Diseño especial',
+                                        '13' => 'Diseño especial',
                                     ])->reactive(),
 
                                 Forms\Components\Select::make('opciones_pano')
@@ -126,7 +126,7 @@ class PresupuestoResource extends Resource
                                         '16' => 'Lama PC4 rayada horizontal',
                                         '17' => 'Lama PC4 rayada vertical',
                                         '18' => 'Malla electrosoldada',
-                                        '5' => 'Diseño especial',
+                                        '13' => 'Diseño especial',
                                     ])->reactive(),
                                 Forms\Components\Select::make('opciones_pano')
                                     ->hidden(function (Callable $get) { return in_array($get('puertamaterial_id'),array(3)) ? false : true; })
@@ -143,7 +143,7 @@ class PresupuestoResource extends Resource
                                         '28' => 'Acanalado pintado',
                                         '29' => 'Uniacanalado pintado',
                                         '30' => 'Superliso pintado',
-                                        '5' => 'Diseño especial',
+                                        '13' => 'Diseño especial',
                                     ])->reactive(),
                                 Forms\Components\Textarea::make('diseno_especial')
                                     ->hidden(function (Callable $get) { return in_array($get('opciones_pano'),array(5)) ? false : true; })
@@ -182,7 +182,8 @@ class PresupuestoResource extends Resource
                                     Forms\Components\TextInput::make('medida_dintel')
                                         ->label('Medida de Dintel (en mm.)')
                                         ->hidden(function (Callable $get) { return in_array($get('tipo_guia'),array(3,4,5)) ? false : true; })
-                                        ->numeric(),
+                                        ->numeric()
+                                        ->reactive(),
                                     Forms\Components\TextInput::make('medida_dintel')
                                         ->label('Medida de Dintel (en mm.)')
                                         ->minValue(120)
@@ -195,7 +196,13 @@ class PresupuestoResource extends Resource
                                         ->minValue(200)
                                         ->maxValue(295)
                                         ->hidden(function (Callable $get) { return in_array($get('tipo_guia'),array(2)) ? false : true; })
-                                        ->numeric(),
+                                        ->numeric()
+                                        ->reactive(),
+                                    Forms\Components\TextInput::make('grados_inclinacion')
+                                        ->label('Grados de inclinación')
+                                        ->hidden(function (Callable $get) { return in_array($get('tipo_guia'),array(3)) ? false : true; })
+                                        ->numeric()
+                                        ->reactive(),
                                 ]),
                                 Fieldset::make('Altura de pilares')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,5)) ? false : true; })
                                 ->schema([
@@ -245,7 +252,7 @@ class PresupuestoResource extends Resource
                                     '1' => 'Si',
                                     '2' => 'No',
                                 ])->reactive(),
-                                Fieldset::make('Medida rabos de la puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) &&  $get('rabos') == 1 ? false : true; })
+                                Fieldset::make('Medida rabos de la puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) &&  $get('rabos') == 1 ? true : false; })
                                 ->schema([
                                     Forms\Components\TextInput::make('rabo_superior')
                                         ->label('Rabo superior')
@@ -294,7 +301,7 @@ class PresupuestoResource extends Resource
                                     '3' => 'Guía embutida',
                                 ])->reactive(),
                                 Forms\Components\Select::make('manillas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(5)) ? false : true; })
-                                ->label('Nanillas')
+                                ->label('Manillas')
                                 ->options([
                                     '1' => 'Sólo manilla interior',
                                     '2' => 'Manilla interior y exterior',
@@ -402,53 +409,54 @@ class PresupuestoResource extends Resource
                                         return $get('color_guias_std') == 2 ? false : true;
                                     }),
 
-                                    Section::make('Ventanas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
-                                    ->description('Marca aquí si incluyes ventanas')
-                                    ->schema([
-                                        Forms\Components\Toggle::make('ventanas')->label(__('Ventanas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
-                                        /*Forms\Components\TextInput::make('numero_ventanas')
-                                            ->label('Numero de ventanas')
-                                            ->hidden(fn(Callable $get) => !$get('ventanas') )
-                                            ->numeric(),
-                                        Forms\Components\ToggleButtons::make('ventana_tipo')->label(__('Tipo de ventana'))->inline()
-                                            ->options([
-                                                '1' => 'Residencial 520 x 350',
-                                                '2' => 'Industrial 609 x 146',
-                                                '3' => 'Industrial 609 x 203',
-                                                '4' => 'Industrial ovalada 670 x 345',
-                                            ])->hidden(fn(Callable $get) => !$get('ventanas') ),
-                                        Forms\Components\ToggleButtons::make('ventana_tipo_cristal')->label(__('Tipo de cristal (ventana)'))->inline()
-                                            ->options([
-                                                '1' => 'Transparente',
-                                                '2' => 'Translucida',
-                                                '3' => 'Opaca',
-                                            ])->hidden(fn(Callable $get) => !$get('ventanas') ),
-                                        Forms\Components\Textarea::make('posicion_ventanas')
-                                            ->label('Posición ventanas')
-                                            ->hidden(fn(Callable $get) => !$get('ventanas') ),*/
-                                    ])->collapsible()->collapsed(),
-                                Section::make('Rejillas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
-                                    ->description('Marca aquí si incluyes rejillas')
-                                    ->schema([
-                                        Forms\Components\Toggle::make('rejillas')->label(__('Rejillas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
-                                        /*Forms\Components\TextInput::make('numero_rejillas')
-                                                ->label('Numero de rejillas')
-                                                ->hidden(fn(Callable $get) => !$get('rejillas') )
-                                                ->numeric(),
-                                        Forms\Components\ToggleButtons::make('rejillas_tipo')->label(__('Tipo de rejillas'))->inline()
-                                                ->options([
-                                                    '1' => 'Estándar 337 x 131',
-                                                    '2' => 'Grande 500 x 330',
-                                                ])->hidden( function (callable $get) {
-                                                    return !$get('rejillas');
-                                                }),
-                                        Forms\Components\Textarea::make('posicion_rejillas')
-                                                ->label('Posición rejillas')
-                                                ->hidden(fn(Callable $get) => !$get('rejillas') ),*/
-                                    ])->collapsible()->collapsed(),
-                                ]),
 
-                            Section::make('Peatonal')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
+
+                                ]),
+                            Section::make('Ventanas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
+                                ->description('Marca aquí si incluyes ventanas')
+                                ->schema([
+                                    Forms\Components\Toggle::make('ventanas')->label(__('Ventanas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
+                                    /*Forms\Components\TextInput::make('numero_ventanas')
+                                        ->label('Numero de ventanas')
+                                        ->hidden(fn(Callable $get) => !$get('ventanas') )
+                                        ->numeric(),
+                                    Forms\Components\ToggleButtons::make('ventana_tipo')->label(__('Tipo de ventana'))->inline()
+                                        ->options([
+                                            '1' => 'Residencial 520 x 350',
+                                            '2' => 'Industrial 609 x 146',
+                                            '3' => 'Industrial 609 x 203',
+                                            '4' => 'Industrial ovalada 670 x 345',
+                                        ])->hidden(fn(Callable $get) => !$get('ventanas') ),
+                                    Forms\Components\ToggleButtons::make('ventana_tipo_cristal')->label(__('Tipo de cristal (ventana)'))->inline()
+                                        ->options([
+                                            '1' => 'Transparente',
+                                            '2' => 'Translucida',
+                                            '3' => 'Opaca',
+                                        ])->hidden(fn(Callable $get) => !$get('ventanas') ),
+                                    Forms\Components\Textarea::make('posicion_ventanas')
+                                        ->label('Posición ventanas')
+                                        ->hidden(fn(Callable $get) => !$get('ventanas') ),*/
+                                ])->collapsible()->collapsed(),
+                            Section::make('Rejillas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
+                                ->description('Marca aquí si incluyes rejillas')
+                                ->schema([
+                                    Forms\Components\Toggle::make('rejillas')->label(__('Rejillas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
+                                    /*Forms\Components\TextInput::make('numero_rejillas')
+                                            ->label('Numero de rejillas')
+                                            ->hidden(fn(Callable $get) => !$get('rejillas') )
+                                            ->numeric(),
+                                    Forms\Components\ToggleButtons::make('rejillas_tipo')->label(__('Tipo de rejillas'))->inline()
+                                            ->options([
+                                                '1' => 'Estándar 337 x 131',
+                                                '2' => 'Grande 500 x 330',
+                                            ])->hidden( function (callable $get) {
+                                                return !$get('rejillas');
+                                            }),
+                                    Forms\Components\Textarea::make('posicion_rejillas')
+                                            ->label('Posición rejillas')
+                                            ->hidden(fn(Callable $get) => !$get('rejillas') ),*/
+                                ])->collapsible()->collapsed(),
+                            Section::make('Peatonal insertada')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
                                 ->description('Marca aquí si incluyes una puerta peatonal')
                                 ->schema([
                                         Forms\Components\Toggle::make('peatonal_insertada')->label(__('Peatonal'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
