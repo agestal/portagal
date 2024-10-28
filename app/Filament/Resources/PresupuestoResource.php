@@ -416,7 +416,7 @@ class PresupuestoResource extends Resource
                                 ->description('Marca aquí si incluyes ventanas')
                                 ->schema([
                                     Forms\Components\Toggle::make('ventanas')->label(__('Ventanas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
-                                    /*Forms\Components\TextInput::make('numero_ventanas')
+                                    Forms\Components\TextInput::make('numero_ventanas')
                                         ->label('Numero de ventanas')
                                         ->hidden(fn(Callable $get) => !$get('ventanas') )
                                         ->numeric(),
@@ -435,13 +435,13 @@ class PresupuestoResource extends Resource
                                         ])->hidden(fn(Callable $get) => !$get('ventanas') ),
                                     Forms\Components\Textarea::make('posicion_ventanas')
                                         ->label('Posición ventanas')
-                                        ->hidden(fn(Callable $get) => !$get('ventanas') ),*/
+                                        ->hidden(fn(Callable $get) => !$get('ventanas') ),
                                 ])->collapsible()->collapsed(),
                             Section::make('Rejillas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                                 ->description('Marca aquí si incluyes rejillas')
                                 ->schema([
                                     Forms\Components\Toggle::make('rejillas')->label(__('Rejillas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
-                                    /*Forms\Components\TextInput::make('numero_rejillas')
+                                    Forms\Components\TextInput::make('numero_rejillas')
                                             ->label('Numero de rejillas')
                                             ->hidden(fn(Callable $get) => !$get('rejillas') )
                                             ->numeric(),
@@ -454,7 +454,7 @@ class PresupuestoResource extends Resource
                                             }),
                                     Forms\Components\Textarea::make('posicion_rejillas')
                                             ->label('Posición rejillas')
-                                            ->hidden(fn(Callable $get) => !$get('rejillas') ),*/
+                                            ->hidden(fn(Callable $get) => !$get('rejillas') ),
                                 ])->collapsible()->collapsed(),
                             Section::make('Peatonal insertada')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
                                 ->description('Marca aquí si incluyes una puerta peatonal')
