@@ -32,6 +32,9 @@ class ColorpanelResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('panels_id')
+                    ->relationship('panels','nombre')
+                    ->required(),
             ]);
     }
 
@@ -40,6 +43,8 @@ class ColorpanelResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('panels.nombre')
                     ->searchable(),
                 ToggleColumn::make('std')
 

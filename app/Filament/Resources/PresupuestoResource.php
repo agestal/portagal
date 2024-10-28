@@ -80,7 +80,7 @@ class PresupuestoResource extends Resource
                                     ->reactive()
                                     ->required()
                                     ->hidden(fn(Callable $get) => !$get('tipo_color_panel') )
-                                    ->options(Colorpanel::where('std',1)->pluck('nombre','id')->toArray()),
+                                    ->options(fn(Callable $get) =>  Colorpanel::where('panels_id',$get('panel_id'))->pluck('nombre','id')->toArray()),
                                 Forms\Components\TextInput::make('colorpanel_no_std')
                                     ->label('Color del panel (No estandard)')
                                     ->required()
