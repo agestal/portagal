@@ -88,6 +88,9 @@ return new class extends Migration
             $table->boolean('dintel_panel')->nullable(); /***/
             $table->string('dintel_ancho')->nullable(); /***/
             $table->string('dintel_alto')->nullable(); /***/
+            $table->integer('medida_dintel')->nullable(); /***/
+            $table->integer('modelo_dintel')->nullable();
+            $table->text('descripcion_modelo_dintel')->nullable();
 
             $table->boolean('tubos_laterales')->nullable(); /***/
             $table->integer('tubos_cantidad')->nullable(); /***/
@@ -125,9 +128,9 @@ return new class extends Migration
             $table->integer('tipomotors_id')->nullable();
             $table->integer('motors_id')->nullable();
 
-            $table->string('manual_cerradura_fac')->nullable();
+            $table->boolean('manual_cerradura_fac')->nullable();
             $table->string('manual_cerradura_pc')->nullable();
-            $table->string('manual_tirador')->nullable();
+            $table->boolean('manual_tirador')->nullable();
 
             $table->boolean('electricidad')->nullable();
             $table->text('electricidad_comentarios')->nullable();
