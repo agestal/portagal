@@ -145,6 +145,12 @@ return new class extends Migration
             $table->Boolean('montaje_guia_suelo')->nullable();
             $table->integer('material_guia_suelo_cr')->nullable();
 
+            $table->integer('tipo_vivienda')->nullable();
+            $table->float('ancho_pilares')->nullable();
+            $table->boolean('tirador')->nullable();
+            $table->integer('tipo_tirador')->nullable();
+            $table->integer('mecanismo_cierra')->nullable();
+
             $table->text('firma')->nullable();
             $table->text('montaje_guias')->nullable();
             $table->text('renates')->nullable();
