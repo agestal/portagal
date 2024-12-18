@@ -47,6 +47,7 @@ return new class extends Migration
             $table->float('pilar_izquierdo')->nullable();/***/
             $table->float('pilar_derecho')->nullable();/***/
             $table->float('ancho_plibre')->nullable();/***/
+            $table->float('ancho_hueco')->nullable();/***/
             $table->float('puerta_izquierda')->nullable();/***/
             $table->float('puerta_derecha')->nullable();/***/
             $table->integer('direccion_apertura')->nullable(); /***/
@@ -150,6 +151,8 @@ return new class extends Migration
             $table->boolean('tirador')->nullable();
             $table->integer('tipo_tirador')->nullable();
             $table->integer('mecanismo_cierra')->nullable();
+            $table->boolean('seguridad_peatonal')->nullable();
+            $table->boolean('cerrojo_suelo')->nullable();
 
             $table->text('firma')->nullable();
             $table->text('montaje_guias')->nullable();
