@@ -170,7 +170,7 @@
           <p>Pol. Ind. Bergondo, Parc. A2-A3-A4-N9</p>
         </div>
         <div class="col-6">
-          <img src="{{  asset('images/logo_portagal_puertas_automaticas') }}" alt="Logo Portagal" class="header-logo">
+          <img src="{{  asset('images/logo_portagal_puertas_automaticas') }}" class="header-logo">
         </div>
       </div>
       <h2 class="mt-5">Puerta</h2>
