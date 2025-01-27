@@ -170,7 +170,7 @@
           <p>Pol. Ind. Bergondo, Parc. A2-A3-A4-N9</p>
         </div>
         <div class="col-6">
-          <img src="{{  asset('logo_portagal_puertas_automaticas') }}" alt="Logo Portagal" class="header-logo">
+          <img src="{{  asset('images/logo_portagal_puertas_automaticas') }}" alt="Logo Portagal" class="header-logo">
         </div>
       </div>
       <h2 class="mt-5">Puerta</h2>
@@ -234,7 +234,7 @@
     <div class="page">
       <h2>Mediciones</h2>
       <div class="image-container">
-        <img src="{{  asset($record->puertas->nombre.'.jpg') }}" alt="Puerta Corredera">
+        <img src="{{  asset('images'.$record->puertas->nombre.'.jpg') }}" alt="Puerta Corredera">
         <div class="measurement measurement-top-left">200cm</div>
         <div class="measurement measurement-top-right">210cm</div>
         <div class="measurement measurement-side-left">190cm</div>
