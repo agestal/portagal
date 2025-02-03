@@ -13,7 +13,7 @@ class PresupuestosChart extends ApexChartWidget
 {
     protected static ?string $chartId = 'PresupuestosChart';
 
-    protected static ?string $heading = 'PresupuestosChart';
+    protected static ?string $heading = 'Gráfico de Mediciones';
 
     protected function getOptions(): array
     {

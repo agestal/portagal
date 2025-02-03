@@ -225,7 +225,7 @@
       </table>
       <div class="signature-container mt-5">
         <p class="mb-2">Firma</p>
-        <img src="https://placehold.co/150x50" alt="Firma">
+        <img src="{{  $record->firma }}" alt="Firma">
       </div>
       <div class="footer">Pag. 1</div>
     </div>

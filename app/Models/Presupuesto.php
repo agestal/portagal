@@ -14,14 +14,17 @@ use Cheesegrits\FilamentGoogleMaps\Concerns\InteractsWithMaps;
 class Presupuesto extends Model
 {
     use HasFactory, InteractsWithMaps;
+    protected static ?string $modeLabel = "Medicion";
+    protected static ?string $pluralModelLabel = "Mediciones";
+    protected static ?string $navigationLabel = "Mediciones";
     protected $fillable = [
         'fecha',
         'nombre_cliente',
         'email',
         'referencia',
-       
+
         'puerta_id',
-        
+
         'panel_id',
         'colorpanel_id',
         'tipo_color_panel',
@@ -62,7 +65,7 @@ class Presupuesto extends Model
         'muelles_antirotura',
         'color_herraje_std',
         'color_herraje_no_std',
-        
+
         'soporte_guia_lateral',
         'color_guias_std',
         'color_guias_no_std',
@@ -166,11 +169,11 @@ class Presupuesto extends Model
         return $this->belongsToThrough(
             Color::class,
             [ColorMaterial::class, Material::class],
-            foreignKeyLookup: [ 
+            foreignKeyLookup: [
                 ColorMaterial::class => 'id',
                 Material::class => 'material_id'
             ],
-            localKeyLookup: [ 
+            localKeyLookup: [
                 Material::class => 'id',
                 Color::class => 'id'
             ]

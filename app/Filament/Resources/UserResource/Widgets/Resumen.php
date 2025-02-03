@@ -18,7 +18,7 @@ class Resumen extends BaseWidget
         return [
             Stat::make('Puertas creadas:', $puertas),
             Stat::make('Opciones disponibles:', $opciones),
-            Stat::make('Presupuestos generados:', $presupuestos)->description('Presupuestos generados desde el inicio de los tiempos')->icon('heroicon-o-document'),
+            Stat::make('Mediciones generadas:', $presupuestos)->description('Mediciones generadas desde el inicio de los tiempos')->icon('heroicon-o-document'),
         ];
     }
 }

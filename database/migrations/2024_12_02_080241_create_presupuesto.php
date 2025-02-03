@@ -74,6 +74,7 @@ return new class extends Migration
 
             $table->boolean('buzon')->nullable(); /***/
             $table->integer('tipo_buzon')->nullable(); /***/
+            $table->text('ubicacion_buzon')->nullable(); /***/
 
             $table->boolean('bate_contrau')->nullable();
             $table->integer('opcion_contrau')->nullable();
