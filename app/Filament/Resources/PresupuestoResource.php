@@ -436,13 +436,7 @@ class PresupuestoResource extends Resource
                                 Grid::make()->columns(1)
                                 ->schema([
 
-                                    Forms\Components\Textarea::make('observaciones_peatonal_ins')->label('Apertura')->inline()
-                                        ->options([
-                                            '1' => 'Interior Derecha',
-                                            '2' => 'Interior Izquierda',
-                                            '3' => 'Exterior Derecha',
-                                            '4' => 'Exterior Izquierda',
-                                        ]),
+                                    Forms\Components\Textarea::make('observaciones_peatonal_ins')->label('Observaciones'),
                                 ])
                             ])->collapsible()->collapsed(),
 
