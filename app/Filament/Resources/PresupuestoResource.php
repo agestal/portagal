@@ -173,7 +173,7 @@ class PresupuestoResource extends Resource
                                         ->numeric()
                                         ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(5)) ? false : true; }),
                                     Forms\Components\TextInput::make('puerta_izquierda')
-                                        ->label('ALTURA DE PUERTA IZQUIERDA (vista interior)')
+                                        ->label('ALTURA DE PUERTA IZQUIERDA (vista exterior)')
                                         ->numeric(),
                                     Forms\Components\TextInput::make('puerta_derecha')
                                         ->label('ALTURA DE PUERTA DERECHA (vista interior)')
@@ -186,7 +186,7 @@ class PresupuestoResource extends Resource
                                         ->label('ANCHO ENTRE PILARES O PAREDES')
                                         ->numeric(),
                                     Forms\Components\TextInput::make('puerta_izquierda')
-                                        ->label('ALTURA DE PUERTA IZQUIERDA (vista interior)')
+                                        ->label('ALTURA DE PUERTA IZQUIERDA (vista exterior)')
                                         ->numeric(),
                                     Forms\Components\TextInput::make('puerta_derecha')
                                         ->label('ALTURA DE PUERTA DERECHA (vista interior)')
@@ -270,13 +270,13 @@ class PresupuestoResource extends Resource
                                         ->label('Holgura')
                                         ->numeric(),
                                 ]),
-                                Forms\Components\ToggleButtons::make('rabos')->label('Puerta corre por el exterior (sin rabos)')->inline()->default(2)
-                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? true : false; })
+                                Forms\Components\ToggleButtons::make('rabos')->label('Puerta corre por el exterior (sin rabos)')->inline()->default(2,5)
+                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,5)) ? true : false; })
                                 ->options([
                                     '1' => 'Si',
                                     '2' => 'No',
                                 ])->reactive(),
-                                Fieldset::make('Medida rabos de la puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) &&  $get('rabos') == 1 ? false : true; })
+                                Fieldset::make('Medida rabos de la puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,5)) &&  $get('rabos') == 1 ? false : true; })
                                 ->schema([
                                     Forms\Components\TextInput::make('rabo_superior')
                                         ->label('Rabo superior')
@@ -373,7 +373,7 @@ class PresupuestoResource extends Resource
 
                         ])->collapsible()->collapsed(),
 
-                    
+
                         Section::make('Peatonal insertada')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4)) ? false : true; })
                         ->description('Marca aquí si incluyes una puerta peatonal')
                         ->schema([
@@ -382,7 +382,7 @@ class PresupuestoResource extends Resource
                                     Forms\Components\Toggle::make('peatonal_cierrapuertas')
                                         ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,3,4)) ? false : true; })
                                         ->label(__('Cierrapuertas (peatonal)'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
-                                    Forms\Components\ToggleButtons::make('peatonal_posicion')->label('Posicion (V. Interior)')->inline()
+                                    Forms\Components\ToggleButtons::make('peatonal_posicion')->label('Posicion (V. exterior)')->inline()
                                         ->options([
                                             '1' => 'Izquierda',
                                             '2' => 'Centro',
@@ -415,10 +415,10 @@ class PresupuestoResource extends Resource
                                             '3' => 'Con coqueta eléctrica',
                                         ]),
                                     ])->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; }),
-                                    Forms\Components\ToggleButtons::make('peatonal_cerradura')->label('Cerradura')->inline()
+                                   /* Forms\Components\ToggleButtons::make('peatonal_cerradura')->label('Cerradura')->inline()
                                     ->options([
                                         '1' => 'Normal',
-                                    ]),
+                                    ]),*/
                                 ])->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; }),
                                 Grid::make()->columns(1)
                                 ->schema([
@@ -426,6 +426,17 @@ class PresupuestoResource extends Resource
                                         ->afterStateUpdated(function ($state, callable $get, callable $set) { })
                                         ->reactive(),
                                     Forms\Components\ToggleButtons::make('peatonal_apertura')->label('Apertura')->inline()
+                                        ->options([
+                                            '1' => 'Interior Derecha',
+                                            '2' => 'Interior Izquierda',
+                                            '3' => 'Exterior Derecha',
+                                            '4' => 'Exterior Izquierda',
+                                        ]),
+                                ]),
+                                Grid::make()->columns(1)
+                                ->schema([
+
+                                    Forms\Components\Textarea::make('observaciones_peatonal_ins')->label('Apertura')->inline()
                                         ->options([
                                             '1' => 'Interior Derecha',
                                             '2' => 'Interior Izquierda',
@@ -513,7 +524,7 @@ class PresupuestoResource extends Resource
                                         ->label('Posición rejillas'),
                             ])->collapsible()->collapsed(),
 
-                        
+
                             Section::make('Otras opciones')->columns(1)->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->schema([
                                 Forms\Components\Toggle::make('muelles_antirotura')->label(__('Muelles antirotura'))->reactive()->default(true),
@@ -556,7 +567,7 @@ class PresupuestoResource extends Resource
                                             }),
                                     SignaturePad::make('ubicacion_buzon'),
                                 ])->collapsible()->collapsed(),
-                                
+
                                 Section::make('Cerradura CISA Moderna')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; })
                                 ->description('Marca aquí si incluyes Cerradura CISA Moderna')
                                 ->schema([
@@ -629,7 +640,7 @@ class PresupuestoResource extends Resource
                                         return !$get('bate_contrau');
                                     }),
                                 ])->collapsible()->collapsed(),
-                            ])->collapsible()->collapsed(), 
+                            ])->collapsible()->collapsed(),
                         Section::make('Tipo de suelo')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Rellena aquí las opciones sobre el tipo de suelo')
                             ->schema([
@@ -916,6 +927,8 @@ class PresupuestoResource extends Resource
                             })
                             ->lazy(), // important to use lazy, to avoid updates as you type
                         SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
+
+                        //DrawingField::make('firma')->label('Firma'),
                 ]),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')

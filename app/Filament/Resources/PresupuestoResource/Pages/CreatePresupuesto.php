@@ -14,4 +14,5 @@ class CreatePresupuesto extends CreateRecord
     protected static ?string $pluralModelLabel = "Mediciones";
     protected static ?string $navigationLabel = "Mediciones";
     protected static ?string $title = "Nueva Medición";
+    public $drawingData;
 }

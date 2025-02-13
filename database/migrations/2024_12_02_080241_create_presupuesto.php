@@ -124,6 +124,7 @@ return new class extends Migration
             $table->integer('peatonal_bisagras')->nullable();
             $table->boolean('peatonal_cierrapuertas')->nullable();
             $table->boolean('peatonal_seguridad')->nullable();
+            $table->text('observaciones_peatonal_ins')->nullable();
 
             $table->string('funcionamiento')->nullable();
             $table->integer('motor_opcion')->nullable();
