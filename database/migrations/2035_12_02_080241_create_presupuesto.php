@@ -184,7 +184,7 @@ return new class extends Migration
             $table->text('poste_2')->nullable();
             $table->text('poste_3')->nullable();
             $table->text('u_de_cierre')->nullable();
-            $table->text('portico')->nullable();
+            $table->text('dibujo_portico')->nullable();
             $table->text('tope_suelo')->nullable();
 
             $table->timestamps();
