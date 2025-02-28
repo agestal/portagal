@@ -799,33 +799,70 @@ class PresupuestoResource extends Resource
                     ]),
                 Wizard\Step::make('Datos para obra y montaje')
                 ->schema([
-                    Section::make('Opciones')
+                    Section::make('Información relevante para montaje')
                         ->description('Marca las opcioones correspondientes')
                         ->schema([
                             Grid::make()->schema([
                                 Forms\Components\Toggle::make('electricidad')->label(__('Electricidad'))->reactive(),
+                                Forms\Components\ToggleButtons::make('responsable_elect')->reactive()->inline()->label('Responsable tareas electricidad')
+                                ->options([
+                                    '1' => 'Portagal',
+                                    '2' => 'Cliente',
+                                ])->hidden(fn(Callable $get) => !$get('electricidad') ),
                                 Forms\Components\Textarea::make('electricidad_comentarios')
-                                    ->label('Electricidad comentarios')
-                                    ->hidden(fn(Callable $get) => !$get('electricidad') ),
+                                    ->label('Tareas a realizar de electricidad')
+                                    ->hidden(fn(Callable $get) => (!$get('responsable_elect') == 1 || !$get('responsable_elect') == 2) || !$get('electricidad') != false ),
 
                                 Forms\Components\Toggle::make('obras')->label(__('Albañilería'))->reactive(),
+                                Forms\Components\ToggleButtons::make('responsable_obras')->reactive()->inline()->label('Responsable tareas albañilería')
+                                ->options([
+                                    '1' => 'Portagal',
+                                    '2' => 'Cliente',
+                                ])->hidden(fn(Callable $get) => !$get('obras') ),
                                 Forms\Components\Textarea::make('obras_comentarios')
-                                    ->label('Albañilería comentarios')
-                                    ->hidden(fn(Callable $get) => !$get('obras') ),
+                                    ->label('Tareas a realizar de albañilería')
+                                    ->hidden(fn(Callable $get) => (!$get('responsable_obras') == 1 || !$get('responsable_obras') == 2) || !$get('obras') != false ),
 
+                            ])->columns(1),
+                            Section::make('Materiales')->schema([
+                            Grid::make()->label('Materiales')->schema([
+                                Forms\Components\Select::make('materiales_pilar_izquierdo')
+                                    ->label('Pilar izquierdo (vista exterior)')
+                                    ->reactive()
+                                    ->options(Material::pluck('nombre','id')->toArray()),
+                                Forms\Components\Select::make('materiales_pilar_derecho')
+                                    ->label('Pilar derecho (vista exterior)')
+                                    ->options(Material::pluck('nombre','id')->toArray()),
+                                Forms\Components\Select::make('materiales_techo_anclaje')
+                                    ->label('Techo o anclaje superior')
+                                    ->options(Material::pluck('nombre','id')->toArray()),
+                            ])->columns(1),
+                            ]),
+                            Section::make('Medidas de obra (en mm.)')->schema([
+                                Grid::make()->label('Materiales')->schema([
+                                    Forms\Components\TextInput::make('distancia_paredes')->label('Distancia entre paredes')->numeric(),
+                                    Forms\Components\TextInput::make('altura_hasta_techo')->label('Altura hasta techo')->numeric(),
+                                ])->columns(1),
+                            ]),
+                            Grid::make()->schema([
+                                Forms\Components\Toggle::make('elevador')->label(__('Elevador'))->reactive(),
+                                Forms\Components\ToggleButtons::make('responsable_elevador')->reactive()->inline()->label('Responsable Elevador')
+                                ->options([
+                                    '1' => 'Portagal',
+                                    '2' => 'Cliente',
+                                ])->hidden(fn(Callable $get) => !$get('elevador') ),
+                                Forms\Components\Select::make('elevador_id')
+                                    ->relationship('elevadors','nombre')
+                                    ->label('Tipo de elevador:')
+                                    ->hidden(fn(Callable $get) => (!$get('responsable_elevador') == 1 || !$get('responsable_elevador') == 2) || !$get('elevador') != false ),
                             ])->columns(1),
                         ]),
                     Section::make('Otras opciones')
                         ->description('Marca las opcioones correspondientes')
+                        ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1,2,3,4)) ? true : false )
                         ->collapsed()
                         ->schema([
                             Grid::make()->schema([
-                                Forms\Components\Select::make('materiales_pilares')
-                                    ->label('Materiales de los pialres')
-                                    ->searchable()
-                                    ->preload()
-                                    ->reactive()
-                                    ->options(Material::pluck('nombre','id')->toArray()),
                                 Forms\Components\Select::make('materiales_techo')
                                     ->label('Materiales del techo')
                                     ->searchable()
@@ -843,8 +880,7 @@ class PresupuestoResource extends Resource
                                     ->hidden(function (callable $get) { return !$get('montaje_guia_suelo'); }),
                                 Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false ),
                                 Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))  ? true : false ),
-
-                                Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()->reactive()
+                                /*Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()->reactive()
                                     ->options([
                                         '1' => 'No se necesita',
                                         '2' => 'Lo aporta Portagal',
@@ -862,14 +898,35 @@ class PresupuestoResource extends Resource
                                         '8' => 'Andamio',
                                     ])->hidden(function (callable $get) {
                                         return $get('elevador') == 2 ? false : true;
-                                    }),
+                                    }),*/
                             ])->columns(1),
                         ]),
                     Section::make('Dibujos aclaratorios')
                         ->schema([
-                            SignaturePad::make('montaje_guias')->label(__('Montaje Guías'))->extraAttributes(['height' => '400px' ]),
-                            SignaturePad::make('remates')->label(__('Remates')),
-                            SignaturePad::make('portico')->label(__('Pórtico')),
+                            Forms\Components\Toggle::make('sw_croquis_1')->label(__('Croquis 1'))->reactive(),
+                            SignaturePad::make('croquis_1')->label(__('Croquis 1'))->hidden(fn(Callable $get) => !$get('sw_croquis_1') ),
+                            Forms\Components\Toggle::make('sw_croquis_2')->label(__('Croquis 2'))->reactive(),
+                            SignaturePad::make('croquis_2')->label(__('Croquis 2'))->hidden(fn(Callable $get) => !$get('sw_croquis_2') ),
+                            Forms\Components\Toggle::make('sw_batiente_1')->label(__('Batiente 1'))->reactive(),
+                            SignaturePad::make('batiente_1')->label(__('Batiente 1'))->hidden(fn(Callable $get) => !$get('sw_batiente_1') ),
+                            Forms\Components\Toggle::make('sw_batiente_2')->label(__('Batiente 2'))->reactive(),
+                            SignaturePad::make('batiente_2')->label(__('Batiente 2'))->hidden(fn(Callable $get) => !$get('sw_batiente_2') ),
+                            Forms\Components\Toggle::make('sw_remate_1')->label(__('Remate 1'))->reactive(),
+                            SignaturePad::make('remate_1')->label(__('Remate 1'))->hidden(fn(Callable $get) => !$get('sw_remate_1') ),
+                            Forms\Components\Toggle::make('sw_remate_2')->label(__('Remate 2'))->reactive(),
+                            SignaturePad::make('remate_2')->label(__('Remate 2'))->hidden(fn(Callable $get) => !$get('sw_remate_2') ),
+                            Forms\Components\Toggle::make('sw_poste_1')->label(__('Poste 1'))->reactive(),
+                            SignaturePad::make('poste_1')->label(__('Poste 1'))->hidden(fn(Callable $get) => !$get('sw_poste_1') ),
+                            Forms\Components\Toggle::make('sw_poste_2')->label(__('Poste 2'))->reactive(),
+                            SignaturePad::make('poste_2')->label(__('Poste 2'))->hidden(fn(Callable $get) => !$get('sw_poste_2') ),
+                            Forms\Components\Toggle::make('sw_poste_3')->label(__('Poste 3'))->reactive(),
+                            SignaturePad::make('poste_3')->label(__('Poste 3'))->hidden(fn(Callable $get) => !$get('sw_poste_3') ),
+                            Forms\Components\Toggle::make('sw_u_de_cierre')->label(__('U de Cierre'))->reactive(),
+                            SignaturePad::make('u_de_cierre')->label(__('U de Cierre'))->hidden(fn(Callable $get) => !$get('sw_u_de_cierre') ),
+                            Forms\Components\Toggle::make('sw_portico')->label(__('Pórtico'))->reactive(),
+                            SignaturePad::make('portico')->label(__('Pórtico'))->hidden(fn(Callable $get) => !$get('sw_portico') ),
+                            Forms\Components\Toggle::make('sw_tope_suelo')->label(__('Tope de suelo'))->reactive(),
+                            SignaturePad::make('tope_suelo')->label(__('Tope de suelo'))->hidden(fn(Callable $get) => !$get('sw_tope_suelo') ),
                         ]),
                     ]),
                 Wizard\Step::make('Imagenes')
@@ -920,9 +977,9 @@ class PresupuestoResource extends Resource
                                 ]);
                             })
                             ->lazy(), // important to use lazy, to avoid updates as you type
-                        SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
+                        //SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
 
-                        //DrawingField::make('firma')->label('Firma'),
+                        DrawingField::make('firma')->label('Firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
                 ]),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')

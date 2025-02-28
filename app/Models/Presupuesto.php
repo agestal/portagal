@@ -159,6 +159,10 @@ class Presupuesto extends Model
     {
         return $this->belongsTo(Motor::class);
     }
+    public function elevadors()  : BelongsTo
+    {
+        return $this->belongsTo(Elevador::class);
+    }
     public function tipomotors() : BelongsTo
     {
         return $this->belongsTo(TipoMotor::class);

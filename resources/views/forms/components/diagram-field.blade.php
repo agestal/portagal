@@ -1,38 +1,34 @@
-<div
-    x-data="diagramEditor($wire, '{{ $getState() }}')"
-    x-init="initDiagram()"
-    class="border border-gray-300 rounded p-2 w-full h-96"
->
-    <div id="diagram-container" class="w-full h-full"></div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.6.2/joint.min.js"></script>
+<script src="https://unpkg.com/konva@9/konva.min.js"></script>
+<div id="container"></div>
 <script>
-    function diagramEditor($wire, initialState) {
-        return {
-            graph: null,
-            paper: null,
+  var stage = new Konva.Stage({
+    container: 'container',
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
-            initDiagram() {
-                this.graph = new joint.dia.Graph();
+  // add canvas element
+  var layer = new Konva.Layer();
+  stage.add(layer);
 
-                this.paper = new joint.dia.Paper({
-                    el: document.getElementById('diagram-container'),
-                    model: this.graph,
-                    width: '100%',
-                    height: '100%',
-                    gridSize: 10,
-                    drawGrid: true,
-                });
+  // create shape
+  var box = new Konva.Rect({
+    x: 50,
+    y: 50,
+    width: 100,
+    height: 50,
+    fill: '#00D2FF',
+    stroke: 'black',
+    strokeWidth: 4,
+    draggable: true,
+  });
+  layer.add(box);
 
-                if (initialState) {
-                    this.graph.fromJSON(JSON.parse(initialState));
-                }
-
-                this.graph.on('change', () => {
-                    $wire.set('state', JSON.stringify(this.graph.toJSON()));
-                });
-            }
-        };
-    }
+  // add cursor styling
+  box.on('mouseover', function () {
+    document.body.style.cursor = 'pointer';
+  });
+  box.on('mouseout', function () {
+    document.body.style.cursor = 'default';
+  });
 </script>

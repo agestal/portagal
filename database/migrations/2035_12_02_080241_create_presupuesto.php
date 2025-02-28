@@ -171,6 +171,22 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('full_address')->nullable();
 
+            $table->integer('distancia_paredes')->nullable();
+            $table->integer('distancia_techo')->nullable();
+
+            $table->text('croquis_1')->nullable();
+            $table->text('croquis_2')->nullable();
+            $table->text('batiente_1')->nullable();
+            $table->text('batiente_2')->nullable();
+            $table->text('remate_1')->nullable();
+            $table->text('remate_2')->nullable();
+            $table->text('poste_1')->nullable();
+            $table->text('poste_2')->nullable();
+            $table->text('poste_3')->nullable();
+            $table->text('u_de_cierre')->nullable();
+            $table->text('portico')->nullable();
+            $table->text('tope_suelo')->nullable();
+
             $table->timestamps();
         });
     }
