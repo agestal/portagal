@@ -977,9 +977,7 @@ class PresupuestoResource extends Resource
                                 ]);
                             })
                             ->lazy(), // important to use lazy, to avoid updates as you type
-                        //SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
-
-                        DrawingField::make('firma')->label('Firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
+                        SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
                 ]),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')
