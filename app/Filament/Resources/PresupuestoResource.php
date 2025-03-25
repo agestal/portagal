@@ -604,7 +604,7 @@ class PresupuestoResource extends Resource
                                             ])->hidden( function (callable $get) {
                                                 return !$get('buzon');
                                             }),
-                                    SignaturePad::make('ubicacion_buzon'),
+                                    SignaturePad::make('ubicacion_buzon')->hidden(function (callable $get) { return !$get('buzon'); }),
                                 ])->collapsible()->collapsed(),
 
                                 Section::make('Cerradura CISA Moderna')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; })
