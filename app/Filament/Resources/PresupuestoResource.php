@@ -23,7 +23,7 @@ use App\Models\TipoMotor;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Filament\Forms\Components\Fieldset;
-use App\Forms\Components\DrawingField;
+use App\Filament\Forms\Components\DibujoField;
 class PresupuestoResource extends Resource
 {
     protected static ?string $modeLabel = "Medicion";
@@ -362,6 +362,51 @@ class PresupuestoResource extends Resource
                                             '2' => 'Fijo o hoja auxiliar a la izquierda',
                                             '3' => '2 fijos, uno a cada lado de la puerta peatonal',
                                         ])->reactive(),
+                                ]),
+
+                                Section::make('Otras opciones')
+                                ->description('Marca las opcioones correspondientes')
+                                ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false )
+                                ->collapsed()
+                                ->schema([
+                                    Grid::make()->schema([
+                                        Forms\Components\Select::make('materiales_techo')
+                                            ->label('Materiales del techo')
+                                            ->searchable()
+                                            ->preload()
+                                            ->reactive()
+                                            ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false )
+                                            ->options(Material::pluck('nombre','id')->toArray()),
+                                        Forms\Components\Toggle::make('montaje_guia_suelo')
+                                            ->label('Montaje guía de suelo')
+                                            ->reactive()
+                                            ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(5)) ? true : false ),
+                                        Forms\Components\TextInput::make('material_guia_suelo_cr')
+                                            ->label('Materiales suelo :')
+                                            ->reactive()
+                                            ->hidden(function (callable $get) { return !$get('montaje_guia_suelo'); }),
+                                        Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false ),
+                                        Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))  ? true : false ),
+                                        /*Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()->reactive()
+                                            ->options([
+                                                '1' => 'No se necesita',
+                                                '2' => 'Lo aporta Portagal',
+                                                '3' => 'Lo aporta el cliente',
+                                            ])->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))),
+                                        Forms\Components\Select::make('elevador_portagal')->label('Elevador tipo:')
+                                            ->options([
+                                                '1' => 'Tijera Electrica 8m',
+                                                '2' => 'Tijera electrica 10m',
+                                                '3' => 'Tijera electrica 12m',
+                                                '4' => 'Tijera Diesel Pequeña',
+                                                '5' => 'Tijera Diesel Grande',
+                                                '6' => 'Pato 12m',
+                                                '7' => 'Camion Cesta',
+                                                '8' => 'Andamio',
+                                            ])->hidden(function (callable $get) {
+                                                return $get('elevador') == 2 ? false : true;
+                                            }),*/
+                                    ])->columns(1),
                                 ]),
                                 /*Forms\Components\ToggleButtons::make('configuracion_hoja_aux')->label('Configuración (vista exterior)')->inline()
                                 ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
@@ -799,8 +844,7 @@ class PresupuestoResource extends Resource
                     ]),
                 Wizard\Step::make('Datos para obra y montaje')
                 ->schema([
-                    Section::make('Información relevante para montaje')
-                        ->description('Marca las opcioones correspondientes')
+                    Section::make('Datos para montaje')
                         ->schema([
                             Grid::make()->schema([
                                 Forms\Components\Toggle::make('electricidad')->label(__('Electricidad'))->reactive(),
@@ -836,6 +880,9 @@ class PresupuestoResource extends Resource
                                 Forms\Components\Select::make('materiales_techo_anclaje')
                                     ->label('Techo o anclaje superior')
                                     ->options(Material::pluck('nombre','id')->toArray()),
+                                Forms\Components\Textarea::make('materiales_comentarios')
+                                    ->label('Observaciones de materialess')
+
                             ])->columns(1),
                             ]),
                             Section::make('Medidas de obra (en mm.)')->schema([
@@ -857,50 +904,6 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => (!$get('responsable_elevador') == 1 || !$get('responsable_elevador') == 2) || !$get('elevador') != false ),
                             ])->columns(1),
                         ]),
-                    Section::make('Otras opciones')
-                        ->description('Marca las opcioones correspondientes')
-                        ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1,2,3,4)) ? true : false )
-                        ->collapsed()
-                        ->schema([
-                            Grid::make()->schema([
-                                Forms\Components\Select::make('materiales_techo')
-                                    ->label('Materiales del techo')
-                                    ->searchable()
-                                    ->preload()
-                                    ->reactive()
-                                    ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false )
-                                    ->options(Material::pluck('nombre','id')->toArray()),
-                                Forms\Components\Toggle::make('montaje_guia_suelo')
-                                    ->label('Montaje guía de suelo')
-                                    ->reactive()
-                                    ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(2)) ? true : false ),
-                                Forms\Components\TextInput::make('material_guia_suelo_cr')
-                                    ->label('Materiales suelo :')
-                                    ->reactive()
-                                    ->hidden(function (callable $get) { return !$get('montaje_guia_suelo'); }),
-                                Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false ),
-                                Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))  ? true : false ),
-                                /*Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()->reactive()
-                                    ->options([
-                                        '1' => 'No se necesita',
-                                        '2' => 'Lo aporta Portagal',
-                                        '3' => 'Lo aporta el cliente',
-                                    ])->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))),
-                                Forms\Components\Select::make('elevador_portagal')->label('Elevador tipo:')
-                                    ->options([
-                                        '1' => 'Tijera Electrica 8m',
-                                        '2' => 'Tijera electrica 10m',
-                                        '3' => 'Tijera electrica 12m',
-                                        '4' => 'Tijera Diesel Pequeña',
-                                        '5' => 'Tijera Diesel Grande',
-                                        '6' => 'Pato 12m',
-                                        '7' => 'Camion Cesta',
-                                        '8' => 'Andamio',
-                                    ])->hidden(function (callable $get) {
-                                        return $get('elevador') == 2 ? false : true;
-                                    }),*/
-                            ])->columns(1),
-                        ]),
                     Section::make('Dibujos aclaratorios')
                         ->schema([
                             Forms\Components\Toggle::make('sw_croquis_1')->label(__('Croquis 1'))->reactive(),
@@ -911,6 +914,8 @@ class PresupuestoResource extends Resource
                             SignaturePad::make('batiente_1')->label(__('Batiente 1'))->hidden(fn(Callable $get) => !$get('sw_batiente_1') ),
                             Forms\Components\Toggle::make('sw_batiente_2')->label(__('Batiente 2'))->reactive(),
                             SignaturePad::make('batiente_2')->label(__('Batiente 2'))->hidden(fn(Callable $get) => !$get('sw_batiente_2') ),
+                            Forms\Components\Toggle::make('sw_orejetas')->label(__('Orejetas'))->reactive(),
+                            SignaturePad::make('orejetas_1')->label(__('Orejetas'))->hidden(fn(Callable $get) => !$get('sw_orejetas') ),
                             Forms\Components\Toggle::make('sw_remate_1')->label(__('Remate 1'))->reactive(),
                             SignaturePad::make('remate_1')->label(__('Remate 1'))->hidden(fn(Callable $get) => !$get('sw_remate_1') ),
                             Forms\Components\Toggle::make('sw_remate_2')->label(__('Remate 2'))->reactive(),
@@ -977,7 +982,8 @@ class PresupuestoResource extends Resource
                                 ]);
                             })
                             ->lazy(), // important to use lazy, to avoid updates as you type
-                        SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
+                        //SignaturePad::make('firma')->extraAttributes(['class' => 'fondo-pantalla'],true),
+                        DibujoField::make('firma'),
                 ]),
                 /*Forms\Components\Select::make('material_id')
                     ->relationship('materials', 'materials.nombre')

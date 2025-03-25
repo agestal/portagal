@@ -147,6 +147,7 @@ return new class extends Migration
             $table->integer('materiales_techo')->nullable();
             $table->Boolean('montaje_guia_suelo')->nullable();
             $table->integer('material_guia_suelo_cr')->nullable();
+            $table->text('materiales_comentarios')->nullable();
 
             $table->integer('tipo_vivienda')->nullable();
             $table->float('ancho_pilares')->nullable();
