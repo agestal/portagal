@@ -598,7 +598,7 @@ class PresupuestoResource extends Resource
                                     }),
                                 ]),
 
-                            Section::make('Buzón')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4,5)) ? false : true; })
+                            Section::make('Buzón')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,5)) ? false : true; })
                                 ->description('Marca aquí si incluyes buzón')
                                 ->schema([
                                     Forms\Components\Toggle::make('buzon')->label(__('Buzon'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
@@ -651,6 +651,7 @@ class PresupuestoResource extends Resource
                                             ])->hidden( function (callable $get) {
                                                 return !$get('buzon');
                                             }),
+                                    SignaturePad::make('ubicacion_buzon')->hidden(function (callable $get) { return !$get('buzon'); }),
                                 ])->collapsible()->collapsed(),
                             /*Section::make('Orejetas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; })
                                 ->description('Datos sobre las orejetas')
