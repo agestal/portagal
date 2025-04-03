@@ -32,6 +32,10 @@ class PresupuestoResource extends Resource
     protected static ?string $navigationLabel = "Mediciones";
     protected static ?string $model = Presupuesto::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getSlug(): string
+    {
+        return 'mediciones';
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -270,8 +274,8 @@ class PresupuestoResource extends Resource
                                         ->label('Holgura')
                                         ->numeric(),
                                 ]),
-                                Forms\Components\ToggleButtons::make('rabos')->label('Puerta corre por el exterior (sin rabos)')->inline()->default(2,5)
-                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,5)) ? true : false; })
+                                Forms\Components\ToggleButtons::make('rabos')->label('Puerta corre por el exterior (sin rabos)')->inline()->default(2)
+                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
                                 ->options([
                                     '1' => 'Si',
                                     '2' => 'No',
@@ -297,7 +301,7 @@ class PresupuestoResource extends Resource
                                     '2' => 'Sólo caída superior',
                                     '3' => ' Con caída superior e inferior',
                                 ])->reactive(),
-                                SignaturePad::make('caida_dibujo')->label(__('Dibujo de la caída'))->hidden(function (Callable $get) { return $get('puerta_caida') == 1 && in_array($get('puerta_id'),array(2,5)) ? false : true; }),
+                                SignaturePad::make('caida_dibujo')->label(__('Dibujo de la caída'))->hidden(function (Callable $get) { return $get('puerta_caida') == 1 && in_array($get('puerta_id'),array(2,3,4,5)) ? false : true; }),
 
 
                                 /*DrawingField::make('caida_dibujo')
@@ -366,17 +370,11 @@ class PresupuestoResource extends Resource
 
                                 Section::make('Otras opciones')
                                 ->description('Marca las opcioones correspondientes')
-                                ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false )
+                                ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(5)) ? true : false )
                                 ->collapsed()
                                 ->schema([
                                     Grid::make()->schema([
-                                        Forms\Components\Select::make('materiales_techo')
-                                            ->label('Materiales del techo')
-                                            ->searchable()
-                                            ->preload()
-                                            ->reactive()
-                                            ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false )
-                                            ->options(Material::pluck('nombre','id')->toArray()),
+
                                         Forms\Components\Toggle::make('montaje_guia_suelo')
                                             ->label('Montaje guía de suelo')
                                             ->reactive()
@@ -385,8 +383,15 @@ class PresupuestoResource extends Resource
                                             ->label('Materiales suelo :')
                                             ->reactive()
                                             ->hidden(function (callable $get) { return !$get('montaje_guia_suelo'); }),
-                                        Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false ),
-                                        Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))  ? true : false ),
+                                        /*Forms\Components\Select::make('materiales_techo')
+                                            ->label('Materiales del techo')
+                                            ->searchable()
+                                            ->preload()
+                                            ->reactive()
+                                            ->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false )
+                                            ->options(Material::pluck('nombre','id')->toArray()),*/
+                                        //Forms\Components\TextInput::make('distancia_vertical')->label(__('Distancia suelo techo: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1)) ? true : false ),
+                                        //Forms\Components\TextInput::make('distancia_horizontal')->label(__('Distancia entre paredes: (CMs)'))->reactive()->numeric()->hidden(fn(Callable $get) => !in_array($get('puerta_id'),array(1))  ? true : false ),
                                         /*Forms\Components\ToggleButtons::make('elevador')->label('Elevador: ')->inline()->reactive()
                                             ->options([
                                                 '1' => 'No se necesita',
@@ -593,7 +598,7 @@ class PresupuestoResource extends Resource
                                     }),
                                 ]),
 
-                            Section::make('Buzón')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,5)) ? false : true; })
+                            Section::make('Buzón')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4,5)) ? false : true; })
                                 ->description('Marca aquí si incluyes buzón')
                                 ->schema([
                                     Forms\Components\Toggle::make('buzon')->label(__('Buzon'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
@@ -647,7 +652,7 @@ class PresupuestoResource extends Resource
                                                 return !$get('buzon');
                                             }),
                                 ])->collapsible()->collapsed(),
-                            Section::make('Orejetas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; })
+                            /*Section::make('Orejetas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; })
                                 ->description('Datos sobre las orejetas')
                                 ->schema([
                                     Forms\Components\Toggle::make('orejetas')->label(__('Orejetas'))->afterStateUpdated(function ($state, callable $get, callable $set) { })->reactive(),
@@ -656,7 +661,7 @@ class PresupuestoResource extends Resource
                                         ->hidden(function (callable $get) { return !$get('orejetas'); }),
                                     SignaturePad::make('orejetas_dibujo')->label(__('Dibujo de las orejetas'))->extraAttributes(['class' => 'fondo-pantalla'])->hidden(function (callable $get) { return !$get('orejetas'); }),
                                 ])->collapsible(),
-
+                                            */
                             /*Section::make('Datos sobre la orientación')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
                                 ->description('Orientación')
                                 ->schema([
@@ -842,7 +847,7 @@ class PresupuestoResource extends Resource
                                 Forms\Components\TextInput::make('valor')
                             ])->columns(2),*/
                     ]),
-                Wizard\Step::make('Datos para obra y montaje')
+                Wizard\Step::make('Datos para montaje y fabricación')
                 ->schema([
                     Section::make('Datos para montaje')
                         ->schema([
@@ -904,7 +909,7 @@ class PresupuestoResource extends Resource
                                     ->hidden(fn(Callable $get) => (!$get('responsable_elevador') == 1 || !$get('responsable_elevador') == 2) || !$get('elevador') != false ),
                             ])->columns(1),
                         ]),
-                    Section::make('Dibujos aclaratorios')
+                    Section::make('Datos para fabricación')
                         ->schema([
                             Forms\Components\Toggle::make('sw_croquis_1')->label(__('Croquis 1'))->reactive(),
                             SignaturePad::make('croquis_1')->label(__('Croquis 1'))->hidden(fn(Callable $get) => !$get('sw_croquis_1') ),
