@@ -48,8 +48,10 @@ return new class extends Migration
             $table->float('pilar_derecho')->nullable();/***/
             $table->float('ancho_plibre')->nullable();/***/
             $table->float('ancho_hueco')->nullable();/***/
-            $table->float('puerta_izquierda')->nullable();/***/
-            $table->float('puerta_derecha')->nullable();/***/
+            $table->float('puerta_izquierda_ext')->nullable();/***/
+            $table->float('puerta_derecha_ext')->nullable();/***/
+            $table->float('puerta_izquierda_int')->nullable();/***/
+            $table->float('puerta_derecha_int')->nullable();/***/
             $table->integer('direccion_apertura')->nullable(); /***/
             $table->integer('solape_motor')->nullable(); /***/
             $table->integer('solape_cierra')->nullable(); /***/
@@ -156,6 +158,7 @@ return new class extends Migration
             $table->integer('mecanismo_cierra')->nullable();
             $table->boolean('seguridad_peatonal')->nullable();
             $table->boolean('cerrojo_suelo')->nullable();
+            $table->text('dibujo_peatonal')->nullable();
 
             $table->text('firma')->nullable();
             $table->text('montaje_guias')->nullable();
