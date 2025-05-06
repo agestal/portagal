@@ -203,7 +203,7 @@ class PresupuestoResource extends Resource
                                         ->label('ALTURA DE PUERTA IZQUIERDA (vista exterior)')
                                         ->numeric(),
                                     Forms\Components\TextInput::make('puerta_derecha_ext')
-                                        ->label('ALTURA DE PUERTA DERECHA (vista interior)')
+                                        ->label('ALTURA DE PUERTA DERECHA (vista exterior)')
                                         ->numeric(),
                                 ]),
 
@@ -244,7 +244,7 @@ class PresupuestoResource extends Resource
                                         ->numeric()
                                         ->reactive(),
                                 ]),
-                                Fieldset::make('Altura de pilares')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4,5)) ? false : true; })
+                                Fieldset::make('Altura de pilares')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4,5)) ? false : true; })
                                 ->schema([
                                     Forms\Components\TextInput::make('pilar_izquierdo')
                                         ->label('ALTURA DE PILAR IZQUIERDO (vista exterior)')
@@ -253,14 +253,23 @@ class PresupuestoResource extends Resource
                                         ->label('ALTURA DE PILAR DERECHO (vista exterior)')
                                         ->numeric(),
                                 ]),
+                                Fieldset::make('Altura de pilares')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
+                                ->schema([
+                                    Forms\Components\TextInput::make('pilar_izquierdo')
+                                        ->label('ALTURA DE PILAR IZQUIERDO (vista interior)')
+                                        ->numeric(),
+                                    Forms\Components\TextInput::make('pilar_derecho')
+                                        ->label('ALTURA DE PILAR DERECHO (vista interior)')
+                                        ->numeric(),
+                                ]),
                                 Forms\Components\ToggleButtons::make('direccion_apertura')->label('Dirección de apertura (vista exterior)')->inline()
-                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
+                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,4)) ? false : true; })
                                 ->options([
                                     '1' => 'ABRE HACIA LA IZQUIERDA',
                                     '2' => 'ABRE HACIA LA DERECHA',
                                 ])->reactive(),
                                 Forms\Components\ToggleButtons::make('direccion_apertura')->label('Dirección de apertura (vista exterior)')->inline()
-                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4,5)) ? false : true; })
+                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,5)) ? false : true; })
                                 ->options([
                                     '1' => 'ABRE HACIA LA IZQUIERDA INTERIOR',
                                     '2' => 'ABRE HACIA LA DERECHA INTERIOR',
@@ -290,7 +299,7 @@ class PresupuestoResource extends Resource
                                     '1' => 'Si',
                                     '2' => 'No',
                                 ])->reactive(),
-                                Fieldset::make('Medida rabos de la puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,5)) &&  $get('rabos') == 1 ? true : false; })
+                                Fieldset::make('Medida rabos de la puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
                                 ->schema([
                                     Forms\Components\TextInput::make('rabo_superior')
                                         ->label('Rabo superior')
