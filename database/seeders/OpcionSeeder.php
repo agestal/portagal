@@ -14,7 +14,7 @@ class OpcionSeeder extends Seeder
     public function run(): void
     {
         Opcion::insert([
-            [ 'nombre' => 'Fotocélulas espejo' ], 
+            [ 'nombre' => 'Fotocélulas espejo' ],
             [ 'nombre' => 'Fotocélulas emisor receptor' ],
             [ 'nombre' => 'Desbloqueo exterior' ],
             [ 'nombre' => 'Teclado inalámbrico' ],
@@ -26,6 +26,7 @@ class OpcionSeeder extends Seeder
             [ 'nombre' => 'Pulsador cableado' ],
             [ 'nombre' => 'Receptor externo' ],
             [ 'nombre' => 'Antena exterior' ],
+            [ 'nombre' => 'Tirador' ],
         ]);
     }
 }
