@@ -263,10 +263,16 @@ class PresupuestoResource extends Resource
                                         ->numeric(),
                                 ]),
                                 Forms\Components\ToggleButtons::make('direccion_apertura')->label('Dirección de apertura (vista exterior)')->inline()
-                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,4)) ? false : true; })
+                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) ? false : true; })
                                 ->options([
                                     '1' => 'ABRE HACIA LA IZQUIERDA',
                                     '2' => 'ABRE HACIA LA DERECHA',
+                                ])->reactive(),
+                                Forms\Components\ToggleButtons::make('direccion_apertura')->label('Dirección de apertura (vista exterior)')->inline()
+                                ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(4)) ? false : true; })
+                                ->options([
+                                    '1' => 'ABRE HACIA INTERIOR',
+                                    '2' => 'ABRE HACIA EXTERIOR',
                                 ])->reactive(),
                                 Forms\Components\ToggleButtons::make('direccion_apertura')->label('Dirección de apertura (vista exterior)')->inline()
                                 ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,5)) ? false : true; })
