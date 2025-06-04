@@ -648,7 +648,7 @@ class PresupuestoResource extends Resource
                                         ->hidden( function (callable $get) {
                                             return $get('funcionamiento') == 2 && in_array($get('puerta_id'),array(2,3,4)) ? false : true;
                                         }),
-                                Forms\Components\Select::make('mecanismo_cierra')->label('Mecanismo de cierre')
+                                Forms\Components\Select::make('mecanismo_cierra')->label('Mecanismo de cierre')->multiple()
                                         ->options([
                                             '1' => 'Cerradura pico de loro.',
                                             '2' => 'Cerrojo a suelo',
@@ -715,6 +715,14 @@ class PresupuestoResource extends Resource
                                     ->hidden( function (callable $get) {
                                         return $get('funcionamiento') == 1 && in_array($get('puerta_id'),array(2))  ? false : true;
                                 }),
+                                Forms\Components\Select::make('manillas')->hidden(function (Callable $get) { return $get('funcionamiento') == 1 && in_array($get('puerta_id'),array(3,4)) ? false : true; })
+                                    ->label('Manillas')
+                                    ->options([
+                                        '1' => 'Sin manillas',
+                                        '2' => 'Sólo manilla exterior',
+                                        '3' => 'Sólo manilla interior',
+                                        '4' => 'Con manillas interior y exterior',
+                                    ])->reactive(),
                             ])->collapsible(),
                     ]),
                 Wizard\Step::make('Datos para montaje y fabricación')
