@@ -134,7 +134,7 @@ return new class extends Migration
             $table->integer('motors_id')->nullable();
 
             $table->boolean('manual_cerradura_fac')->nullable();
-            $table->string('manual_cerradura_pc')->nullable();
+            $table->json('manual_cerradura_pc')->nullable();
             $table->boolean('manual_tirador')->nullable();
 
             $table->boolean('electricidad')->nullable();
@@ -155,7 +155,7 @@ return new class extends Migration
             $table->float('ancho_pilares')->nullable();
             $table->boolean('tirador')->nullable();
             $table->integer('tipo_tirador')->nullable();
-            $table->integer('mecanismo_cierra')->nullable();
+            $table->json('mecanismo_cierra')->nullable();
             $table->boolean('seguridad_peatonal')->nullable();
             $table->boolean('cerrojo_suelo')->nullable();
             $table->text('dibujo_peatonal')->nullable();
