@@ -305,7 +305,7 @@ class PresupuestoResource extends Resource
                                     '1' => 'Si',
                                     '2' => 'No',
                                 ])->reactive(),
-                                Fieldset::make('Medida rabos de la puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) && $get('rabos') == 1 ? false : true; })
+                                Fieldset::make('Medida rabos de la puerta')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2)) && $get('rabos') == 2 ? false : true; })
                                 ->schema([
                                     Forms\Components\TextInput::make('rabo_superior')
                                         ->label('Rabo superior')
@@ -459,7 +459,7 @@ class PresupuestoResource extends Resource
                                                 '3' => 'Sólo manilla interior',
                                                 '4' => 'Con manillas interior y exterior',
                                             ])->reactive()
-                                            ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; }),
+                                            ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(2,3,4)) ? false : true; }),
                                     ]),
                                     Grid::make()->columns(1)
                                     ->schema([
@@ -475,12 +475,13 @@ class PresupuestoResource extends Resource
                         Section::make('Accesorios y Opciones')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1,2,3,4,5)) ? false : true; })
                         ->description('Escoge accesorios y opciones')
                         ->schema([
-                            Forms\Components\Select::make('manillas')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(5)) ? false : true; })
+                            Forms\Components\Select::make('manillas_peatonal')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(5)) ? false : true; })
                                 ->label('Manillas')
                                 ->options([
                                     '1' => 'Sólo manilla interior',
-                                    '2' => 'Manilla interior y exterior',
-                                    '3' => 'Sin manillas',
+                                    '2' => 'Sólo manilla exterior',
+                                    '3' => 'Manilla interior y exterior',
+                                    '4' => 'Sin manillas',
                                 ])->reactive(),
                             Section::make('Dintel')->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(1)) ? false : true; })
                             ->description('Dintel del panel')
@@ -721,7 +722,7 @@ class PresupuestoResource extends Resource
                                     ->hidden( function (callable $get) {
                                         return $get('funcionamiento') == 1 && in_array($get('puerta_id'),array(2))  ? false : true;
                                 }),
-                                Forms\Components\Select::make('manillas')->hidden(function (Callable $get) { return $get('funcionamiento') == 1 && in_array($get('puerta_id'),array(3,4)) ? false : true; })
+                                Forms\Components\Select::make('manillas')->hidden(function (Callable $get) { return $get('funcionamiento') == 1 && in_array($get('puerta_id'),array(2,3,4)) ? false : true; })
                                     ->label('Manillas')
                                     ->options([
                                         '1' => 'Sin manillas',

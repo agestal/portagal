@@ -70,6 +70,7 @@ return new class extends Migration
             $table->float('holgura_inferior')->nullable();
             $table->integer('tipo_cierre_peatonal')->nullable();
             $table->integer('manillas')->nullable();
+            $table->integer('manillas_peatonal')->nullable();
             $table->boolean('pano_fijo_hoja_aux')->nullable();
             $table->integer('ancho_fijo_aux')->nullable();
             $table->integer('alto_fijo_aux')->nullable();
