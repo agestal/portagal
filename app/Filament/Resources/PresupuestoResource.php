@@ -94,7 +94,7 @@ class PresupuestoResource extends Resource
                             ->schema([
 
                                 Forms\Components\ToggleButtons::make('tipo_vivienda')->label('Tipo de vivienda')->inline()
-                                    ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3)) ? false : true; })
+                                    ->hidden(function (Callable $get) { return in_array($get('puerta_id'),array(3,4)) ? false : true; })
                                     ->options([
                                         '1' => 'Residencial',
                                         '2' => 'Comunitaria',
@@ -655,7 +655,7 @@ class PresupuestoResource extends Resource
                                         ->hidden( function (callable $get) {
                                             return $get('funcionamiento') == 2 && in_array($get('puerta_id'),array(2,3,4)) ? false : true;
                                         }),
-                                Forms\Components\Select::make('mecanismo_cierra')->label('Mecanismo de cierre')->multiple()
+                                Forms\Components\ToggleButtons::make('mecanismo_cierra')->label('Mecanismo de cierre')->multiple()->inline()
                                         ->options([
                                             '1' => 'Cerradura pico de loro.',
                                             '2' => 'Cerrojo a suelo',
